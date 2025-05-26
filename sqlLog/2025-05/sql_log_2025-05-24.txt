@@ -1,0 +1,5 @@
+[2025-05-24 21:24:24.597] update bascontract set status = '20' where id = '93351'
+[2025-05-24 21:24:34.159] update bascontract set status = '10' where id = '93351'
+[2025-05-24 21:29:40.541] update bascontract set status = ? where id = ?
+[2025-05-24 21:29:53.586] update bascontract set status = ? where id = ?
+[2025-05-24 21:33:20.785] update bascontract set status = '20' where id = '93353'

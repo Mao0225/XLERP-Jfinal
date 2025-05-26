@@ -1,0 +1,2 @@
+[2025-05-20 16:12:41.861] insert into `sysuser`(`password`, `username`) values('123456', 'dadad')
+[2025-05-20 16:17:26.306] insert into `sysuser`(`password`, `username`) values('123456', 'dadad')

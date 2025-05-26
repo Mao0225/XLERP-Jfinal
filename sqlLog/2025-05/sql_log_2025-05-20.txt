@@ -1,0 +1,96 @@
+[2025-05-20 16:23:13.000] insert into `sysuser`(`password`, `username`) values('123456', 'dadad')
+[2025-05-20 16:23:24.297] insert into `sysuser`(`password`, `username`) values('123456', '达瓦达瓦达瓦')
+[2025-05-20 17:02:16.687] insert into `sysuser`(`password`, `username`) values('123456', '达瓦达瓦达瓦')
+[2025-05-20 17:13:11.672] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:13:41.616] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:13:56.278] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:30:35.116] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:34:56.805] update `sysuser` set `username` = 'dad4awd4aw'  where `id` = 2
+[2025-05-20 17:35:30.257] update `sysuser` set `username` = 'dad4awd4aw'  where `id` = 2
+[2025-05-20 17:35:52.422] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:36:30.125] insert into `sysuser`(`status`) values(0)
+[2025-05-20 17:36:39.367] insert into `sysuser`(`status`) values(0)
+[2025-05-20 20:42:29.970] insert into `sysuser`(`status`) values(0)
+[2025-05-20 20:46:00.498] update `sysuser` set `status` = -1  where `id` = 12
+[2025-05-20 20:46:08.889] update `sysuser` set `status` = -1  where `id` = 2
+[2025-05-20 20:47:32.590] update `sysuser` set `status` = -1  where `id` = 3
+[2025-05-20 20:47:59.639] update `sysuser` set `status` = -1  where `id` = 12
+[2025-05-20 21:06:03.239] delete from sysusermenu where userid = 1 and menuid = 4
+[2025-05-20 21:06:03.253] delete from sysusermenu where userid = 1 and menuid = 8
+[2025-05-20 21:06:03.265] delete from sysusermenu where userid = 1 and menuid = 9
+[2025-05-20 21:15:30.412] insert into `sysusermenu`(`menuid`, `userid`) values(8, 1)
+[2025-05-20 21:15:30.438] insert into `sysusermenu`(`menuid`, `userid`) values(9, 1)
+[2025-05-20 21:16:34.302] delete from sysusermenu where userid = 1 and menuid = 8
+[2025-05-20 21:16:34.311] delete from sysusermenu where userid = 1 and menuid = 9
+[2025-05-20 21:16:38.321] insert into `sysusermenu`(`menuid`, `userid`) values(8, 1)
+[2025-05-20 21:16:38.330] insert into `sysusermenu`(`menuid`, `userid`) values(9, 1)
+[2025-05-20 21:17:02.716] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 21:17:02.726] insert into `sysusermenu`(`menuid`, `userid`) values(3, 4)
+[2025-05-20 21:17:02.735] insert into `sysusermenu`(`menuid`, `userid`) values(5, 4)
+[2025-05-20 21:17:02.744] insert into `sysusermenu`(`menuid`, `userid`) values(7, 4)
+[2025-05-20 21:17:04.492] delete from sysusermenu where userid = 4 and menuid = 5
+[2025-05-20 21:17:07.638] insert into `sysusermenu`(`menuid`, `userid`) values(5, 4)
+[2025-05-20 21:17:07.649] delete from sysusermenu where userid = 4 and menuid = 7
+[2025-05-20 21:21:53.440] insert into `sysuser`(`descr`, `password`, `flag`, `phone`, `memo`, `rule`, `departmentno`, `type`, `category`, `fax`, `username`, `status`) values('1', '123456', '11', '1', '', 'fc006', '', '1', '', 'liuguoqi', 0, ?)
+[2025-05-20 21:45:27.041] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 21:45:27.054] delete from sysusermenu where userid = 4 and menuid = 3
+[2025-05-20 21:45:27.062] delete from sysusermenu where userid = 4 and menuid = 5
+[2025-05-20 21:45:35.037] insert into `sysusermenu`(`menuid`, `userid`) values(7, 4)
+[2025-05-20 21:45:35.047] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 21:50:30.998] insert into `sysusermenu`(`menuid`, `userid`) values(5, 4)
+[2025-05-20 21:50:32.198] delete from sysusermenu where userid = 4 and menuid = 5
+[2025-05-20 21:50:33.067] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 21:57:12.658] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 21:57:14.495] insert into `sysusermenu`(`menuid`, `userid`) values(3, 4)
+[2025-05-20 21:57:15.677] insert into `sysusermenu`(`menuid`, `userid`) values(5, 4)
+[2025-05-20 21:57:18.101] insert into `sysusermenu`(`menuid`, `userid`) values(9, 4)
+[2025-05-20 21:57:18.111] insert into `sysusermenu`(`menuid`, `userid`) values(8, 4)
+[2025-05-20 21:57:20.001] delete from sysusermenu where userid = 4 and menuid = 8
+[2025-05-20 21:57:23.985] delete from sysusermenu where userid = 4 and menuid = 9
+[2025-05-20 21:57:33.624] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 21:57:37.541] delete from sysusermenu where userid = 4 and menuid = 3
+[2025-05-20 21:57:37.867] delete from sysusermenu where userid = 4 and menuid = 5
+[2025-05-20 21:57:38.263] delete from sysusermenu where userid = 4 and menuid = 7
+[2025-05-20 21:57:41.638] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 21:57:54.834] insert into `sysusermenu`(`menuid`, `userid`) values(3, 4)
+[2025-05-20 21:58:01.062] delete from sysusermenu where userid = 4 and menuid = 3
+[2025-05-20 21:58:01.071] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 22:01:48.737] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 22:01:50.662] insert into `sysusermenu`(`menuid`, `userid`) values(3, 4)
+[2025-05-20 22:01:51.559] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 22:01:51.568] delete from sysusermenu where userid = 4 and menuid = 3
+[2025-05-20 22:01:53.627] insert into `sysusermenu`(`menuid`, `userid`) values(7, 4)
+[2025-05-20 22:01:53.640] insert into `sysusermenu`(`menuid`, `userid`) values(2, 4)
+[2025-05-20 22:01:54.077] insert into `sysusermenu`(`menuid`, `userid`) values(5, 4)
+[2025-05-20 22:01:55.038] insert into `sysusermenu`(`menuid`, `userid`) values(3, 4)
+[2025-05-20 22:01:56.941] delete from sysusermenu where userid = 4 and menuid = 2
+[2025-05-20 22:01:56.950] delete from sysusermenu where userid = 4 and menuid = 3
+[2025-05-20 22:01:56.959] delete from sysusermenu where userid = 4 and menuid = 5
+[2025-05-20 22:01:56.968] delete from sysusermenu where userid = 4 and menuid = 7
+[2025-05-20 22:02:04.071] insert into `sysusermenu`(`menuid`, `userid`) values(8, 4)
+[2025-05-20 22:02:06.011] insert into `sysusermenu`(`menuid`, `userid`) values(9, 4)
+[2025-05-20 22:02:13.162] delete from sysusermenu where userid = 4 and menuid = 8
+[2025-05-20 22:02:13.170] delete from sysusermenu where userid = 4 and menuid = 9
+[2025-05-20 22:21:46.545] insert into `sysuser`(`status`) values(0)
+[2025-05-20 22:21:57.806] insert into `sysuser`(`status`) values(0)
+[2025-05-20 22:23:54.475] insert into `sysuser`(`avatar`, `status`) values('upload/avatars/2025/05/20/ea8c21d16d7b46b2a583fc7d39da9031.jpg', 0)
+[2025-05-20 22:44:23.829] insert into `sysuser`(`status`) values(0)
+[2025-05-20 22:45:30.687] insert into `sysusermenu`(`menuid`, `userid`) values(2, 2)
+[2025-05-20 22:45:31.393] insert into `sysusermenu`(`menuid`, `userid`) values(3, 2)
+[2025-05-20 22:45:31.805] insert into `sysusermenu`(`menuid`, `userid`) values(5, 2)
+[2025-05-20 22:45:32.331] insert into `sysusermenu`(`menuid`, `userid`) values(7, 2)
+[2025-05-20 22:47:33.724] insert into `sysuser`(`avatar`, `status`) values('upload/avatars/2025/05/20/f0a626512c364e649ef6f9bd5e912323.jpg', 0)
+[2025-05-20 23:00:24.398] insert into `sysmenu`(`layout`, `path`, `component`, `icon`, `title`, `parentid`) values('default', '/test', 'test', 'Setting', 'test', 0)
+[2025-05-20 23:00:58.789] delete from `sysmenu` where `id` = 10
+[2025-05-20 23:01:17.859] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:02:32.926] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:04:16.824] update `sysuser` set `status` = -1  where `id` = 17
+[2025-05-20 23:07:38.019] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:10:11.062] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:11:15.834] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:13:30.272] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:14:41.152] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:15:33.439] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:19:17.090] insert into `sysuser`(`status`) values(0)
+[2025-05-20 23:30:18.890] insert into `sysuser`(`flag`, `departmentid`, `memo`, `rule`, `avatar`, `type`, `descr`, `password`, `phone`, `category`, `fax`, `username`, `status`) values(13, '', '', '', '', 'wedqwe', '123456', '', '', '', 'liuguoqi', 0, ?)
+[2025-05-20 23:30:37.207] insert into `sysuser`(`flag`, `departmentid`, `memo`, `rule`, `avatar`, `type`, `descr`, `password`, `phone`, `category`, `fax`, `username`, `status`) values(11, '', '', '{"uid":1747755035652}', '', 'dawdawd', 'awd', '', '', '', 'dawd', 0, ?)

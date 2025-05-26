@@ -1,0 +1,65 @@
+[2025-05-23 14:21:01.024] insert into `bascontract`(`no`, `salesmanid`, `agent`, `other`, `casingcost`, `transcost`, `destination`, `userid`, `bank`, `checktype`, `postalcode`, `term`, `fax`, `bankcode`, `pressurestage`, `receiver`, `transtype`, `picktype`, `telephone`, `name`, `customerid`, `legalrepresent`, `taxnum`, `isdelete`, `signdate`) values('23123', 1087, '123123', '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：', 1, 1, '12312', '31231', '1231', '12312', '3123', '231231231', 1, '3123', '铁路', '送货', '12312', '123123', 31612, '12312', '312312', 0, 'Wed Apr 30 00:00:00 GMT+08:00 2025', ?, ?)
+[2025-05-23 14:23:04.092] insert into `sysusermenu`(`menuid`, `userid`) values(11, 1)
+[2025-05-23 14:23:04.780] insert into `sysusermenu`(`menuid`, `userid`) values(12, 1)
+[2025-05-23 14:42:33.319] insert into `bascontractitem`(`no`, `itemid`, `itemnum`, `itemgrossweight`, `itemmemo`, `itemunit`, `itemprice`, `itemweight`, `itemsum`, `isdelete`) values('23123', 33627, 3, 65.40, '大碗大碗大碗大碗大碗', '套', 73, 21.8, 219.00, 0)
+[2025-05-23 14:46:42.484] insert into `bascontract`(`no`, `salesmanid`, `agent`, `other`, `casingcost`, `transcost`, `destination`, `userid`, `bank`, `checktype`, `postalcode`, `term`, `fax`, `bankcode`, `pressurestage`, `receiver`, `transtype`, `picktype`, `telephone`, `name`, `customerid`, `legalrepresent`, `taxnum`, `isdelete`, `signdate`) values('23112', 1312, '1231', '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：', 1, 1, '', 1, '', '', '', 201408, '', '', 0, '', '', '', '', '123123', 31610, '3123123', '', 0, 'Wed May 07 00:00:00 GMT+08:00 2025')
+[2025-05-23 14:55:16.393] update `bascontract` set `no` = '23123' , `salesmanid` = 1087 , `agent` = '123123' , `other` = '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：' , `casingcost` = 1 , `flag` = 0 , `transcost` = 1 , `destination` = '12312' , `description` = 'N/A' , `rule` = 'N/A' , `appenddate` = 0 , `type` = '31231' , `userid` = '1231' , `bank` = '12312' , `checktype` = 2 , `postalcode` = '3123' , `term` = '231231231' , `fax` = 0 , `bankcode` = 1 , `owner` = '3123' , `pressurestage` = '铁路' , `receiver` = '送货' , `transtype` = '12312' , `picktype` = 0 , `telephone` = '' , `orgid` = '嗲家我i大家阿瓦蒂阿文' , `itemtype` = 31612 , `name` = '12312' , `customerid` = '312312' , `legalrepresent` = 'Fri May 23 14:21:01 GMT+08:00 2025' , `taxnum` = 0 , `indate` = 'Wed Apr 30 00:00:00 GMT+08:00 2025' , `isdelete` = 10 , `signdate` = 1 , `status` = ?  where `id` = ?
+[2025-05-23 15:10:13.475] update `bascontractitem` set `no` = '23123' , `itemid` = 33627 , `itemnum` = 3 , `itemgrossweight` = 65.40 , `itemmemo` = '大碗大碗大碗大碗大碗111111' , `itemunit` = '套' , `itemprice` = 73 , `itemweight` = 21.8 , `itemsum` = 219.00  where `id` = 211541
+[2025-05-23 15:13:52.598] update `bascontractitem` set `no` = '23123' , `itemid` = 33627 , `itemnum` = 3 , `itemgrossweight` = 65.4 , `itemmemo` = '大碗大碗大碗大碗大碗111111' , `itemunit` = '套' , `itemprice` = 73 , `itemweight` = 21.8 , `itemsum` = 219  where `id` = 211541
+[2025-05-23 15:18:36.191] insert into `bascontract`(`no`, `salesmanid`, `agent`, `other`, `casingcost`, `transcost`, `destination`, `userid`, `bank`, `checktype`, `postalcode`, `term`, `fax`, `bankcode`, `pressurestage`, `receiver`, `transtype`, `picktype`, `telephone`, `name`, `customerid`, `legalrepresent`, `taxnum`, `isdelete`, `signdate`, `status`) values('123124124', 1087, '213', '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：', 2, 2, '1231', 1, '123123', '1231', '123123', 201408, '12312', '23123123', 1231, '213', '铁路', '送货', '3123', '213123123', 31611, '1231', '1231', 0, 'Wed May 07 00:00:00 GMT+08:00 2025', 10)
+[2025-05-23 15:28:52.211] update bascontract set isdelete = -1 where id = 123124124
+[2025-05-23 15:28:57.369] update bascontract set isdelete = -1 where id = 123124124
+[2025-05-23 15:29:08.075] update bascontract set isdelete = -1 where id = 123124124
+[2025-05-23 15:30:11.586] update bascontract set isdelete = -1 where id = 93351
+[2025-05-23 15:32:19.403] insert into `bascontract`(`no`, `salesmanid`, `agent`, `other`, `casingcost`, `transcost`, `destination`, `userid`, `bank`, `checktype`, `postalcode`, `term`, `fax`, `bankcode`, `pressurestage`, `receiver`, `transtype`, `picktype`, `telephone`, `name`, `customerid`, `legalrepresent`, `taxnum`, `isdelete`, `signdate`, `status`) values('3333333333333', 1312, '33333333', '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：', 1, 1, '33333333', 1, '333333333333', '3333', '123123', 201408, '31231231', '33333333333', 213, '333333333333', '汽运', '送货', '231312', '333333333', 31612, '3333333333', '333333333', 0, 'Sat May 03 00:00:00 GMT+08:00 2025', 10)
+[2025-05-23 15:32:55.597] insert into `bascontractitem`(`no`, `itemid`, `itemnum`, `itemgrossweight`, `itemmemo`, `itemunit`, `itemprice`, `id`, `itemweight`, `itemsum`, `isdelete`) values('3333333333333', 33642, 8, 600.00, '33333333333333333333333333333333', '片', 300, 75, 2400.00, 0, ?)
+[2025-05-23 15:33:41.294] update `bascontractitem` set `no` = '3333333333333' , `itemid` = 33642 , `itemnum` = 12 , `itemgrossweight` = 900.00 , `itemmemo` = '33333333333333333333333333333333' , `itemunit` = '片' , `itemprice` = 300 , `itemweight` = 75 , `itemsum` = 3600.00  where `id` = 211542
+[2025-05-23 15:33:52.982] update bascontractitem set isdelete = -1 where id = 211542
+[2025-05-23 15:36:57.311] update bascontract set isdelete = -1 where id = 93352
+[2025-05-23 15:48:56.247] insert into `bascontract`(`no`, `salesmanid`, `agent`, `other`, `casingcost`, `transcost`, `destination`, `userid`, `bank`, `checktype`, `postalcode`, `term`, `fax`, `bankcode`, `pressurestage`, `receiver`, `transtype`, `picktype`, `telephone`, `name`, `customerid`, `legalrepresent`, `taxnum`, `isdelete`, `signdate`, `status`) values('44444444', 1312, '', '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：', 1, 1, '', 1, '', '', '', 201408, '', '', 0, '', '', '', '', '4444444444444444444', 31612, '', '', 0, 'Wed Sep 18 00:00:00 GMT+08:00 4447', 10)
+[2025-05-23 15:52:12.651] insert into `bascontractitem`(`no`, `itemid`, `itemnum`, `itemgrossweight`, `itemmemo`, `itemunit`, `itemprice`, `id`, `itemweight`, `itemsum`, `isdelete`) values('44444444', 33627, 8, 174.40, '', '套', 73, 21.8, 584.00, 0, ?)
+[2025-05-23 15:52:19.126] update bascontractitem set isdelete = -1 where id = 211543
+[2025-05-23 15:57:28.233] update `bascontract` set `no` = '44444444' , `salesmanid` = 1312 , `agent` = '' , `other` = '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：' , `casingcost` = 1 , `flag` = 0 , `transcost` = 1 , `destination` = '' , `description` = 'N/A' , `rule` = 'N/A' , `appenddate` = 0 , `type` = 1 , `userid` = '' , `bank` = '' , `checktype` = '' , `postalcode` = 201408 , `term` = '' , `fax` = '' , `bankcode` = 0 , `owner` = 0 , `pressurestage` = '' , `receiver` = '' , `transtype` = '' , `picktype` = '' , `telephone` = 0 , `orgid` = '' , `itemtype` = '4444444444444444444' , `name` = 31612 , `customerid` = '' , `legalrepresent` = '' , `taxnum` = 'Fri May 23 15:48:56 GMT+08:00 2025' , `indate` = 0 , `isdelete` = 'Wed Sep 18 00:00:00 GMT+08:00 4447' , `signdate` = 10 , `status` = 93353  where `id` = ?
+[2025-05-23 15:59:06.933] update `bascontract` set `no` = '44444444' , `salesmanid` = 1312 , `agent` = '' , `other` = '提出异议期限：
+结算方式及付款期限：
+备品、配件、工具供应办法：
+违约责任：
+因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
+其他违约事项：' , `casingcost` = 1 , `flag` = 0 , `transcost` = 1 , `destination` = '' , `description` = 'N/A' , `rule` = 'N/A' , `appenddate` = 0 , `type` = 1 , `userid` = '' , `bank` = '' , `checktype` = '' , `postalcode` = 201408 , `term` = '' , `fax` = '' , `bankcode` = 0 , `owner` = 0 , `pressurestage` = '' , `receiver` = '' , `transtype` = '' , `picktype` = '' , `telephone` = 0 , `orgid` = '' , `itemtype` = 'Thu May 08 00:00:00 GMT+08:00 2025' , `itemsenddate` = '4444444444444444444' , `name` = 31612 , `customerid` = '' , `legalrepresent` = '' , `taxnum` = 'Fri May 23 15:48:56 GMT+08:00 2025' , `indate` = 0 , `isdelete` = 'Wed Sep 18 00:00:00 GMT+08:00 4447' , `signdate` = 10 , `status` = 93353  where `id` = ?
+[2025-05-23 21:42:40.725] update bascontract set isdelete = -1 where id = 1
+[2025-05-23 21:42:43.330] update bascontract set isdelete = -1 where id = 93353
