@@ -107,7 +107,7 @@ public class DemoConfig extends JFinalConfig {
 		DruidPlugin druidPlugin = createDruidPlugin();
 		me.add(druidPlugin);
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
-		arp.setDialect(new AnsiSqlDialect());
+		arp.setDialect(new AnsiSqlDialect());//设置达梦的方言
 		druidPlugin.addFilter(new SQLDruidFilter());//完整显示SQL语句
 		_MappingKit.mapping(arp);
 		me.add(arp);

@@ -49,7 +49,7 @@ public class _JFinalDemoGenerator {
 		generator.setGenerateRemarks(true);
 		
 		// 设置数据库方言
-//		generator.setDialect(new MysqlDialect());
+//		generator.setDialect(new MysqlDialect());//mysql
 		generator.setDialect(new AnsiSqlDialect());//达梦
 
 
