@@ -1,5 +1,6 @@
 package com.xlerp.common.model;
 
+import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.activerecord.generator.Generator;
 import com.jfinal.plugin.activerecord.generator.TypeMapping;
@@ -48,13 +49,23 @@ public class _JFinalDemoGenerator {
 		generator.setGenerateRemarks(true);
 		
 		// 设置数据库方言
-		generator.setDialect(new MysqlDialect());
-		
+//		generator.setDialect(new MysqlDialect());
+		generator.setDialect(new AnsiSqlDialect());//达梦
+
+
 		// 设置是否生成链式 setter 方法，强烈建议配置成 false，否则 fastjson 反序列化会跳过有返回值的 setter 方法
 		generator.setGenerateChainSetter(false);
-		
+
 		// 添加不需要生成的表名到黑名单
-		generator.addBlacklist("adv");
+//		generator.addBlacklist("adv");
+		generator.addBlacklist("##PLAN_TABLE");
+		generator.addBlacklist("AQ$_QUEUES");
+		generator.addBlacklist("AQ$_QUEUE_TABLES");
+		generator.addBlacklist("DBMS_LOCK_ALLOCATED");
+		generator.addBlacklist("DBMS_PARALLEL_EXECUTE_CHUNKS$");
+		generator.addBlacklist("DBMS_PARALLEL_EXECUTE_TASK$");
+		generator.addBlacklist("REG$");
+		generator.addBlacklist("##HISTOGRAMS_TABLE");
 		
 		// 设置是否在 Model 中生成 dao 对象
 		generator.setGenerateDaoInModel(false);

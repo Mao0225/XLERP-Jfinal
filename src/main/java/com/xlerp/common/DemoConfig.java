@@ -10,6 +10,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
@@ -106,6 +107,7 @@ public class DemoConfig extends JFinalConfig {
 		DruidPlugin druidPlugin = createDruidPlugin();
 		me.add(druidPlugin);
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
+		arp.setDialect(new AnsiSqlDialect());
 		druidPlugin.addFilter(new SQLDruidFilter());//完整显示SQL语句
 		_MappingKit.mapping(arp);
 		me.add(arp);

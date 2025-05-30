@@ -1,0 +1,5 @@
+# config
+jdbcUrl = jdbc:mysql://127.0.0.1:3307/erp_mysql?useSSL=false&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+user = root
+password = 123456
+devMode = true

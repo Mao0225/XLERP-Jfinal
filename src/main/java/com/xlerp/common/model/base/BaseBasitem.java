@@ -122,31 +122,25 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 	}
 	
 	/**
-	 * 标志位
-	 */
-	public void setFlag(java.lang.Integer flag) {
-		set("flag", flag);
-	}
-	
-	/**
-	 * 标志位
-	 */
-	public java.lang.Integer getFlag() {
-		return getInt("flag");
-	}
-	
-	/**
 	 * 物料类型
 	 */
-	public void setType(java.lang.String type) {
+	public void setType(java.lang.Integer type) {
 		set("type", type);
 	}
 	
 	/**
 	 * 物料类型
 	 */
-	public java.lang.String getType() {
-		return getStr("type");
+	public java.lang.Integer getType() {
+		return getInt("type");
+	}
+	
+	public void setFlag(java.lang.String flag) {
+		set("flag", flag);
+	}
+	
+	public java.lang.String getFlag() {
+		return getStr("flag");
 	}
 	
 	/**
