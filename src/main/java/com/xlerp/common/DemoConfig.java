@@ -18,6 +18,7 @@ import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.JwtInterceptor;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
+import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.System.Controller.*;
@@ -90,6 +91,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/bascontract", BasContractController.class);
 		me.add("/term", TermController.class);
 		me.add("/hruser", HruserController.class);
+		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 
 
 	}
