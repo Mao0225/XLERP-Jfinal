@@ -1,10 +1,12 @@
 package com.xlerp.api.Common;
 
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.upload.UploadFile;
 import com.xlerp.api.Common.Result;
 
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,20 +25,28 @@ public class FileUploadController extends Controller {
      *   - folder: 文件夹名称
      */
     public void file() {
+        System.out.println("开始上传文件！");
+        addCorsHeaders();
         try {
+            System.out.println("开始处理文件上传请求");
+
             // 获取上传的文件
             UploadFile uploadFile = getFile("file");
             if (uploadFile == null) {
+                System.out.println("未找到上传文件");
                 renderJson(Result.badRequest("未找到上传文件"));
                 return;
             }
 
             // 获取文件夹参数
             String folder = getPara("folder", "common");
+            System.out.println("上传文件夹: " + folder);
 
             // 获取上传的文件对象和原始文件名
             File file = uploadFile.getFile();
             String originalFileName = uploadFile.getOriginalFileName();
+            System.out.println("上传的原始文件名: " + originalFileName);
+            System.out.println("临时文件路径: " + file.getAbsolutePath());
 
             // 上传文件并获取文件路径
             String filePath = FileUploadUtils.uploadFile(file, originalFileName, folder);
@@ -46,6 +56,7 @@ public class FileUploadController extends Controller {
                 if (!filePath.startsWith("/")) {
                     filePath = "/" + filePath;
                 }
+                System.out.println("文件上传成功，访问路径: " + filePath);
 
                 // 返回成功结果和文件路径
                 Map<String, Object> data = new HashMap<>();
@@ -53,15 +64,21 @@ public class FileUploadController extends Controller {
                 data.put("originalFileName", originalFileName);
                 renderJson(Result.success("文件上传成功", data));
             } else {
+                System.err.println("文件上传失败，FileUploadUtils返回null");
                 renderJson(Result.serverError("文件上传失败"));
             }
 
             // 删除临时文件
             if (file.exists()) {
-                file.delete();
+                System.out.println("删除临时文件: " + file.getAbsolutePath());
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    System.err.println("临时文件删除失败: " + file.getAbsolutePath());
+                }
             }
 
         } catch (Exception e) {
+            System.err.println("文件上传异常: " + e.getMessage());
             e.printStackTrace();
             renderJson(Result.serverError("文件上传异常: " + e.getMessage()));
         }
@@ -228,5 +245,23 @@ public class FileUploadController extends Controller {
             e.printStackTrace();
             renderJson(Result.serverError("文件上传异常: " + e.getMessage()));
         }
+    }
+
+    public void addCorsHeaders() {
+        // 获取 HttpServletResponse 对象
+        HttpServletResponse response = getResponse();
+        // 设置允许跨域的来源
+        String origin = getHeader("Origin");
+        if (StrKit.notBlank(origin)) {
+            // 设置允许跨域的方法
+            ((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            // 设置允许跨域的头
+            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            // 设置允许跨域的最大缓存时间（单位：秒）
+            response.setHeader("Access-Control-Max-Age", "3600");
+            // 设置允许跨域的来源
+            response.setHeader("Access-Control-Allow-Origin", origin);
+        }
+        renderNull();
     }
 }

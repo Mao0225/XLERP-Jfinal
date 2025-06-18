@@ -24,6 +24,7 @@ public class _MappingKit {
 		arp.addMapping("basmaterial", "id", Basmaterial.class);
 		arp.addMapping("basorg", "id", Basorg.class);
 		arp.addMapping("basPurchaseOrder", "id", BasPurchaseOrder.class);
+		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
 		arp.addMapping("hruser", "id", Hruser.class);
 		arp.addMapping("sysmenu", "id", Sysmenu.class);
 		arp.addMapping("systerm", "id", Systerm.class);

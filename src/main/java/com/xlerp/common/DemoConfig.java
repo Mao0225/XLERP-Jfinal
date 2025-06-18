@@ -24,7 +24,7 @@ import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.System.Controller.*;
 
 
-
+import com.xlerp.api.Tuzhi.Controller.TuzhiController;
 import com.xlerp.common.model._MappingKit;
 
 public class DemoConfig extends JFinalConfig {
@@ -92,6 +92,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/term", TermController.class);
 		me.add("/hruser", HruserController.class);
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
+		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 
 
 	}
