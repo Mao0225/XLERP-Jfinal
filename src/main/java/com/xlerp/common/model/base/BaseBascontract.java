@@ -24,28 +24,28 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	}
 	
 	/**
-	 * 电网编号
+	 * 电网合同编号
 	 */
 	public void setGridno(java.lang.String gridno) {
 		set("gridno", gridno);
 	}
 	
 	/**
-	 * 电网编号
+	 * 电网合同编号
 	 */
 	public java.lang.String getGridno() {
 		return getStr("gridno");
 	}
 	
 	/**
-	 * 合同的编号
+	 * 合同的场内编号
 	 */
 	public void setNo(java.lang.String no) {
 		set("no", no);
 	}
 	
 	/**
-	 * 合同的编号
+	 * 合同的场内编号
 	 */
 	public java.lang.String getNo() {
 		return getStr("no");
@@ -521,6 +521,34 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	 */
 	public java.util.Date getItemsenddate() {
 		return getDate("itemsenddate");
+	}
+	
+	/**
+	 * 国网经法合同编号
+	 */
+	public void setEcpno(java.lang.String ecpno) {
+		set("ecpno", ecpno);
+	}
+	
+	/**
+	 * 国网经法合同编号
+	 */
+	public java.lang.String getEcpno() {
+		return getStr("ecpno");
+	}
+	
+	/**
+	 * 器材合同编号
+	 */
+	public void setEquipno(java.lang.String equipno) {
+		set("equipno", equipno);
+	}
+	
+	/**
+	 * 器材合同编号
+	 */
+	public java.lang.String getEquipno() {
+		return getStr("equipno");
 	}
 	
 }
