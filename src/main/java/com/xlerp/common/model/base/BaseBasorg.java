@@ -38,14 +38,14 @@ public abstract class BaseBasorg<M extends BaseBasorg<M>> extends Model<M> imple
 	}
 	
 	/**
-	 * 组织描述-刘国企
+	 * 组织描述
 	 */
 	public void setDescr(java.lang.String descr) {
 		set("descr", descr);
 	}
 	
 	/**
-	 * 组织描述-刘国企
+	 * 组织描述
 	 */
 	public java.lang.String getDescr() {
 		return getStr("descr");
