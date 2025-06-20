@@ -3,7 +3,6 @@ package com.xlerp.api.Common;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.upload.UploadFile;
-import com.xlerp.api.Common.Result;
 
 
 import javax.servlet.http.HttpServletResponse;

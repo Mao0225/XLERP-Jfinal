@@ -25,6 +25,7 @@ import com.xlerp.api.System.Controller.*;
 
 
 import com.xlerp.api.Tuzhi.Controller.TuzhiController;
+import com.xlerp.api.Tuzhi.Controller.TuzhicailiaoController;
 import com.xlerp.common.model._MappingKit;
 
 public class DemoConfig extends JFinalConfig {
@@ -93,6 +94,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/hruser", HruserController.class);
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
+		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
 
 
 	}

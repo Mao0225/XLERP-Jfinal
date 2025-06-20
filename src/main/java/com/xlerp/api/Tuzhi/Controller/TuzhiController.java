@@ -138,30 +138,17 @@ public class TuzhiController extends Controller {
     }
     @ActionKey("/bastuzhi/update")
     @HttpMethod("PUT")
-    public void update() {
+    public void update(Bastuzhi bastuzhi) {
         try {
-            // 获取上传的文件
-            List<UploadFile> files = getFiles();
-            Bastuzhi tuzhi = getModel(Bastuzhi.class);
-
-            // 处理文件上传
-            List<String> filePaths = new ArrayList<>();
-            for (UploadFile file : files) {
-                String filePath = saveFile(file);
-                if (filePath != null) {
-                    filePaths.add(filePath);
-                }
+            if (bastuzhi == null || bastuzhi.getId() == null) {
+                renderJson(Result.badRequest("图纸ID不能为空"));
+                return;
             }
-            String tuzhiurl = String.join("-", filePaths);
-            if (!tuzhiurl.isEmpty()) {
-                tuzhi.setTuzhiurl(tuzhiurl);
-            }
-
-            boolean success = tuzhiService.update(tuzhi);
+            boolean success = tuzhiService.update(bastuzhi);
             if (success) {
                 renderJson(Result.success("图纸更新成功"));
             } else {
-                renderJson(Result.serverError("更新图纸失败"));
+                renderJson(Result.serverError("图纸部门失败"));
             }
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("图纸ID格式错误"));

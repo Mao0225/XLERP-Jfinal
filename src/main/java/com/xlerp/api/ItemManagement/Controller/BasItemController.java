@@ -122,4 +122,31 @@ public class BasItemController extends Controller {
             renderJson(Result.serverError("删除物料时发生错误: " + e.getMessage()));
         }
     }
+
+    //刘国奇，获取原材料，用于为图纸配置原材料清单
+    @ActionKey("/basitem/getyuancailiaopage")
+    @HttpMethod("GET")
+    public void getyuancailiaopage() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String itemNo = getPara("itemNo");
+        String itemName = getPara("itemName");
+        String inclass = getPara("inclass");
+        String type = getPara("type");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page page = basItemService.tuzhiyuancailiaopaginate(pageNum, pageSz,  itemNo, itemName, inclass, type);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
 }
