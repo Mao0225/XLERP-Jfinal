@@ -21,6 +21,7 @@ import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
+import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
 import com.xlerp.api.System.Controller.*;
 
 
@@ -95,6 +96,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
+		me.add("/plinoutstore", PlinoutstoreController.class);
 
 
 	}
