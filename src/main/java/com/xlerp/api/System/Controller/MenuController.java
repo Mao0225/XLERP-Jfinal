@@ -23,20 +23,12 @@ public class MenuController extends Controller {
 
     @ActionKey("/menu/getpage")
     @HttpMethod("GET")
-    public void getpage() {
+    public void list() {
         try {
-            int pageNumber = getParaToInt("pageNumber", 1);
-            int pageSize = getParaToInt("pageSize", 10);
-
-            if (pageNumber < 1 || pageSize < 1) {
-                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
-                return;
-            }
-
-            Page<Sysmenu> page = menuService.paginate(pageNumber, pageSize);
-            renderJson(Result.success("查询菜单分页成功").putData("page", page));
-        } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("页码或每页大小格式错误"));
+            List<Sysmenu> allMenus = menuService.findAll();
+            renderJson(Result.success("查询菜单列表成功").putData("list", allMenus));
+        } catch (Exception e) {
+            renderJson(Result.serverError("获取菜单列表失败: " + e.getMessage()));
         }
     }
 

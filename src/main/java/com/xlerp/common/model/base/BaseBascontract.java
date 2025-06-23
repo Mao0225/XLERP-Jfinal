@@ -496,14 +496,14 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	}
 	
 	/**
-	 * 0正常，-1删除
+	 * 0正常，1删除
 	 */
 	public void setIsdelete(java.lang.Integer isdelete) {
 		set("isdelete", isdelete);
 	}
 	
 	/**
-	 * 0正常，-1删除
+	 * 0正常，1删除
 	 */
 	public java.lang.Integer getIsdelete() {
 		return getInt("isdelete");

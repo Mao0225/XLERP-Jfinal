@@ -33,7 +33,9 @@ public class MenuService {
         return dao.deleteById(id);
     }
 
-
+    public List<Sysmenu> findAll() {
+        return dao.find("select * from sysmenu order by id desc");
+    }
 
     private List<Record> buildChildren(int parentId, List<Sysmenu> menus) {
         List<Record> children = new ArrayList<>();
