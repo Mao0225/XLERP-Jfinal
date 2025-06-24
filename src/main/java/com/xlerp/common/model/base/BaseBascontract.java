@@ -38,6 +38,34 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	}
 	
 	/**
+	 * 国网经法合同编号
+	 */
+	public void setEcpno(java.lang.String ecpno) {
+		set("ecpno", ecpno);
+	}
+	
+	/**
+	 * 国网经法合同编号
+	 */
+	public java.lang.String getEcpno() {
+		return getStr("ecpno");
+	}
+	
+	/**
+	 * 器材合同编号
+	 */
+	public void setEquipno(java.lang.String equipno) {
+		set("equipno", equipno);
+	}
+	
+	/**
+	 * 器材合同编号
+	 */
+	public java.lang.String getEquipno() {
+		return getStr("equipno");
+	}
+	
+	/**
 	 * 合同的场内编号
 	 */
 	public void setNo(java.lang.String no) {
@@ -49,6 +77,48 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	 */
 	public java.lang.String getNo() {
 		return getStr("no");
+	}
+	
+	/**
+	 * 采购方总部编码
+	 */
+	public void setPurchaserHqCode(java.lang.String purchaserHqCode) {
+		set("purchaserHqCode", purchaserHqCode);
+	}
+	
+	/**
+	 * 采购方总部编码
+	 */
+	public java.lang.String getPurchaserHqCode() {
+		return getStr("purchaserHqCode");
+	}
+	
+	/**
+	 * 供应商编码
+	 */
+	public void setSupplierCode(java.lang.String supplierCode) {
+		set("supplierCode", supplierCode);
+	}
+	
+	/**
+	 * 供应商编码
+	 */
+	public java.lang.String getSupplierCode() {
+		return getStr("supplierCode");
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public void setSupplierName(java.lang.String supplierName) {
+		set("supplierName", supplierName);
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public java.lang.String getSupplierName() {
+		return getStr("supplierName");
 	}
 	
 	/**
@@ -521,34 +591,6 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 	 */
 	public java.util.Date getItemsenddate() {
 		return getDate("itemsenddate");
-	}
-	
-	/**
-	 * 国网经法合同编号
-	 */
-	public void setEcpno(java.lang.String ecpno) {
-		set("ecpno", ecpno);
-	}
-	
-	/**
-	 * 国网经法合同编号
-	 */
-	public java.lang.String getEcpno() {
-		return getStr("ecpno");
-	}
-	
-	/**
-	 * 器材合同编号
-	 */
-	public void setEquipno(java.lang.String equipno) {
-		set("equipno", equipno);
-	}
-	
-	/**
-	 * 器材合同编号
-	 */
-	public java.lang.String getEquipno() {
-		return getStr("equipno");
 	}
 	
 }
