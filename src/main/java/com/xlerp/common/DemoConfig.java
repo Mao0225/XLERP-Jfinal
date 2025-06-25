@@ -1,8 +1,5 @@
 package com.xlerp.common;
 
-import com.alibaba.druid.filter.logging.Slf4jLogFilter;
-import com.alibaba.druid.filter.stat.StatFilter;
-import com.alibaba.druid.wall.WallFilter;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.config.*;
@@ -15,7 +12,6 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.xlerp.api.Common.FileUploadController;
-import com.xlerp.api.Common.JwtInterceptor;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
@@ -25,6 +21,7 @@ import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
 import com.xlerp.api.System.Controller.*;
 
 
+import com.xlerp.api.Tongzhi.Controller.TongzhiController;
 import com.xlerp.api.Tuzhi.Controller.TuzhiController;
 import com.xlerp.api.Tuzhi.Controller.TuzhicailiaoController;
 import com.xlerp.common.model._MappingKit;
@@ -96,7 +93,11 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
+<<<<<<< Updated upstream
 		me.add("/plinoutstore", PlinoutstoreController.class);
+=======
+		me.add("/tongzhi", TongzhiController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
+>>>>>>> Stashed changes
 
 
 	}
