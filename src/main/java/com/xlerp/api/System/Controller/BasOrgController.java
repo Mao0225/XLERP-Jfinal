@@ -23,6 +23,7 @@ public class BasOrgController extends Controller {
         String pageSize = getPara("pageSize");
         String no = getPara("no");
         String descr = getPara("descr");
+        String type = getPara("type");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -33,7 +34,7 @@ public class BasOrgController extends Controller {
                 return;
             }
 
-            Page page = basOrgService.paginate(pageNum, pageSz, no, descr);
+            Page page = basOrgService.paginate(pageNum, pageSz, no, descr, type);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -45,19 +46,19 @@ public class BasOrgController extends Controller {
         String id = getPara("id");
 
         if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("部门ID不能为空"));
+            renderJson(Result.badRequest("客户ID不能为空"));
             return;
         }
 
         try {
             Basorg basOrg = basOrgService.findById(Integer.parseInt(id.trim()));
             if (basOrg != null) {
-                renderJson(Result.success("查询部门成功").putData("basOrg", basOrg));
+                renderJson(Result.success("查询客户成功").putData("basOrg", basOrg));
             } else {
-                renderJson(Result.notFound("部门未找到"));
+                renderJson(Result.notFound("客户未找到"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("部门ID格式错误"));
+            renderJson(Result.badRequest("客户ID格式错误"));
         }
     }
 
@@ -67,12 +68,12 @@ public class BasOrgController extends Controller {
         try {
             boolean success = basOrgService.save(basOrg);
             if (success) {
-                renderJson(Result.success("部门保存成功").putData("basOrgId", basOrg.getId()));
+                renderJson(Result.success("客户保存成功").putData("basOrgId", basOrg.getId()));
             } else {
-                renderJson(Result.serverError("保存部门失败"));
+                renderJson(Result.serverError("保存客户失败"));
             }
         } catch (Exception e) {
-            renderJson(Result.serverError("保存部门时发生错误: " + e.getMessage()));
+            renderJson(Result.serverError("保存客户时发生错误: " + e.getMessage()));
         }
     }
 
@@ -84,14 +85,14 @@ public class BasOrgController extends Controller {
 
             boolean success = basOrgService.update(basOrg);
             if (success) {
-                renderJson(Result.success("部门更新成功"));
+                renderJson(Result.success("客户更新成功"));
             } else {
-                renderJson(Result.serverError("更新部门失败"));
+                renderJson(Result.serverError("更新客户失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("部门ID格式错误"));
+            renderJson(Result.badRequest("客户ID格式错误"));
         } catch (Exception e) {
-            renderJson(Result.serverError("更新部门时发生错误: " + e.getMessage()));
+            renderJson(Result.serverError("更新客户时发生错误: " + e.getMessage()));
         }
     }
     @ActionKey("/basorg/delete")
@@ -100,21 +101,21 @@ public class BasOrgController extends Controller {
         String id = getPara("id");
 
         if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("部门ID不能为空"));
+            renderJson(Result.badRequest("客户ID不能为空"));
             return;
         }
 
         try {
             boolean success = basOrgService.deleteById(Integer.parseInt(id.trim()));
             if (success) {
-                renderJson(Result.success("部门删除成功"));
+                renderJson(Result.success("客户删除成功"));
             } else {
-                renderJson(Result.notFound("部门不存在或删除失败"));
+                renderJson(Result.notFound("客户不存在或删除失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("部门ID格式错误"));
+            renderJson(Result.badRequest("客户ID格式错误"));
         } catch (Exception e) {
-            renderJson(Result.serverError("删除部门时发生错误: " + e.getMessage()));
+            renderJson(Result.serverError("删除客户时发生错误: " + e.getMessage()));
         }
     }
 }

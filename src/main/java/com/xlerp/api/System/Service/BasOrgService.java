@@ -9,7 +9,7 @@ import java.util.List;
 public class BasOrgService {
     private static final Basorg dao = new Basorg();
 
-    public Page<Basorg> paginate(int pageNumber, int pageSize,  String no,  String descr) {
+    public Page<Basorg> paginate(int pageNumber, int pageSize,  String no,  String descr , String type) {
         String select = "select *";
         StringBuilder from = new StringBuilder("from basorg where isdelete = 0");
 
@@ -20,6 +20,9 @@ public class BasOrgService {
         if (StrKit.notBlank(no)) {
             from.append(" and no like ?");
         }
+        if (StrKit.notBlank(type)) {
+            from.append(" and type = ?");
+        }
         from.append(" order by id desc");
 
         // 准备参数
@@ -29,6 +32,9 @@ public class BasOrgService {
         }
         if (StrKit.notBlank(no)) {
             params.add("%" + no + "%");
+        }
+        if (StrKit.notBlank(type)) {
+            params.add(type);
         }
 
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
