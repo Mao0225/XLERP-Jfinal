@@ -17,6 +17,7 @@ import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
+import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
 import com.xlerp.api.System.Controller.*;
 
