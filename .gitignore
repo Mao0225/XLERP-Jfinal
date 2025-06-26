@@ -14,3 +14,4 @@ log/                #日志文件
 sqlLog/             #sql日志文件
 result*             # 忽略所有以 "result" 开头的文件
 src/main/java/com/xlerp/common/model/   #model文件自动商城不用上传
+/target
