@@ -17,7 +17,7 @@ public class BasContractService {
     public Page<Record> getContractList(int pageNumber, int pageSize, String term, String contractNo,
                                         String projectName, String salesmanNo, String rule, String owner) {
         // SELECT部分
-        String select = "SELECT c.id,c.no,c.gridno," +
+        String select = "SELECT c.id,c.no,c.gridno, c.ecpno,c.equipno," +
                 "c.name, " +
                 "o.descr AS customerName, " +
                 "u.name AS salesmanName, " +
