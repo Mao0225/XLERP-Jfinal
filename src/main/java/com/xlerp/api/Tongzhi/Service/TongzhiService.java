@@ -98,4 +98,79 @@ public class TongzhiService {
     public boolean updateitem(Bascontractitem bascontractitem) {
         return bascontractitem.update();
     }
+
+    //下面是获取通知的列表的功能。刘国奇
+    public Page<Record> gettongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
+        // SELECT部分
+        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename,i.\"noticestatus\" AS noticestatus, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver";
+
+        // FROM和JOIN部分
+        StringBuilder from = new StringBuilder(
+                "FROM XLQCERP.\"bascontractitem\" i " +
+                        "LEFT JOIN XLQCERP.\"bascontract\" c ON c.\"no\" = i.\"no\" " +
+                        "WHERE i.\"isdelete\" = 0 and i.\"noticeid\" !='N/A'"
+        );
+
+        // 参数收集
+        List<Object> params = new ArrayList<>();
+
+        // 动态条件
+        if (noticeid != null && !noticeid.trim().isEmpty()) {
+            from.append(" AND i.\"noticeid\" LIKE ?");
+            params.add("%" + noticeid.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+        if (noticename != null && !noticename.trim().isEmpty()) {
+            from.append(" AND i.\"noticename\" LIKE ?");
+            params.add("%" + noticename.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+
+        // 排序
+        from.append(" ORDER BY i.\"noticebuilddate\" DESC");
+
+        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
+
+    //下面根据通知编号，获取通知信息，刘国奇
+    public Page<Record> gettongzhibyid(int pageNumber, int pageSize, String noticeid) {
+        String select = "select b.\"no\",b.\"name\",b.\"spec\",c.\"itemnum\",b.\"unit\"," +
+                "c.\"noticeid\",c.\"noticedrawno\",c.\"noticeinstead\",c.\"noticename\",c.\"noticeauther\",c.\"noticebuilddate\"，c.\"noticedeliver\",c.\"noticeshenhe\" ";
+        String from = "from XLQCERP.\"bascontractitem\" c " +
+                "left join XLQCERP.\"basitem\" b on " +
+                "c.\"itemid\" = b.\"id\" " +
+                "where c.\"noticeid\" = ?";
+
+        return Db.paginate(pageNumber, pageSize, select, from, noticeid);
+
+    }
+    //根据 noticeid 更太 noticestatus 的值
+    public boolean updatenotice(String statusvalue, String noticeid) {
+        long startTime = System.currentTimeMillis();
+        System.out.println("开始更新通知状态，noticeid: " + noticeid + ", statusvalue: " + statusvalue);
+
+        // 准备SQL
+        long sqlPrepareTime = System.currentTimeMillis();
+        String sql = "UPDATE XLQCERP.\"bascontractitem\" c " +
+                "SET c.\"noticestatus\" = ? " +
+                "WHERE c.\"noticeid\" = ?";
+        long sqlPrepareEndTime = System.currentTimeMillis();
+        System.out.println("SQL准备耗时: " + (sqlPrepareEndTime - sqlPrepareTime) + "ms");
+
+        // 执行SQL
+        long sqlExecTime = System.currentTimeMillis();
+        try {
+            int rows = Db.update(sql, statusvalue, noticeid);
+            long sqlExecEndTime = System.currentTimeMillis();
+            System.out.println("SQL执行耗时: " + (sqlExecEndTime - sqlExecTime) + "ms, 更新行数: " + rows);
+
+            long endTime = System.currentTimeMillis();
+            System.out.println("更新通知状态总耗时: " + (endTime - startTime) + "ms");
+
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            long endTime = System.currentTimeMillis();
+            System.out.println("更新通知状态失败，耗时: " + (endTime - startTime) + "ms");
+            return false;
+        }
+    }
 }

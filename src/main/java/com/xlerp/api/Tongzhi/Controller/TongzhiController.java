@@ -45,12 +45,13 @@ public class TongzhiController extends Controller {
                 return;
             }
 
-            Page<Record> page = tongzhiService.getContractList(pageNum, pageSz, term, contractNo, projectName, salesmanNo, rule,owenr);
+            Page<Record> page = tongzhiService.getContractList(pageNum, pageSz, term, contractNo, projectName, salesmanNo, rule, owenr);
             renderJson(Result.success("查询合同列表成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
+
     @ActionKey("/tongzhi/gettuzhilist")
     @HttpMethod("GET")
     public void gettuzhilist() {
@@ -91,6 +92,99 @@ public class TongzhiController extends Controller {
             renderJson(Result.badRequest("物料ID格式错误"));
         } catch (Exception e) {
             renderJson(Result.serverError("更新物料时发生错误: " + e.getMessage()));
+        }
+    }
+
+    //按通知生产提料单开始
+    @ActionKey("/tongzhi/gettongzhipage")
+    @HttpMethod("GET")
+    public void gettongzhipage() {
+        // 获取参数
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String noticeid = getPara("noticeid");
+        String noticename = getPara("noticename");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Record> page = tongzhiService.gettongzhipage(pageNum, pageSz, noticeid, noticename);
+            renderJson(Result.success("查询通知列表成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+    //按通知生产提料单结束
+
+    //按照通知编号查询所有的通知内容
+    @ActionKey("/tongzhi/gettongzhibyid")
+    @HttpMethod("GET")
+    public void gettongzhibyid() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String noticeid = getPara("noticeid");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            if (noticeid == null || noticeid.trim().isEmpty()) {
+                renderJson(Result.badRequest("noticeid 不能为空"));
+                return;
+            }
+
+            Page<Record> page = tongzhiService.gettongzhibyid(pageNum, pageSz, noticeid);
+            renderJson(Result.success("查询通知信息成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    //根据获取的参数noticeid，更改通知的状态为获取到的 statusvalue 的值
+
+
+    @ActionKey("/tongzhi/updatenstatusbyid")
+    @HttpMethod("PUT")
+    public void updatenstatusbyid() {
+        long startTime = System.currentTimeMillis(); // 记录开始时间
+
+        String noticeid = getPara("noticeid");
+        String statusvalue = getPara("statusvalue");
+
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+
+        if (statusvalue == null || statusvalue.trim().isEmpty()) {
+            renderJson(Result.badRequest("statusvalue 不能为空"));
+            return;
+        }
+
+        try {
+            boolean success = tongzhiService.updatenotice(statusvalue, noticeid);
+            long endTime = System.currentTimeMillis(); // 记录结束时间
+            System.out.println("更新通知状态耗时: " + (endTime - startTime) + "ms");
+
+            if (success) {
+                renderJson(Result.success("通知状态更新成功"));
+            } else {
+                renderJson(Result.serverError("通知状态更新失败"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            renderJson(Result.serverError("更新过程中发生异常"));
         }
     }
 }
