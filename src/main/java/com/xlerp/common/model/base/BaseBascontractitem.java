@@ -191,5 +191,223 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 通知编号
+	 */
+	public void setNoticeid(java.lang.String noticeid) {
+		set("noticeid", noticeid);
+	}
+	
+	/**
+	 * 通知编号
+	 */
+	public java.lang.String getNoticeid() {
+		return getStr("noticeid");
+	}
+	
+	/**
+	 * 通知名称
+	 */
+	public void setNoticename(java.lang.String noticename) {
+		set("noticename", noticename);
+	}
+	
+	/**
+	 * 通知名称
+	 */
+	public java.lang.String getNoticename() {
+		return getStr("noticename");
+	}
+	
+	/**
+	 * 通知状态，10录入-20确认-30审核
+	 */
+	public void setNoticestatus(java.lang.String noticestatus) {
+		set("noticestatus", noticestatus);
+	}
+	
+	/**
+	 * 通知状态，10录入-20确认-30审核
+	 */
+	public java.lang.String getNoticestatus() {
+		return getStr("noticestatus");
+	}
+	
+	/**
+	 * 通知图纸编号
+	 */
+	public void setNoticedrawno(java.lang.String noticedrawno) {
+		set("noticedrawno", noticedrawno);
+	}
+	
+	/**
+	 * 通知图纸编号
+	 */
+	public java.lang.String getNoticedrawno() {
+		return getStr("noticedrawno");
+	}
+	
+	/**
+	 * 预留字段通知本条数据备注
+	 */
+	public void setNoticememo(java.lang.String noticememo) {
+		set("noticememo", noticememo);
+	}
+	
+	/**
+	 * 预留字段通知本条数据备注
+	 */
+	public java.lang.String getNoticememo() {
+		return getStr("noticememo");
+	}
+	
+	/**
+	 * 通知校验者
+	 */
+	public void setNoticedeliver(java.lang.String noticedeliver) {
+		set("noticedeliver", noticedeliver);
+	}
+	
+	/**
+	 * 通知校验者
+	 */
+	public java.lang.String getNoticedeliver() {
+		return getStr("noticedeliver");
+	}
+	
+	/**
+	 * 通知作者
+	 */
+	public void setNoticeauther(java.lang.String noticeauther) {
+		set("noticeauther", noticeauther);
+	}
+	
+	/**
+	 * 通知作者
+	 */
+	public java.lang.String getNoticeauther() {
+		return getStr("noticeauther");
+	}
+	
+	/**
+	 * 通知备注
+	 */
+	public void setNoticecomment(java.lang.String noticecomment) {
+		set("noticecomment", noticecomment);
+	}
+	
+	/**
+	 * 通知备注
+	 */
+	public java.lang.String getNoticecomment() {
+		return getStr("noticecomment");
+	}
+	
+	/**
+	 * 通知制定日期
+	 */
+	public void setNoticebuilddate(java.util.Date noticebuilddate) {
+		set("noticebuilddate", noticebuilddate);
+	}
+	
+	/**
+	 * 通知制定日期
+	 */
+	public java.util.Date getNoticebuilddate() {
+		return getDate("noticebuilddate");
+	}
+	
+	/**
+	 * 通知期间
+	 */
+	public void setNoticeterm(java.math.BigDecimal noticeterm) {
+		set("noticeterm", noticeterm);
+	}
+	
+	/**
+	 * 通知期间
+	 */
+	public java.math.BigDecimal getNoticeterm() {
+		return get("noticeterm");
+	}
+	
+	/**
+	 * 通知规则
+	 */
+	public void setNoticerule(java.lang.String noticerule) {
+		set("noticerule", noticerule);
+	}
+	
+	/**
+	 * 通知规则
+	 */
+	public java.lang.String getNoticerule() {
+		return getStr("noticerule");
+	}
+	
+	/**
+	 * 通知修改内容
+	 */
+	public void setNoticemodify(java.lang.String noticemodify) {
+		set("noticemodify", noticemodify);
+	}
+	
+	/**
+	 * 通知修改内容
+	 */
+	public java.lang.String getNoticemodify() {
+		return getStr("noticemodify");
+	}
+	
+	/**
+	 * 通知替代型号
+	 */
+	public void setNoticeinstead(java.lang.String noticeinstead) {
+		set("noticeinstead", noticeinstead);
+	}
+	
+	/**
+	 * 通知替代型号
+	 */
+	public java.lang.String getNoticeinstead() {
+		return getStr("noticeinstead");
+	}
+	
+	public void setTuoyun(java.lang.String tuoyun) {
+		set("tuoyun", tuoyun);
+	}
+	
+	public java.lang.String getTuoyun() {
+		return getStr("tuoyun");
+	}
+	
+	/**
+	 * 修改后的通知装填，现在没用上
+	 */
+	public void setUpdatenotice(java.math.BigDecimal updatenotice) {
+		set("updatenotice", updatenotice);
+	}
+	
+	/**
+	 * 修改后的通知装填，现在没用上
+	 */
+	public java.math.BigDecimal getUpdatenotice() {
+		return get("updatenotice");
+	}
+	
+	/**
+	 * 通知审核者
+	 */
+	public void setNoticeshenhe(java.lang.String noticeshenhe) {
+		set("noticeshenhe", noticeshenhe);
+	}
+	
+	/**
+	 * 通知审核者
+	 */
+	public java.lang.String getNoticeshenhe() {
+		return getStr("noticeshenhe");
+	}
+	
 }
 
