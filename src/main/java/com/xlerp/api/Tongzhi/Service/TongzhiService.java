@@ -142,35 +142,67 @@ public class TongzhiService {
         return Db.paginate(pageNumber, pageSize, select, from, noticeid);
 
     }
-    //根据 noticeid 更太 noticestatus 的值
-    public boolean updatenotice(String statusvalue, String noticeid) {
-        long startTime = System.currentTimeMillis();
-        System.out.println("开始更新通知状态，noticeid: " + noticeid + ", statusvalue: " + statusvalue);
+    //根据 noticeid 更新 noticestatus 的值，下面的方法是确认、校验，审核通知的方法。
+    /**
+     * 确认通知方法
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean querentongzhi(String noticeid) {
 
-        // 准备SQL
-        long sqlPrepareTime = System.currentTimeMillis();
-        String sql = "UPDATE XLQCERP.\"bascontractitem\" c " +
-                "SET c.\"noticestatus\" = ? " +
-                "WHERE c.\"noticeid\" = ?";
-        long sqlPrepareEndTime = System.currentTimeMillis();
-        System.out.println("SQL准备耗时: " + (sqlPrepareEndTime - sqlPrepareTime) + "ms");
+        String sql = "update bascontractitem set noticestatus = 20 where noticeid = ? ";
+        return Db.update(sql, noticeid) > 0;
+    }
 
-        // 执行SQL
-        long sqlExecTime = System.currentTimeMillis();
-        try {
-            int rows = Db.update(sql, statusvalue, noticeid);
-            long sqlExecEndTime = System.currentTimeMillis();
-            System.out.println("SQL执行耗时: " + (sqlExecEndTime - sqlExecTime) + "ms, 更新行数: " + rows);
+    /**
+     * 反确认通知方法
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean fanquerentongzih(String noticeid) {
+        String sql = "update bascontractitem set noticestatus = 10 where noticeid = ?";
+        return Db.update(sql, noticeid) > 0;
+    }
 
-            long endTime = System.currentTimeMillis();
-            System.out.println("更新通知状态总耗时: " + (endTime - startTime) + "ms");
+    /**
+     * 校验通知方法
+     * @param noticeinstead 替代通知信息
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean jiaoyantongzhi(String noticeinstead, String noticeid) {
+        String sql = "update bascontractitem set noticestatus = 30, noticedeliver = ? where noticeid = ?";
+        return Db.update(sql, noticeinstead, noticeid) > 0;
+    }
 
-            return rows > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            long endTime = System.currentTimeMillis();
-            System.out.println("更新通知状态失败，耗时: " + (endTime - startTime) + "ms");
-            return false;
-        }
+    /**
+     * 反校验通知方法
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean fanjiaoyantongzhi(String noticeid) {
+        String sql = "update bascontractitem set noticestatus = 20 where noticeid = ?";
+        return Db.update(sql, noticeid) > 0;
+    }
+
+    /**
+     * 审核通知方法
+     * @param noticeshenhe 审核信息
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean shenhetongzhi(String noticeshenhe, String noticeid) {
+        String sql = "update bascontractitem set noticestatus = 40 , noticeshenhe = ? where noticeid = ?";
+        return Db.update(sql, noticeshenhe, noticeid) > 0;
+    }
+
+    /**
+     * 反审核通知方法
+     * @param noticeid 通知编号
+     * @return 更新成功返回 true，否则返回 false
+     */
+    public boolean fanshenhtongzhi(String noticeid) {
+        String sql = "update bascontractitem set noticestatus = 30 where noticeid = ?";
+        return Db.update(sql, noticeid) > 0;
     }
 }

@@ -151,40 +151,113 @@ public class TongzhiController extends Controller {
         }
     }
 
-    //根据获取的参数noticeid，更改通知的状态为获取到的 statusvalue 的值
 
-
-    @ActionKey("/tongzhi/updatenstatusbyid")
+// 确认通知接口
+    @ActionKey("/tongzhi/querentongzhi")
     @HttpMethod("PUT")
-    public void updatenstatusbyid() {
-        long startTime = System.currentTimeMillis(); // 记录开始时间
-
+    public void querentongzhi() {
+        // 测试接口：http://localhost:8099/tongzhi/querentongzhi
         String noticeid = getPara("noticeid");
-        String statusvalue = getPara("statusvalue");
-
         if (noticeid == null || noticeid.trim().isEmpty()) {
             renderJson(Result.badRequest("noticeid 不能为空"));
             return;
         }
-
-        if (statusvalue == null || statusvalue.trim().isEmpty()) {
-            renderJson(Result.badRequest("statusvalue 不能为空"));
-            return;
-        }
-
-        try {
-            boolean success = tongzhiService.updatenotice(statusvalue, noticeid);
-            long endTime = System.currentTimeMillis(); // 记录结束时间
-            System.out.println("更新通知状态耗时: " + (endTime - startTime) + "ms");
-
-            if (success) {
-                renderJson(Result.success("通知状态更新成功"));
-            } else {
-                renderJson(Result.serverError("通知状态更新失败"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            renderJson(Result.serverError("更新过程中发生异常"));
+        boolean success = tongzhiService.querentongzhi(noticeid);
+        if (success) {
+            renderJson(Result.success("确认通知成功"));
+        } else {
+            renderJson(Result.serverError("确认通知失败"));
         }
     }
+
+    // 反确认通知接口
+    @ActionKey("/tongzhi/fanquerentongzhi")
+    @HttpMethod("PUT")
+    public void fanquerentongzhi() {
+        // 测试接口：http://localhost:8099/tongzhi/fanquerentongzih
+        String noticeid = getPara("noticeid");
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+        boolean success = tongzhiService.fanquerentongzih(noticeid);
+        if (success) {
+            renderJson(Result.success("反确认通知成功"));
+        } else {
+            renderJson(Result.serverError("反确认通知失败"));
+        }
+    }
+
+    // 校验通知接口
+    @ActionKey("/tongzhi/jiaoyantongzhi")
+    @HttpMethod("PUT")
+    public void jiaoyantongzhi() {
+        String noticeinstead = getPara("noticeinstead");
+        String noticeid = getPara("noticeid");
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+        boolean success = tongzhiService.jiaoyantongzhi(noticeinstead, noticeid);
+        if (success) {
+            renderJson(Result.success("校验通知成功"));
+        } else {
+            renderJson(Result.serverError("校验通知失败"));
+        }
+    }
+
+    // 反校验通知接口
+    @ActionKey("/tongzhi/fanjiaoyantongzhi")
+    @HttpMethod("PUT")
+    public void fanjiaoyantongzhi() {
+        String noticeid = getPara("noticeid");
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+        boolean success = tongzhiService.fanjiaoyantongzhi(noticeid);
+        if (success) {
+            renderJson(Result.success("反校验通知成功"));
+        } else {
+            renderJson(Result.serverError("反校验通知失败"));
+        }
+    }
+
+    // 审核通知接口
+    @ActionKey("/tongzhi/shenhetongzhi")
+    @HttpMethod("PUT")
+    public void shenhetongzhi() {
+        // 测试接口：http://localhost:8099/tongzhi/shenhetongzhi
+        String noticeshenhe = getPara("noticeshenhe");
+        String noticeid = getPara("noticeid");
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+        boolean success = tongzhiService.shenhetongzhi(noticeshenhe, noticeid);
+        if (success) {
+            renderJson(Result.success("审核通知成功"));
+        } else {
+            renderJson(Result.serverError("审核通知失败"));
+        }
+    }
+
+    // 反审核通知接口
+    @ActionKey("/tongzhi/fanshenhetongzhi")
+    @HttpMethod("PUT")
+    public void fanshenhtongzhi() {
+        String noticeid = getPara("noticeid");
+        if (noticeid == null || noticeid.trim().isEmpty()) {
+            renderJson(Result.badRequest("noticeid 不能为空"));
+            return;
+        }
+        boolean success = tongzhiService.fanshenhtongzhi(noticeid);
+        if (success) {
+            renderJson(Result.success("反审核通知成功"));
+        } else {
+            renderJson(Result.serverError("反审核通知失败"));
+        }
+    }
+
+
 }
