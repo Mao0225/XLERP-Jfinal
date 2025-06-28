@@ -108,7 +108,7 @@ public class TongzhiService {
         StringBuilder from = new StringBuilder(
                 "FROM XLQCERP.\"bascontractitem\" i " +
                         "LEFT JOIN XLQCERP.\"bascontract\" c ON c.\"no\" = i.\"no\" " +
-                        "WHERE i.\"isdelete\" = 0 and i.\"noticeid\" !='N/A'"
+                        "WHERE i.\"isdelete\" = 0 and i.\"noticestatus\" >5 "
         );
 
         // 参数收集
@@ -133,7 +133,7 @@ public class TongzhiService {
     //下面根据通知编号，获取通知信息，刘国奇
     public Page<Record> gettongzhibyid(int pageNumber, int pageSize, String noticeid) {
         String select = "select b.\"no\",b.\"name\",b.\"spec\",c.\"itemnum\",b.\"unit\"," +
-                "c.\"noticeid\",c.\"noticedrawno\",c.\"noticeinstead\",c.\"noticename\",c.\"noticeauther\",c.\"noticebuilddate\"，c.\"noticedeliver\",c.\"noticeshenhe\" ";
+                "c.\"id\",c.\"noticeid\",c.\"noticedrawno\",c.\"noticeinstead\",c.\"noticename\",c.\"noticeauther\",c.\"noticebuilddate\"，c.\"noticedeliver\",c.\"noticeshenhe\" ";
         String from = "from XLQCERP.\"bascontractitem\" c " +
                 "left join XLQCERP.\"basitem\" b on " +
                 "c.\"itemid\" = b.\"id\" " +
@@ -148,10 +148,10 @@ public class TongzhiService {
      * @param noticeid 通知编号
      * @return 更新成功返回 true，否则返回 false
      */
-    public boolean querentongzhi(String noticeid) {
+    public boolean querentongzhi(String noticedeliver,String noticeid) {
 
-        String sql = "update bascontractitem set noticestatus = 20 where noticeid = ? ";
-        return Db.update(sql, noticeid) > 0;
+        String sql = "update bascontractitem set noticestatus = 20, noticedeliver = ? where noticeid = ? ";
+        return Db.update(sql, noticedeliver,noticeid) > 0;
     }
 
     /**

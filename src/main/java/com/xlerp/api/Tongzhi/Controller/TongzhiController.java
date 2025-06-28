@@ -154,15 +154,18 @@ public class TongzhiController extends Controller {
 
 // 确认通知接口
     @ActionKey("/tongzhi/querentongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void querentongzhi() {
         // 测试接口：http://localhost:8099/tongzhi/querentongzhi
         String noticeid = getPara("noticeid");
+        String noticedeliver = getPara("noticedeliver");
+        System.out.println("noticeid:"+noticeid);
+        System.out.println("noticedeliver:"+noticedeliver);
         if (noticeid == null || noticeid.trim().isEmpty()) {
             renderJson(Result.badRequest("noticeid 不能为空"));
             return;
         }
-        boolean success = tongzhiService.querentongzhi(noticeid);
+        boolean success = tongzhiService.querentongzhi(noticedeliver,noticeid);
         if (success) {
             renderJson(Result.success("确认通知成功"));
         } else {
