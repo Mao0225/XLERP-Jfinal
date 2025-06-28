@@ -158,14 +158,12 @@ public class TongzhiController extends Controller {
     public void querentongzhi() {
         // 测试接口：http://localhost:8099/tongzhi/querentongzhi
         String noticeid = getPara("noticeid");
-        String noticedeliver = getPara("noticedeliver");
         System.out.println("noticeid:"+noticeid);
-        System.out.println("noticedeliver:"+noticedeliver);
         if (noticeid == null || noticeid.trim().isEmpty()) {
             renderJson(Result.badRequest("noticeid 不能为空"));
             return;
         }
-        boolean success = tongzhiService.querentongzhi(noticedeliver,noticeid);
+        boolean success = tongzhiService.querentongzhi(noticeid);
         if (success) {
             renderJson(Result.success("确认通知成功"));
         } else {

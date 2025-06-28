@@ -148,10 +148,10 @@ public class TongzhiService {
      * @param noticeid 通知编号
      * @return 更新成功返回 true，否则返回 false
      */
-    public boolean querentongzhi(String noticedeliver,String noticeid) {
+    public boolean querentongzhi(String noticeid) {
 
-        String sql = "update bascontractitem set noticestatus = 20, noticedeliver = ? where noticeid = ? ";
-        return Db.update(sql, noticedeliver,noticeid) > 0;
+        String sql = "update bascontractitem set noticestatus = 20  where noticeid = ? ";
+        return Db.update(sql, noticeid) > 0;
     }
 
     /**
