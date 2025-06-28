@@ -101,8 +101,8 @@ public class TongzhiService {
 
     //下面是获取通知的列表的功能。刘国奇
     public Page<Record> gettongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
-        // SELECT部分
-        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename,i.\"noticestatus\" AS noticestatus, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver";
+        // SELECT部分，修正列名双引号闭合问题，并去除重复列
+        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther";
 
         // FROM和JOIN部分
         StringBuilder from = new StringBuilder(
