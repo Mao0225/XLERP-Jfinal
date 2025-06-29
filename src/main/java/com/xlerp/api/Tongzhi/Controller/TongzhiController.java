@@ -173,7 +173,7 @@ public class TongzhiController extends Controller {
 
     // 反确认通知接口
     @ActionKey("/tongzhi/fanquerentongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void fanquerentongzhi() {
         // 测试接口：http://localhost:8099/tongzhi/fanquerentongzih
         String noticeid = getPara("noticeid");
@@ -191,15 +191,15 @@ public class TongzhiController extends Controller {
 
     // 校验通知接口
     @ActionKey("/tongzhi/jiaoyantongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void jiaoyantongzhi() {
-        String noticeinstead = getPara("noticeinstead");
+        String noticedeliver = getPara("noticedeliver");
         String noticeid = getPara("noticeid");
         if (noticeid == null || noticeid.trim().isEmpty()) {
             renderJson(Result.badRequest("noticeid 不能为空"));
             return;
         }
-        boolean success = tongzhiService.jiaoyantongzhi(noticeinstead, noticeid);
+        boolean success = tongzhiService.jiaoyantongzhi(noticedeliver, noticeid);
         if (success) {
             renderJson(Result.success("校验通知成功"));
         } else {
@@ -209,7 +209,7 @@ public class TongzhiController extends Controller {
 
     // 反校验通知接口
     @ActionKey("/tongzhi/fanjiaoyantongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void fanjiaoyantongzhi() {
         String noticeid = getPara("noticeid");
         if (noticeid == null || noticeid.trim().isEmpty()) {
@@ -226,7 +226,7 @@ public class TongzhiController extends Controller {
 
     // 审核通知接口
     @ActionKey("/tongzhi/shenhetongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void shenhetongzhi() {
         // 测试接口：http://localhost:8099/tongzhi/shenhetongzhi
         String noticeshenhe = getPara("noticeshenhe");
@@ -245,7 +245,7 @@ public class TongzhiController extends Controller {
 
     // 反审核通知接口
     @ActionKey("/tongzhi/fanshenhetongzhi")
-    @HttpMethod("PUT")
+    @HttpMethod("GET")
     public void fanshenhtongzhi() {
         String noticeid = getPara("noticeid");
         if (noticeid == null || noticeid.trim().isEmpty()) {

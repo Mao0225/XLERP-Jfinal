@@ -102,7 +102,7 @@ public class TongzhiService {
     //下面是获取通知的列表的功能。刘国奇
     public Page<Record> gettongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
         // SELECT部分，修正列名双引号闭合问题，并去除重复列
-        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther";
+        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticeshenhe\" AS noticeshenhe, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther";
 
         // FROM和JOIN部分
         StringBuilder from = new StringBuilder(
@@ -133,7 +133,7 @@ public class TongzhiService {
     //下面根据通知编号，获取通知信息，刘国奇
     public Page<Record> gettongzhibyid(int pageNumber, int pageSize, String noticeid) {
         String select = "select b.\"no\",b.\"name\",b.\"spec\",c.\"itemnum\",b.\"unit\"," +
-                "c.\"id\",c.\"noticeid\",c.\"noticedrawno\",c.\"noticeinstead\",c.\"noticename\",c.\"noticeauther\",c.\"noticebuilddate\"，c.\"noticedeliver\",c.\"noticeshenhe\" ";
+                "c.\"id\",c.\"noticeid\",c.\"noticedrawno\",c.\"noticeinstead\",c.\"noticename\",c.\"noticeauther\",c.\"noticebuilddate\"，c.\"noticedeliver\",c.\"noticeshenhe\",c.\"noticecomment\" ";
         String from = "from XLQCERP.\"bascontractitem\" c " +
                 "left join XLQCERP.\"basitem\" b on " +
                 "c.\"itemid\" = b.\"id\" " +
@@ -166,13 +166,13 @@ public class TongzhiService {
 
     /**
      * 校验通知方法
-     * @param noticeinstead 替代通知信息
+     * @param noticedeliver 替代通知信息
      * @param noticeid 通知编号
      * @return 更新成功返回 true，否则返回 false
      */
-    public boolean jiaoyantongzhi(String noticeinstead, String noticeid) {
-        String sql = "update bascontractitem set noticestatus = 30, noticedeliver = ? where noticeid = ?";
-        return Db.update(sql, noticeinstead, noticeid) > 0;
+    public boolean jiaoyantongzhi(String noticedeliver, String noticeid) {
+        String sql = "update bascontractitem set noticestatus = '30', noticedeliver = ? where noticeid = ?";
+        return Db.update(sql, noticedeliver, noticeid) > 0;
     }
 
     /**
