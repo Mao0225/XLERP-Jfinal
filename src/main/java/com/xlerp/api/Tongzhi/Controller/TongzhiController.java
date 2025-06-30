@@ -120,6 +120,32 @@ public class TongzhiController extends Controller {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
+
+    //按通知生产提料单开始
+    @ActionKey("/tongzhi/getshenhehoutongzhipage")
+    @HttpMethod("GET")
+    public void getshenhehoutongzhipage() {
+        // 获取参数
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String noticeid = getPara("noticeid");
+        String noticename = getPara("noticename");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Record> page = tongzhiService.getshenhehoutongzhipage(pageNum, pageSz, noticeid, noticename);
+            renderJson(Result.success("查询通知列表成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
     //按通知生产提料单结束
 
     //按照通知编号查询所有的通知内容
