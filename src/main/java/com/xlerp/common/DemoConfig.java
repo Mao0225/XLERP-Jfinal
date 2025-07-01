@@ -22,6 +22,7 @@ import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
 import com.xlerp.api.System.Controller.*;
 
 
+import com.xlerp.api.Tongzhi.Controller.BeiliaojihuaController;
 import com.xlerp.api.Tongzhi.Controller.TongzhiController;
 import com.xlerp.api.Tuzhi.Controller.TuzhiController;
 import com.xlerp.api.Tuzhi.Controller.TuzhicailiaoController;
@@ -94,10 +95,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
-
 		me.add("/plinoutstore", PlinoutstoreController.class);
-
 		me.add("/tongzhi", TongzhiController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
+		me.add("/beiliaojihua", BeiliaojihuaController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
 
 
 

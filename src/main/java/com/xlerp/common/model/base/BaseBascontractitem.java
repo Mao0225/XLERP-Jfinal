@@ -409,5 +409,19 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 		return getStr("noticeshenhe");
 	}
 	
+	/**
+	 * 通知图纸id
+	 */
+	public void setNoticetuzhiid(java.lang.String noticetuzhiid) {
+		set("noticetuzhiid", noticetuzhiid);
+	}
+	
+	/**
+	 * 通知图纸id
+	 */
+	public java.lang.String getNoticetuzhiid() {
+		return getStr("noticetuzhiid");
+	}
+	
 }
 
