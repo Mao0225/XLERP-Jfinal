@@ -99,6 +99,33 @@ public class TongzhiService {
         return bascontractitem.update();
     }
 
+
+    /**
+     * 根据noticeid和noticedrawno查询备料计划数据
+     */
+    public List<Record> getBeiliaoData(String noticeid, String noticedrawno) {
+        String sql = "SELECT " +
+                "    b.no AS contractno, " +
+                "    i.id AS xiaoshouitemid, " +
+                "    c.name AS contractname, " +
+                "    b.noticeinstead AS daiyongxinghao, " +
+                "    b.itemnum AS dinghuotaoshu, " +
+                "    i.no AS itemno, " +
+                "    b.noticedrawno AS noticedrawno, " +
+                "    b.noticeid AS noticeid, " +
+                "    i.unit as unit, " +
+                "    t.basitemid AS sxcailiaoid, " +
+                "    t.shuliang AS sxclshuliang, " +
+                "    m.no AS sxclitemno " +
+                "FROM XLQCERP.bascontractitem b " +
+                "LEFT JOIN XLQCERP.bascontract c ON b.no = c.no " +
+                "LEFT JOIN XLQCERP.basitem i ON b.itemid = i.id " +
+                "LEFT JOIN XLQCERP.bastuzhicailiao t ON b.noticetuzhiid = t.tuzhiid " +
+                "LEFT JOIN XLQCERP.basitem m ON t.basitemid = m.id " +
+                "WHERE b.noticeid = ? AND b.noticedrawno = ?";
+
+        return Db.find(sql, noticeid, noticedrawno);
+    }
     //下面是获取通知的列表的功能。刘国奇
     public Page<Record> gettongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
         // SELECT部分，修正列名双引号闭合问题，并去除重复列

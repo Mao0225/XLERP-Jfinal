@@ -12,12 +12,14 @@ import com.xlerp.api.Common.Result;
 import com.xlerp.api.Tongzhi.Service.TongzhiService;
 import com.xlerp.common.model.Bascontractitem;
 import com.xlerp.common.model.Bastuzhi;
+import com.xlerp.common.model.Plbeiliaojihua;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Before(HttpMethodInterceptor.class)
 public class TongzhiController extends Controller {
@@ -79,12 +81,37 @@ public class TongzhiController extends Controller {
 
     @ActionKey("/tongzhi/updateitem")
     @HttpMethod("PUT")
-    //修改单条通知信息
+//修改单条通知信息
     public void updateitem(Bascontractitem bascontractitem) {
         try {
             boolean success = tongzhiService.updateitem(bascontractitem);
             if (success) {
                 renderJson(Result.success("物料更新成功"));
+
+                // 新增：在更新成功后，执行SQL查询并保存数据
+                String noticeid = bascontractitem.getNoticeid();
+                String noticedrawno = bascontractitem.getNoticedrawno();
+
+                if (noticeid != null && !noticeid.trim().isEmpty() &&
+                        noticedrawno != null && !noticedrawno.trim().isEmpty()) {
+
+                    // 创建BeiliaojihuaController实例
+                    BeiliaojihuaController beiliaoController = new BeiliaojihuaController();
+
+                    // 检查是否已存在相同的noticeid和noticedrawno的数据
+                    boolean exists = beiliaoController.checkExists(noticeid, noticedrawno);
+
+                    if (!exists) {
+                        // 执行SQL查询
+                        List<Record> resultList = tongzhiService.getBeiliaoData(noticeid, noticedrawno);
+
+                        // 保存查询结果
+                        for (Record record : resultList) {
+                            Plbeiliaojihua beiliaojihua = convertToPlbeiliaojihua(record);
+                            beiliaoController.save(beiliaojihua);
+                        }
+                    }
+                }
             } else {
                 renderJson(Result.serverError("更新物料失败"));
             }
@@ -93,6 +120,27 @@ public class TongzhiController extends Controller {
         } catch (Exception e) {
             renderJson(Result.serverError("更新物料时发生错误: " + e.getMessage()));
         }
+    }
+
+    // 将查询结果转换为Plbeiliaojihua对象
+    private Plbeiliaojihua convertToPlbeiliaojihua(Record record) {
+        Plbeiliaojihua beiliaojihua = new Plbeiliaojihua();
+
+        beiliaojihua.setContractno(record.getStr("contractno"));
+        beiliaojihua.setXiaoshouitemid(record.getInt("xiaoshouitemid"));
+        beiliaojihua.setContractname(record.getStr("contractname"));
+        beiliaojihua.setDaiyongxinghao(record.getStr("daiyongxinghao"));
+        beiliaojihua.setDinghuotaoshu(record.getInt("dinghuotaoshu"));
+        beiliaojihua.setItemno(record.getStr("itemno"));
+        beiliaojihua.setNoticedrawno(record.getStr("noticedrawno"));
+        beiliaojihua.setNoticeid(record.getStr("noticeid"));
+        beiliaojihua.setSxclshuliang(record.getInt("sxclshuliang"));
+        beiliaojihua.setSxclitemno(record.getStr("sxclitemno"));
+
+        // 设置其他必要字段
+
+
+        return beiliaojihua;
     }
 
     //按通知生产提料单开始
