@@ -38,14 +38,14 @@ public abstract class BaseBasorg<M extends BaseBasorg<M>> extends Model<M> imple
 	}
 	
 	/**
-	 * 组织描述-刘国企
+	 * 组织描述
 	 */
 	public void setDescr(java.lang.String descr) {
 		set("descr", descr);
 	}
 	
 	/**
-	 * 组织描述-刘国企
+	 * 组织描述
 	 */
 	public java.lang.String getDescr() {
 		return getStr("descr");
@@ -262,14 +262,14 @@ public abstract class BaseBasorg<M extends BaseBasorg<M>> extends Model<M> imple
 	}
 	
 	/**
-	 * 组织类型
+	 * 取值1表示供应商,2表示运输商,3表示客户，4表仓库,10表示分厂，11表示分厂中外加工，12表示外协部，20表示部门
 	 */
 	public void setType(java.lang.Integer type) {
 		set("type", type);
 	}
 	
 	/**
-	 * 组织类型
+	 * 取值1表示供应商,2表示运输商,3表示客户，4表仓库,10表示分厂，11表示分厂中外加工，12表示外协部，20表示部门
 	 */
 	public java.lang.Integer getType() {
 		return getInt("type");

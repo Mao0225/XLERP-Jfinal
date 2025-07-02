@@ -30,6 +30,8 @@ public class _MappingKit {
 		arp.addMapping("plbeiliaojihua", "id", Plbeiliaojihua.class);
 		arp.addMapping("plentityid", "id", Plentityid.class);
 		arp.addMapping("plinoutstore", "id", Plinoutstore.class);
+		arp.addMapping("plshengchandingdan", "id", Plshengchandingdan.class);
+		arp.addMapping("plshengchangongdan", "id", Plshengchangongdan.class);
 		arp.addMapping("sysmenu", "id", Sysmenu.class);
 		arp.addMapping("systerm", "id", Systerm.class);
 		arp.addMapping("sysuser", "id", Sysuser.class);
