@@ -44,6 +44,7 @@ public class BeiliaojihuaController extends Controller {
     @ActionKey("/beiliaojihua/getbeiliaojihuapage")
     @HttpMethod("GET")
     public void getbeiliaojihuapage() {
+        //通过通知编号，物料编号，获取备料计划单，这个是在制定备料计划表的时候试用
         String noticeid = getPara("noticeid");
         String noticedrawno = getPara("noticedrawno");
         String pageNumber = getPara("pageNumber");
@@ -65,6 +66,29 @@ public class BeiliaojihuaController extends Controller {
         }
     }
 
+    @ActionKey("/beiliaojihua/getbeiliaojihuabynoticepage")
+    @HttpMethod("GET")
+    public void getbeiliaojihuabynoticepage() {
+        //通过通知编号，获取备料计划单，这个是在制定备料计划表的时候试用，这个是在查看一个通知的所有备料计划的时候试用
+        String noticeid = getPara("noticeid");
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Plbeiliaojihua> page = beiliaojihuaService.beiliaojihuabynoticepaginate(pageNum, pageSz, noticeid);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
     @ActionKey("/beiliaojihua/get")
     @HttpMethod("GET")
     public void get() {

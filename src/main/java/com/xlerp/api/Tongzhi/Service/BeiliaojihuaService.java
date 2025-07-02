@@ -46,6 +46,28 @@ public class BeiliaojihuaService {
         // 使用带参数的paginate方法
         return dao.paginate(pageNumber, pageSize, select.toString(), from.toString(), params.toArray());
     }
+    public Page<Plbeiliaojihua> beiliaojihuabynoticepaginate(int pageNumber, int pageSize, String noticeid) {
+        StringBuilder select = new StringBuilder();
+        select.append("SELECT p.*, b.unit, b.spec,b.name, i.name as sxclname, i.unit as sxclunit"); // 修改SELECT子句
+
+        StringBuilder from = new StringBuilder();
+        from.append("FROM plbeiliaojihua p ")
+                .append("LEFT JOIN basitem b ON p.itemno = b.no ")
+                .append("LEFT JOIN basitem i ON p.itemno = i.no ") // 添加JOIN子句
+                .append("WHERE 1=1");
+
+        // 使用预编译语句的参数化查询，避免SQL注入
+        List<Object> params = new ArrayList<>();
+        if (noticeid != null && !noticeid.isEmpty()) {
+            from.append(" AND p.noticeid = ?");
+            params.add(noticeid);
+        }
+
+        from.append(" ORDER BY p.id DESC"); // 使用plbeiliaojihua表的id字段排序
+
+        // 使用带参数的paginate方法
+        return dao.paginate(pageNumber, pageSize, select.toString(), from.toString(), params.toArray());
+    }
     public Plbeiliaojihua findById(int id) {
         return dao.findById(id);
     }
