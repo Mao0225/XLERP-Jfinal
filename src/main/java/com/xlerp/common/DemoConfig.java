@@ -19,6 +19,8 @@ import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
+import com.xlerp.api.PlManagement.Controller.PlshengchandingdanController;
+import com.xlerp.api.PlManagement.Controller.PlshengchangongdanController;
 import com.xlerp.api.System.Controller.*;
 
 
@@ -95,9 +97,13 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
-		me.add("/plinoutstore", PlinoutstoreController.class);
+		me.add("/plinoutstore", PlinoutstoreController.class);//毛文斌，入库出库管理
 		me.add("/tongzhi", TongzhiController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
 		me.add("/beiliaojihua", BeiliaojihuaController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
+		me.add("/plshengchandingdan", PlshengchandingdanController.class);//毛文斌，生产订单管理
+		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
+
+
 
 
 
