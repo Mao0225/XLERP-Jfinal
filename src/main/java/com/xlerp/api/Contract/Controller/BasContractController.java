@@ -181,7 +181,7 @@ public class BasContractController extends Controller {
         }
     }
 
-
+    //获取合同物料
     @ActionKey("/bascontract/getitem")
     @HttpMethod("GET")
     public void getitem() {
