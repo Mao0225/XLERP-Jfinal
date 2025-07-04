@@ -2,12 +2,14 @@ package com.xlerp.api.PlManagement.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.PlManagement.Service.PlshengchangongdanService;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
+import com.xlerp.common.model.Plgongdanitem;
 import com.xlerp.common.model.Plshengchangongdan;
 
 import java.util.Arrays;
@@ -153,4 +155,76 @@ public class PlshengchangongdanController extends Controller {
             renderJson (Result.serverError ("批量删除记录时发生错误:" + e.getMessage ()));
         }
     }
+
+    //生产订单关联的产品操作
+    @ActionKey("/plshengchangongdan/item/getList")
+    @HttpMethod("GET")
+    public void getGongdanItemList() {
+        String woNo = getPara("woNo");//生产工单号
+        if (woNo == null || woNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("订单号不能为空"));
+        }
+        try {
+            List<Record> itemList = plshengchangongdanService.getGongdanItemByNo(woNo);
+            renderJson(Result.success("查询物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    @ActionKey("/plshengchangongdan/item/save")
+    @HttpMethod("POST")
+    public void saveGongdanItem(Plgongdanitem Item) {
+        System.out.println("保存物料1"+ Item);
+        try {
+            boolean success = plshengchangongdanService.saveGongdanItem(Item);
+            if (success) {
+                renderJson(Result.success("保存物料成功"));
+            } else {
+                renderJson(Result.serverError("保存物料失败"));
+            }
+        } catch (Exception e) {
+            renderJson(Result.serverError("保存物料时发生错误:" + e.getMessage()));
+        }
+    }
+
+    //修改
+    @ActionKey("/plshengchangongdan/item/update")
+    @HttpMethod("PUT")
+    public void updateGongdanItem(Plgongdanitem Item) {
+        try {
+            boolean success = plshengchangongdanService.updateGongdanItem(Item);
+            if (success) {
+                renderJson(Result.success("修改物料成功"));
+            } else {
+                renderJson(Result.serverError("修改物料失败"));
+            }
+        } catch (Exception e) {
+            renderJson(Result.serverError("修改物料时发生错误:" + e.getMessage()));
+        }
+    }
+
+    //删除
+    @ActionKey("/plshengchangongdan/item/delete")
+    @HttpMethod("DELETE")
+    public void deleteGongdanItem() {
+        String id = getPara("id");
+        if (id == null || id.trim().isEmpty()) {
+            renderJson(Result.badRequest("物料ID不能为空"));
+            return;
+        }
+        try {
+            boolean success = plshengchangongdanService.deleteGongdanItem(Integer.parseInt(id.trim()));
+            if (success) {
+                renderJson(Result.success("删除物料成功"));
+            } else {
+                renderJson(Result.serverError("删除物料失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("物料ID格式错误"));
+        } catch (Exception e) {
+            renderJson(Result.serverError("删除物料时发生错误:" + e.getMessage()));
+        }
+    }
+
 }

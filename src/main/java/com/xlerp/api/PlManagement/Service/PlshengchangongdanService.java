@@ -3,6 +3,9 @@ package com.xlerp.api.PlManagement.Service;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+import com.xlerp.common.model.Pldingdanitem;
+import com.xlerp.common.model.Plgongdanitem;
 import com.xlerp.common.model.Plshengchangongdan;
 
 import java.util.List;
@@ -52,5 +55,24 @@ public class PlshengchangongdanService {
         String placeholders = ids.stream().map(id -> "?").collect(Collectors.joining(","));
         String sql = "update plshengchangongdan set isdelete = 1 where id in (" + placeholders + ") and isdelete = 0";
         return Db.update(sql, ids.toArray()) > 0;
+    }
+
+
+    private static final Plgongdanitem itemDao = new Plgongdanitem();
+
+    public List<Record> getGongdanItemByNo(String woNo) {
+        return Db.find("select * from plgongdanitem where woNo = ?", woNo);
+    }
+
+    public boolean saveGongdanItem(Plgongdanitem item) {
+        return item.save();
+    }
+
+    public boolean updateGongdanItem(Plgongdanitem item) {
+        return item.update();
+    }
+
+    public boolean deleteGongdanItem(int id) {
+        return itemDao.deleteById( id);
     }
 }
