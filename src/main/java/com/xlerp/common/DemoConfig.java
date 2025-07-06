@@ -15,11 +15,8 @@ import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
-import com.xlerp.api.DataDetection.Controller.ACSRController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
-import com.xlerp.api.Inspection.Controller.*;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
-import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlManagement.Controller.PlinoutstoreController;
 import com.xlerp.api.PlManagement.Controller.PlshengchandingdanController;
 import com.xlerp.api.PlManagement.Controller.PlshengchangongdanController;
@@ -104,8 +101,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/beiliaojihua", BeiliaojihuaController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
 		me.add("/plshengchandingdan", PlshengchandingdanController.class);//毛文斌，生产订单管理
 		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
-		me.add("/bgxjlc", BgxjlcController.class); // 倪佳琪，（预绞式）铝材
-		me.add("/acsr", ACSRController.class); // 谭请赢，
+
 
 
 
