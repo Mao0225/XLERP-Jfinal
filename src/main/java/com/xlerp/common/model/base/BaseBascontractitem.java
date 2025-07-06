@@ -38,14 +38,14 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 	}
 	
 	/**
-	 * 产品或原料的顺序号，无包装
+	 * 产品或原料的顺序号，无包装，关联basitem表
 	 */
 	public void setItemid(java.lang.Long itemid) {
 		set("itemid", itemid);
 	}
 	
 	/**
-	 * 产品或原料的顺序号，无包装
+	 * 产品或原料的顺序号，无包装，关联basitem表
 	 */
 	public java.lang.Long getItemid() {
 		return getLong("itemid");
