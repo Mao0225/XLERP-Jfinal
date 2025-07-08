@@ -156,7 +156,37 @@ public class TongzhiService {
 
         return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
+//获取 shenhe 状态的通知
 
+    public Page<Record> getshenhetongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
+        // SELECT部分，修正列名双引号闭合问题，并去除重复列
+        String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticeshenhe\" AS noticeshenhe, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther";
+
+        // FROM和JOIN部分
+        StringBuilder from = new StringBuilder(
+                "FROM XLQCERP.\"bascontractitem\" i " +
+                        "LEFT JOIN XLQCERP.\"bascontract\" c ON c.\"no\" = i.\"no\" " +
+                        "WHERE i.\"isdelete\" = 0 and i.\"noticestatus\" >35 "
+        );
+
+        // 参数收集
+        List<Object> params = new ArrayList<>();
+
+        // 动态条件
+        if (noticeid != null && !noticeid.trim().isEmpty()) {
+            from.append(" AND i.\"noticeid\" LIKE ?");
+            params.add("%" + noticeid.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+        if (noticename != null && !noticename.trim().isEmpty()) {
+            from.append(" AND i.\"noticename\" LIKE ?");
+            params.add("%" + noticename.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+
+        // 排序
+        from.append(" ORDER BY i.\"noticebuilddate\" DESC");
+
+        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
     //下面是获取审核后通知的列表的功能。刘国奇
     public Page<Record> getshenhehoutongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
         // SELECT部分，修正列名双引号闭合问题，并去除重复列
