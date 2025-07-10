@@ -129,6 +129,7 @@ public class TongzhiService {
     //下面是获取通知的列表的功能。刘国奇
     public Page<Record> gettongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {
         // SELECT部分，修正列名双引号闭合问题，并去除重复列
+        // SELECT部分，修正列名双引号闭合问题，并去除重复列
         String select = "SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticeshenhe\" AS noticeshenhe, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther";
 
         // FROM和JOIN部分
@@ -154,7 +155,19 @@ public class TongzhiService {
         // 排序
         from.append(" ORDER BY i.\"noticebuilddate\" DESC");
 
-        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+        // 手动统计总条数
+        String countSql = "SELECT COUNT(*) FROM (SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticeshenhe\" AS noticeshenhe, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther " + from.toString() + ") AS total";
+        Long totalRow = Db.queryLong(countSql, params.toArray());
+
+        // 分页查询
+        int start = (pageNumber - 1) * pageSize;
+        String pageSql = select + " " + from.toString() + " LIMIT ? OFFSET ?";
+        params.add(pageSize);
+        params.add(start);
+        List<Record> records = Db.find(pageSql, params.toArray());
+
+        // 创建分页对象
+        return new Page<>(records, pageNumber, pageSize, (int) (totalRow / pageSize + (totalRow % pageSize == 0 ? 0 : 1)), totalRow.intValue());
     }
 //获取 shenhe 状态的通知
 
@@ -185,7 +198,19 @@ public class TongzhiService {
         // 排序
         from.append(" ORDER BY i.\"noticebuilddate\" DESC");
 
-        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+        // 手动统计总条数
+        String countSql = "SELECT COUNT(*) FROM (SELECT DISTINCT c.\"no\" AS contractno, c.\"name\" AS contractname, i.\"noticeid\" AS noticeid, i.\"noticename\" AS noticename, i.\"noticestatus\" AS noticestatus, i.\"noticeshenhe\" AS noticeshenhe, i.\"noticebuilddate\" AS noticebuilddate, i.\"noticedeliver\" AS noticedeliver, i.\"noticeauther\" AS noticeauther " + from.toString() + ") AS total";
+        Long totalRow = Db.queryLong(countSql, params.toArray());
+
+        // 分页查询
+        int start = (pageNumber - 1) * pageSize;
+        String pageSql = select + " " + from.toString() + " LIMIT ? OFFSET ?";
+        params.add(pageSize);
+        params.add(start);
+        List<Record> records = Db.find(pageSql, params.toArray());
+
+        // 创建分页对象
+        return new Page<>(records, pageNumber, pageSize, (int) (totalRow / pageSize + (totalRow % pageSize == 0 ? 0 : 1)), totalRow.intValue());
     }
     //下面是获取审核后通知的列表的功能。刘国奇
     public Page<Record> getshenhehoutongzhipage(int pageNumber, int pageSize, String noticeid, String noticename) {

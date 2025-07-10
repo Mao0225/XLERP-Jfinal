@@ -170,7 +170,7 @@ public class TongzhiController extends Controller {
     }
 
 
-    //下面是获取审核后的通知
+
     @ActionKey("/tongzhi/getshenhetongzhipage")
     @HttpMethod("GET")
     public void getshenhetongzhipage() {
