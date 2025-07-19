@@ -14,20 +14,23 @@ import java.util.stream.Collectors;
 public class PlshengchangongdanService {
     private static final Plshengchangongdan dao = new Plshengchangongdan();
 
-    public Page<Plshengchangongdan> paginate(int pageNumber, int pageSize,String woNo) {
+    public Page<Plshengchangongdan> paginate(int pageNumber, int pageSize,String woNo,String contractNo) {
         String select = "select *";
         StringBuilder from = new StringBuilder("from plshengchangongdan where isdelete = 0");
 
 // 动态构建查询条件
         if (StrKit.notBlank(woNo))
-            from.append(" and wo_no like ?");
-
+            from.append(" and woNo like ?");
+        if (StrKit.notBlank(contractNo))
+            from.append(" and contractNo like ?");
         from.append(" order by id desc");
 
 // 准备参数
         List<Object> params = new java.util.ArrayList<>();
         if (StrKit.notBlank(woNo))
             params.add("%" + woNo + "%");
+        if (StrKit.notBlank(contractNo))
+            params.add("%" + contractNo + "%");
 
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
@@ -37,6 +40,7 @@ public class PlshengchangongdanService {
     }
 
     public boolean save(Plshengchangongdan plshengchangongdan) {
+        System.out.println("service保存工单信息"+plshengchangongdan);
         return plshengchangongdan.save();
     }
 

@@ -27,6 +27,7 @@ public class PlshengchandingdanController extends Controller {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String ipoNo = getPara("ipoNo");//生产订单号
+        String contractNo = getPara("contractNo");//厂内合同号
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -37,7 +38,7 @@ public class PlshengchandingdanController extends Controller {
                 return;
             }
 
-            Page<Record> page = plshengchandingdanService.paginate (pageNum, pageSz,ipoNo);
+            Page<Record> page = plshengchandingdanService.paginate (pageNum, pageSz,ipoNo,contractNo);
             renderJson (Result.success ("查询成功").putData ("page", page));
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("页码或每页大小格式错误"));

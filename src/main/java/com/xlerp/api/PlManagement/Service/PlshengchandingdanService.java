@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class PlshengchandingdanService {
     private static final Plshengchandingdan dao = new Plshengchandingdan();
 
-    public Page<Record> paginate(int pageNumber, int pageSize, String ipoNo) {
+    public Page<Record> paginate(int pageNumber, int pageSize, String ipoNo ,String contractNo) {
         String select = "select ssdd.*,c.name as contractName";
         StringBuilder from = new StringBuilder("from plshengchandingdan ssdd " +
                 "left join bascontract c on ssdd.contractNo = c.no " +
@@ -22,6 +22,8 @@ public class PlshengchandingdanService {
 // 动态构建查询条件
         if (StrKit.notBlank(ipoNo))
             from.append(" and ipoNo like ?");
+        if (StrKit.notBlank(contractNo))
+            from.append(" and ssdd.contractNo like ?");
 
         from.append(" order by id desc");
 
@@ -29,6 +31,9 @@ public class PlshengchandingdanService {
         List<Object> params = new java.util.ArrayList<>();
         if (StrKit.notBlank(ipoNo)) {
             params.add("%" + ipoNo + "%");
+        }
+        if (StrKit.notBlank(contractNo)) {
+            params.add("%" + contractNo + "%");
         }
 
 

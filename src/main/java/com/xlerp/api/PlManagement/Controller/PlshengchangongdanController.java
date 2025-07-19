@@ -27,6 +27,7 @@ public class PlshengchangongdanController extends Controller {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String woNo = getPara("woNo");//生产工单编码
+        String contractNo = getPara("contractNo");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -37,7 +38,7 @@ public class PlshengchangongdanController extends Controller {
                 return;
             }
 
-            Page page = plshengchangongdanService.paginate (pageNum, pageSz ,woNo);
+            Page page = plshengchangongdanService.paginate (pageNum, pageSz ,woNo, contractNo);
             renderJson (Result.success ("查询成功").putData ("page", page));
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("页码或每页大小格式错误"));
@@ -71,6 +72,7 @@ public class PlshengchangongdanController extends Controller {
     public void save (Plshengchangongdan plshengchangongdan) {
         try {
             plshengchangongdan.setIsdelete(0); // 设置为正常状态
+            System.out.println("controller保存工单信息"+plshengchangongdan);
             boolean success = plshengchangongdanService.save (plshengchangongdan);
             if (success) {
                 renderJson (Result.success ("记录保存成功").putData ("recordId", plshengchangongdan.getId ()));
