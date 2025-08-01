@@ -12,6 +12,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.common.model.Pldingdanitem;
 import com.xlerp.common.model.Plshengchandingdan;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -228,5 +229,27 @@ public class PlshengchandingdanController extends Controller {
             renderJson(Result.serverError("删除物料时发生错误:" + e.getMessage()));
         }
     }
+
+
+    //根据conitemid总结订单工单分配数量及剩余数量的情况
+    @ActionKey("/plshengchandingdan/getItemCount")
+    @HttpMethod("GET")
+    public void getItemCount() {
+        String conItemId = getPara("conItemId");
+        if (conItemId == null || conItemId.trim().isEmpty()) {
+            renderJson(Result.badRequest("内容ID不能为空"));
+            return;
+        }
+        try {
+            List<Record> itemList = plshengchandingdanService.getItemCount(conItemId);
+            if (itemList.isEmpty())
+                renderJson(Result.success("物料暂未分配").putData("itemList", new ArrayList<>()));
+            else
+                renderJson(Result.success("查询物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e){
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
 
 }

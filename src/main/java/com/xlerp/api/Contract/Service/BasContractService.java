@@ -123,17 +123,16 @@ public class BasContractService {
 
 
     public List<Record> getContractItemByNo(String contractNo) {
-        String select = "SELECT c.*," +
-                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec";
-        String from = "FROM bascontractitem c " +
+        String sql = "SELECT c.*, " +
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, " +
+                "(SELECT COALESCE(SUM(d.amount), 0) " +
+                " FROM pldingdanitem d " +
+                " WHERE d.conitemId = c.id) AS allocatedOrderAmount " +
+                "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "WHERE c.no = ? " +
                 "ORDER BY c.id";
 
-        // 拼接完整的SQL语句
-        String sql = select + " " + from;
-
-        // 使用完整的SQL语句和参数调用Db.find()
         return Db.find(sql, contractNo);
     }
 

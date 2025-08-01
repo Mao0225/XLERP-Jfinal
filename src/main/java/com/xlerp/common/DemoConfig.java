@@ -11,6 +11,7 @@ import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
+import com.xlerp.api.ClManagement.Controller.ClBgxjsbxjLcController;
 import com.xlerp.api.ClManagement.Controller.XcxjLcController;
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
@@ -23,7 +24,7 @@ import com.xlerp.api.PlManagement.Controller.PlpaichanjihuaController;
 import com.xlerp.api.PlManagement.Controller.PlshengchandingdanController;
 import com.xlerp.api.PlManagement.Controller.PlshengchangongdanController;
 import com.xlerp.api.System.Controller.*;
-
+import com.jfinal.handler.*; // 正确的包路径
 
 import com.xlerp.api.Tongzhi.Controller.BeiliaojihuaController;
 import com.xlerp.api.Tongzhi.Controller.TongzhiController;
@@ -104,7 +105,8 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/plshengchandingdan", PlshengchandingdanController.class);//毛文斌，生产订单管理
 		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
 		me.add("/plpaichanjihua", PlpaichanjihuaController.class);//毛文斌，排产计划管理
-		me.add("/xcxjLc", XcxjLcController.class);//
+		me.add("/xcxjLc", XcxjLcController.class);//谭请赢
+		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);
 
 
 
@@ -176,6 +178,7 @@ public class DemoConfig extends JFinalConfig {
 	 * 配置处理器
 	 */
 	public void configHandler(Handlers me) {
+
 
 	}
 }

@@ -79,4 +79,9 @@ public class PlshengchangongdanService {
     public boolean deleteGongdanItem(int id) {
         return itemDao.deleteById( id);
     }
+
+    //学姐加的
+    public Plshengchangongdan findByWoNo(String woNo) {
+        return dao.findFirst("select * from plshengchangongdan where woNo = ? and isdelete = 0", woNo);
+    }
 }

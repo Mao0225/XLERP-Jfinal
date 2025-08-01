@@ -7,7 +7,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.Pldingdanitem;
 import com.xlerp.common.model.Plshengchandingdan;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlshengchandingdanService {
@@ -82,5 +82,109 @@ public class PlshengchandingdanService {
 
     public boolean deleteDingdanItem(int id) {
         return itemDao.deleteById( id);
+    }
+
+    public List<Record> getItemCount(String itemId) {
+        // 1. 执行原始查询
+        List<Record> records = executeQuery(itemId);
+
+        if (records.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 2. 处理顶层数据（从第一条记录提取基础信息）
+        Map<String, Object> data = new HashMap<>();
+        Record first = records.get(0);
+        data.put("itemNo", first.getStr("itemNo"));
+        data.put("itemName", first.getStr("itemName"));
+        data.put("spec", first.getStr("spec"));
+        data.put("totalAmount", first.getBigDecimal("totalAmount"));
+        data.put("allocatedOrderAmount", first.getBigDecimal("allocatedOrderAmount"));
+
+        // 3. 按订单号分组处理（核心修改：处理 null 值的 ipoNo）
+        Map<String, List<Record>> orderGroups = records.stream()
+                .collect(Collectors.groupingBy(r -> {
+                    String ipoNo = r.getStr("ipoNo");
+                    // 关键修复：将 null 转换为特定字符串（如"无订单号"），避免分组键为 null
+                    return ipoNo == null ? "无订单号" : ipoNo;
+                }));
+
+        List<Map<String, Object>> orders = new ArrayList<>();
+        for (Map.Entry<String, List<Record>> entry : orderGroups.entrySet()) {
+            String ipoNo = entry.getKey();
+            List<Record> orderRecords = entry.getValue();
+
+            // 订单级数据（从分组的第一条记录提取订单信息）
+            Map<String, Object> order = new HashMap<>();
+            Record orderFirst = orderRecords.get(0);
+            order.put("ipoNo", ipoNo);
+            // 处理订单数量可能为 null 的情况
+            order.put("orderAmount", orderFirst.getStr("orderAmount") != null ?
+                    orderFirst.getStr("orderAmount") : "0");
+            // 处理剩余数量可能为 null 的情况
+            order.put("remainingInOrder", orderFirst.getBigDecimal("remainingInOrder") != null ?
+                    orderFirst.getBigDecimal("remainingInOrder") : 0);
+            // 处理车间名称可能为 null 的情况
+            order.put("workshopName", orderFirst.getStr("workshopName") != null ?
+                    orderFirst.getStr("workshopName") : "");
+
+            // 处理工单列表（过滤 null 和空字符串的 woNo）
+            List<Map<String, Object>> workorders = orderRecords.stream()
+                    .filter(r -> r.getStr("woNo") != null && !r.getStr("woNo").trim().isEmpty())
+                    .map(r -> {
+                        Map<String, Object> wo = new HashMap<>();
+                        wo.put("woNo", r.getStr("woNo"));
+                        // 处理工单数量可能为 null 的情况
+                        wo.put("workorderAmount", r.getStr("workorderAmount") != null ?
+                                r.getStr("workorderAmount") : "0");
+                        return wo;
+                    })
+                    .distinct() // 去重避免重复工单
+                    .collect(Collectors.toList());
+
+            order.put("workorders", workorders);
+            orders.add(order);
+        }
+
+        data.put("orders", orders);
+
+        // 4. 将处理好的 Map 转换为 Record
+        Record resultRecord = new Record();
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            resultRecord.set(entry.getKey(), entry.getValue());
+        }
+
+        return Collections.singletonList(resultRecord);
+    }
+
+    // 执行查询的方法（保持不变）
+    private List<Record> executeQuery(String itemId) {
+        String sql = "SELECT " +
+                "    b.no AS itemNo, " +
+                "    b.name AS itemName, " +
+                "    b.spec, " +
+                "    bi.itemnum AS totalAmount, " +
+                "    di.ipoNo, " +
+                "    di.amount AS orderAmount, " +
+                "    gi.woNo, " +
+                "    gi.amount AS workorderAmount, " +
+                "    di.workshopName, " +
+                "    (SELECT COALESCE(SUM(d.amount), 0) " +
+                "     FROM pldingdanitem d " +
+                "     WHERE d.conitemId = bi.id) AS allocatedOrderAmount, " +
+                "    di.amount - (SELECT COALESCE(SUM(g.amount), 0) " +
+                "                FROM plgongdanitem g " +
+                "                WHERE g.dingdanitemId = di.id) AS remainingInOrder " +
+                "FROM " +
+                "    bascontractitem bi " +
+                "    LEFT JOIN pldingdanitem di ON di.conitemId = bi.id " +
+                "    LEFT JOIN plgongdanitem gi ON gi.dingdanitemId = di.id " +
+                "    LEFT JOIN basitem b ON bi.itemid = b.id " +
+                "WHERE " +
+                "    bi.id = ? " +
+                "ORDER BY " +
+                "    di.ipoNo, gi.woNo";
+
+        return Db.find(sql, itemId);
     }
 }
