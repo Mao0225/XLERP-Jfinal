@@ -5,9 +5,17 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Db;
 import com.xlerp.common.model.Bascontract;
 import com.xlerp.common.model.Bascontractitem;
+import com.xlerp.common.model.Basitem;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BasContractService {
     private static final Bascontract dao = new Bascontract();
@@ -131,6 +139,7 @@ public class BasContractService {
                 "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "WHERE c.no = ? " +
+                "AND c.isdelete = 0 "+
                 "ORDER BY c.id";
 
         return Db.find(sql, contractNo);
@@ -169,5 +178,124 @@ public class BasContractService {
 
     public boolean updateStatusById(String id, String status) {
         return Db.update("update bascontract set status = ? where id = ?", status, id) > 0;
+    }
+
+
+
+    private static final Basitem daoBasitem = new Basitem();
+
+    public Map<String, Object> parseContractExcel(File excelFile , String contractNo) throws Exception {
+//        List<Bascontractitem> itemList = new ArrayList<>();
+        List<Map<String, Object>> failedRows = new ArrayList<>();
+        int successCount = 0;
+        int totalRows = 0;
+        Workbook workbook = null;
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(excelFile);
+            // 根据文件类型创建工作簿
+            if (excelFile.getName().endsWith(".xlsx")) {
+                workbook = new XSSFWorkbook(fis);
+            } else if (excelFile.getName().endsWith(".xls")) {
+                workbook = new HSSFWorkbook(fis);
+            } else {
+                throw new IllegalArgumentException("不支持的文件格式，仅支持 .xls 或 .xlsx");
+            }
+
+            // 获取第一个工作表
+            Sheet sheet = workbook.getSheetAt(0);
+            // 获取表头行
+            Row headerRow = sheet.getRow(0);
+            if (headerRow == null) {
+                throw new IllegalArgumentException("Excel文件第一行不能为空（需包含表头）");
+            }
+
+            // 从第二行开始迭代（跳过表头）
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue; // 跳过空行
+                totalRows++; // 统计非空行
+
+                Map<String, Object> failureInfo = new HashMap<>();
+                failureInfo.put("rowNumber", i + 1); // Excel row number (1-based)
+                try {
+                    Bascontractitem iteminfo = new Bascontractitem();
+                    String itemNo = getCellValue(row.getCell(1));
+                    Basitem item = getItemInfoByNo(itemNo);
+
+                    if (item == null) {
+                        failureInfo.put("error", "物料编号 " + itemNo + " 不存在");
+                        failedRows.add(failureInfo);
+                        continue;
+                    }
+
+                    iteminfo.set("no", contractNo); // 合同编号
+                    iteminfo.set("itemid", item.getId()); // 对应basitem里面的ID
+                    iteminfo.set("itemunit", getCellValue(row.getCell(2))); // 产品单位
+                    iteminfo.set("itemnum", getCellValue(row.getCell(3))); // 产品数量
+                    iteminfo.set("itemprice", getCellValue(row.getCell(4))); // 计划单价
+                    iteminfo.set("itemsum", getCellValue(row.getCell(5))); // 计划总价
+                    iteminfo.set("itemRealPrice", getCellValue(row.getCell(6))); // 销售单价
+                    iteminfo.set("itemRealSum", getCellValue(row.getCell(7))); // 销售总价
+                    iteminfo.set("itemweight", getCellValue(row.getCell(8))); // 单重
+                    iteminfo.set("itemgrossweight", getCellValue(row.getCell(9))); // 总重
+                    iteminfo.set("poItemNo", getCellValue(row.getCell(10))); // 行订单号
+                    iteminfo.set("poItemId", getCellValue(row.getCell(11))); // 行订单ID
+                    iteminfo.set("poItemCode", getCellValue(row.getCell(12))); // 行订单编码
+                    iteminfo.set("itemmemo", getCellValue(row.getCell(13))); // 备注
+
+                    if (iteminfo.save()) {
+                        successCount++;
+//                        itemList.add(iteminfo);//暂时不用返回添加的详细数据
+                        System.out.println("保存成功: 行 " + (i + 1));
+                    } else {
+                        failureInfo.put("error", "保存失败，数据库操作错误");
+                        failedRows.add(failureInfo);
+                    }
+                } catch (Exception e) {
+                    failureInfo.put("error", "解析错误: " + e.getMessage());
+                    failedRows.add(failureInfo);
+                }
+            }
+        } finally {
+            // 关闭资源
+            if (workbook != null) workbook.close();
+            if (fis != null) fis.close();
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("successCount", successCount);
+        result.put("failedRows", failedRows);
+        result.put("failedCount", failedRows.size());
+        result.put("totalRows", totalRows);
+//        result.put("itemList", itemList);//暂时不用返回添加的详细数据
+        return result;
+    }
+
+    // 根据itemNo从basItem里面获取物料信息
+    public Basitem getItemInfoByNo(String itemNo) {
+        return daoBasitem.findFirst("SELECT * FROM basitem WHERE no = ?", itemNo);
+    }
+
+    // 获取单元格值的辅助方法
+    private String getCellValue(Cell cell) {
+        if (cell == null) return "";
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.valueOf((long) cell.getNumericCellValue());
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                return cell.getCellFormula();
+            default:
+                return "";
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
@@ -15,6 +16,7 @@ import com.xlerp.common.model.Bascontract;
 import com.xlerp.common.model.Bascontractitem;
 
 import java.util.List;
+import java.util.Map;
 
 @Before(HttpMethodInterceptor.class)
 public class BasContractController extends Controller {
@@ -257,6 +259,48 @@ public class BasContractController extends Controller {
             renderJson(Result.badRequest("物料ID格式错误"));
         } catch (Exception e) {
             renderJson(Result.serverError("删除物料时发生错误: " + e.getMessage()));
+        }
+    }
+
+
+    //上传表格文件自动导入合同物料信息
+    @ActionKey("/bascontract/importContractItem")
+    @HttpMethod("POST")
+    public void importContractItem() {
+        try {
+            UploadFile file = getFile("itemListFile"); // "itemListFile" is the form field name
+            String contractNo = getPara("contractNo");
+            System.out.println("导入文件的合同号contractNo:" + contractNo);
+            if (file == null) {
+                renderJson(Result.badRequest("未上传文件"));
+                return;
+            }
+
+            // 验证文件大小 (e.g., max 10MB)
+            String fileName = file.getFileName().toLowerCase();
+            if (!fileName.endsWith(".xls") && !fileName.endsWith(".xlsx")) {
+                file.getFile().delete();
+                renderJson(Result.badRequest("仅支持 .xls 或 .xlsx 文件"));
+                return;
+            }
+            if (file.getFile().length() > 10 * 1024 * 1024) { // 10MB limit
+                file.getFile().delete();
+                renderJson(Result.badRequest("文件大小超过10MB限制"));
+                return;
+            }
+
+            // Parse file and get result
+            Map<String, Object> result = bascontractService.parseContractExcel(file.getFile(),contractNo);
+            file.getFile().delete(); // Clean up uploaded file
+
+            renderJson(Result.success("文件解析完成")
+                    .putData("successCount", result.get("successCount"))
+                    .putData("failedRows", result.get("failedRows"))
+                    .putData("failedCount", result.get("failedCount"))
+                    .putData("totalRows", result.get("totalRows")));
+//                    .putData("itemList", result.get("itemList")));
+        } catch (Exception e) {
+            renderJson(Result.badRequest("文件解析失败: " + e.getMessage()));
         }
     }
 }

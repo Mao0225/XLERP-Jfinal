@@ -12,6 +12,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.xlerp.api.ClManagement.Controller.ClBgxjsbxjLcController;
+import com.xlerp.api.ClManagement.Controller.ClProductionDataController;
 import com.xlerp.api.ClManagement.Controller.XcxjLcController;
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
@@ -107,6 +108,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/plpaichanjihua", PlpaichanjihuaController.class);//毛文斌，排产计划管理
 		me.add("/xcxjLc", XcxjLcController.class);//谭请赢
 		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);
+		me.add("/clproductiondata", ClProductionDataController.class);
 
 
 
