@@ -25,6 +25,10 @@ public class PlpaichanjihuaController extends Controller {
     public void getpage() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
+        String contractNo = getPara("contractNo");
+        String woNo = getPara("woNo");
+        String ipoNo = getPara("ipoNo");
+        String scheduleCode = getPara("scheduleCode");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -35,7 +39,7 @@ public class PlpaichanjihuaController extends Controller {
                 return;
             }
 
-            Page page = plpaichanjihuaService.paginate (pageNum, pageSz);
+            Page page = plpaichanjihuaService.paginate (pageNum, pageSz, contractNo, woNo, ipoNo, scheduleCode);
             renderJson (Result.success ("查询成功").putData ("page", page));
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("页码或每页大小格式错误"));

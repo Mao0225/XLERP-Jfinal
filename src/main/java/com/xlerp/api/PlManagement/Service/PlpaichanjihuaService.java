@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class PlpaichanjihuaService {
     private static final Plpaichanjihua dao = new Plpaichanjihua();
 
-    public Page<Plpaichanjihua> paginate(int pageNumber, int pageSize) {
+    public Page<Plpaichanjihua> paginate(int pageNumber, int pageSize,String contractNo,String woNo,String ipoNo,String scheduleCode) {
         String select = "select p.*,gi.amount as gdamount,di.amount as ddamount," +
-                "ci.itemnum as conamount,ci.itemprice," +
+                "ci.itemnum as conamount,ci.itemprice,ci.itemRealPrice," +
                 "i.name as itemName ,i.no as itemNo ,i.spec,i.unit";
         StringBuilder from = new StringBuilder("from plpaichanjihua p ");
         from.append("left join plgongdanitem gi on gi.id = p.gdItemId ")
