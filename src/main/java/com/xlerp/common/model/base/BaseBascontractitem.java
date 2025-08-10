@@ -80,28 +80,28 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 	}
 	
 	/**
-	 * 产品或原料的单价，计费单价
+	 * 产品或原料的计划单价，计费单价
 	 */
 	public void setItemprice(java.math.BigDecimal itemprice) {
 		set("itemprice", itemprice);
 	}
 	
 	/**
-	 * 产品或原料的单价，计费单价
+	 * 产品或原料的计划单价，计费单价
 	 */
 	public java.math.BigDecimal getItemprice() {
 		return get("itemprice");
 	}
 	
 	/**
-	 * 一种产品或原料的总金额，运费合计
+	 * 一种产品或原料的计划总金额，运费合计
 	 */
 	public void setItemsum(java.math.BigDecimal itemsum) {
 		set("itemsum", itemsum);
 	}
 	
 	/**
-	 * 一种产品或原料的总金额，运费合计
+	 * 一种产品或原料的计划总金额，运费合计
 	 */
 	public java.math.BigDecimal getItemsum() {
 		return get("itemsum");
@@ -421,6 +421,76 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 	 */
 	public java.lang.String getNoticetuzhiid() {
 		return getStr("noticetuzhiid");
+	}
+	
+	/**
+	 * 采购行项目号
+	 */
+	public void setPoItemNo(java.lang.String poItemNo) {
+		set("poItemNo", poItemNo);
+	}
+	
+	/**
+	 * 采购行项目号
+	 */
+	public java.lang.String getPoItemNo() {
+		return getStr("poItemNo");
+	}
+	
+	/**
+	 * 国网物料编码
+	 */
+	public void setPoItemCode(java.lang.String poItemCode) {
+		set("poItemCode", poItemCode);
+	}
+	
+	/**
+	 * 国网物料编码
+	 */
+	public java.lang.String getPoItemCode() {
+		return getStr("poItemCode");
+	}
+	
+	/**
+	 * 实际单价，销售价格
+	 */
+	public void setItemRealPrice(java.math.BigDecimal itemRealPrice) {
+		set("itemRealPrice", itemRealPrice);
+	}
+	
+	/**
+	 * 实际单价，销售价格
+	 */
+	public java.math.BigDecimal getItemRealPrice() {
+		return get("itemRealPrice");
+	}
+	
+	/**
+	 * 实际总价格，总实际销售额
+	 */
+	public void setItemRealSum(java.math.BigDecimal itemRealSum) {
+		set("itemRealSum", itemRealSum);
+	}
+	
+	/**
+	 * 实际总价格，总实际销售额
+	 */
+	public java.math.BigDecimal getItemRealSum() {
+		return get("itemRealSum");
+	}
+	
+	/**
+	 * 采购行项目ID
+	 */
+	public void setPoItemId(java.lang.String poItemId) {
+		set("poItemId", poItemId);
+	}
+	
+	/**
+	 * 采购行项目ID
+	 */
+	public java.lang.String getPoItemId() {
+		return getStr("poItemId");
 	}
 	
 }

@@ -342,20 +342,6 @@ public abstract class BasePlinoutstore<M extends BasePlinoutstore<M>> extends Mo
 	}
 	
 	/**
-	 * 合同号
-	 */
-	public void setContactno(java.lang.String contactno) {
-		set("contactno", contactno);
-	}
-	
-	/**
-	 * 合同号
-	 */
-	public java.lang.String getContactno() {
-		return getStr("contactno");
-	}
-	
-	/**
 	 * 工程名称
 	 */
 	public void setProjectname(java.lang.String projectname) {
@@ -482,17 +468,17 @@ public abstract class BasePlinoutstore<M extends BasePlinoutstore<M>> extends Mo
 	}
 	
 	/**
-	 * 现行价格
+	 * 销售价格
 	 */
-	public void setNowprice(java.math.BigDecimal nowprice) {
-		set("nowprice", nowprice);
+	public void setRealprice(java.math.BigDecimal realprice) {
+		set("realprice", realprice);
 	}
 	
 	/**
-	 * 现行价格
+	 * 销售价格
 	 */
-	public java.math.BigDecimal getNowprice() {
-		return get("nowprice");
+	public java.math.BigDecimal getRealprice() {
+		return get("realprice");
 	}
 	
 	/**
@@ -529,6 +515,76 @@ public abstract class BasePlinoutstore<M extends BasePlinoutstore<M>> extends Mo
 	
 	public java.lang.String getGouhuounitname() {
 		return getStr("gouhuounitname");
+	}
+	
+	/**
+	 * 厂内合同号
+	 */
+	public void setContractNo(java.lang.String contractNo) {
+		set("contractNo", contractNo);
+	}
+	
+	/**
+	 * 厂内合同号
+	 */
+	public java.lang.String getContractNo() {
+		return getStr("contractNo");
+	}
+	
+	/**
+	 * 排产计划号
+	 */
+	public void setScheduleCode(java.lang.String scheduleCode) {
+		set("scheduleCode", scheduleCode);
+	}
+	
+	/**
+	 * 排产计划号
+	 */
+	public java.lang.String getScheduleCode() {
+		return getStr("scheduleCode");
+	}
+	
+	/**
+	 * 生产工单号
+	 */
+	public void setWoNo(java.lang.String woNo) {
+		set("woNo", woNo);
+	}
+	
+	/**
+	 * 生产工单号
+	 */
+	public java.lang.String getWoNo() {
+		return getStr("woNo");
+	}
+	
+	/**
+	 * 生产订单号
+	 */
+	public void setIpoNo(java.lang.String ipoNo) {
+		set("ipoNo", ipoNo);
+	}
+	
+	/**
+	 * 生产订单号
+	 */
+	public java.lang.String getIpoNo() {
+		return getStr("ipoNo");
+	}
+	
+	/**
+	 * 销售总价格
+	 */
+	public void setRealTotalMoney(java.lang.String realTotalMoney) {
+		set("realTotalMoney", realTotalMoney);
+	}
+	
+	/**
+	 * 销售总价格
+	 */
+	public java.lang.String getRealTotalMoney() {
+		return getStr("realTotalMoney");
 	}
 	
 }
