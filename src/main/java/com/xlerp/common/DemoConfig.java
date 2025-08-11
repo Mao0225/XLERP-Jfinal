@@ -109,6 +109,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/xcxjLc", XcxjLcController.class);//谭请赢
 		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);
 		me.add("/clproductiondata", ClProductionDataController.class);
+		me.add("/basno", BasNoController.class);//编号管理
 
 
 
