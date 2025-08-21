@@ -22,6 +22,7 @@ public class _MappingKit {
 		arp.addMapping("basitem", "id", Basitem.class);
 		arp.addMapping("basitemclass", "id", Basitemclass.class);
 		arp.addMapping("basmaterial", "id", Basmaterial.class);
+		arp.addMapping("basno", "id", Basno.class);
 		arp.addMapping("basorg", "id", Basorg.class);
 		arp.addMapping("basPurchaseOrder", "id", BasPurchaseOrder.class);
 		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
@@ -43,14 +44,19 @@ public class _MappingKit {
 		arp.addMapping("cl_nzxj_gc", "id", ClNzxjGc.class);
 		arp.addMapping("cl_nzxj_lbgx", "id", ClNzxjLbgx.class);
 		arp.addMapping("cl_nzxj_lc", "id", ClNzxjLc.class);
+		arp.addMapping("cl_production_data", "id", ClProductionData.class);
 		arp.addMapping("cl_xcxj_fc", "id", ClXcxjFc.class);
 		arp.addMapping("cl_xcxj_lc", "id", ClXcxjLc.class);
 		arp.addMapping("hruser", "id", Hruser.class);
+		arp.addMapping("plbaogongdan", "id", Plbaogongdan.class);
 		arp.addMapping("plbeiliaojihua", "id", Plbeiliaojihua.class);
+		arp.addMapping("plchuchangchoujian", "id", Plchuchangchoujian.class);
+		arp.addMapping("plchuchangshiyanshuju", "id", Plchuchangshiyanshuju.class);
 		arp.addMapping("pldingdanitem", "id", Pldingdanitem.class);
 		arp.addMapping("plentityid", "id", Plentityid.class);
 		arp.addMapping("plgongdanitem", "id", Plgongdanitem.class);
 		arp.addMapping("plinoutstore", "id", Plinoutstore.class);
+		arp.addMapping("plpaichanjihua", "id", Plpaichanjihua.class);
 		arp.addMapping("plshengchandingdan", "id", Plshengchandingdan.class);
 		arp.addMapping("plshengchangongdan", "id", Plshengchangongdan.class);
 		arp.addMapping("sysmenu", "id", Sysmenu.class);

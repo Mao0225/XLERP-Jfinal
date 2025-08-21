@@ -65,5 +65,19 @@ public abstract class BaseSysmenu<M extends BaseSysmenu<M>> extends Model<M> imp
 		return getStr("layout");
 	}
 	
+	/**
+	 * 创建人
+	 */
+	public void setWriter(java.lang.String writer) {
+		set("writer", writer);
+	}
+	
+	/**
+	 * 创建人
+	 */
+	public java.lang.String getWriter() {
+		return getStr("writer");
+	}
+	
 }
 

@@ -12,8 +12,12 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.xlerp.api.ClManagement.Controller.ClBgxjsbxjLcController;
 import com.xlerp.api.ClManagement.Controller.XcxjLcController;
+=======
+import com.xlerp.api.ClManagement.Controller.*;
+>>>>>>> Stashed changes
 =======
 import com.xlerp.api.ClManagement.Controller.*;
 >>>>>>> Stashed changes
@@ -110,9 +114,12 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
 		me.add("/plpaichanjihua", PlpaichanjihuaController.class);//毛文斌，排产计划管理
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		me.add("/xcxjLc", XcxjLcController.class);//谭请赢
 		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);
 =======
+=======
+>>>>>>> Stashed changes
 		me.add("/clproductiondata", ClProductionDataController.class);
 >>>>>>> Stashed changes
 		me.add("/basno", BasNoController.class);//编号管理
