@@ -54,6 +54,7 @@ public class XcxjLcService {
         if (StrKit.notBlank(ipoNo)) {
             from.append(" and ipoNo like ?");
         }
+
         if (StrKit.notBlank(writer)) {
             from.append(" and writer like ?");
         }
@@ -63,7 +64,7 @@ public class XcxjLcService {
         from.append(" order by id desc");
 
         // 准备参数
-        List<Object> params = new ArrayList<>();
+        List<Object> params = new java.util.ArrayList<>();
         if (StrKit.notBlank(mafactory)) {
             params.add("%" + mafactory + "%");
         }

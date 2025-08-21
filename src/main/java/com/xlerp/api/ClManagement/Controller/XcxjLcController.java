@@ -22,7 +22,7 @@ import java.util.Map;
 
         private final XcxjLcService xcxjLcService = new XcxjLcService();
 
-        @ActionKey("/xcxjLc/getpage")
+        @ActionKey("/clxcxjLc/getpage")
         @HttpMethod("GET")
         public void getpage() {
             String pageNumber = getPara("pageNumber");
@@ -39,6 +39,7 @@ import java.util.Map;
             String contractNo = getPara("contractNo");
             String woNo = getPara("woNo");
             String ipoNo = getPara("ipoNo");
+
             String writer = getPara("writer");
             String writeTime = getPara("writeTime");
 //            String gridno = getPara("gridno");

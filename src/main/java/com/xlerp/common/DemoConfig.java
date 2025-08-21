@@ -11,8 +11,12 @@ import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
+<<<<<<< Updated upstream
 import com.xlerp.api.ClManagement.Controller.ClBgxjsbxjLcController;
 import com.xlerp.api.ClManagement.Controller.XcxjLcController;
+=======
+import com.xlerp.api.ClManagement.Controller.*;
+>>>>>>> Stashed changes
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
@@ -105,9 +109,37 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/plshengchandingdan", PlshengchandingdanController.class);//毛文斌，生产订单管理
 		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
 		me.add("/plpaichanjihua", PlpaichanjihuaController.class);//毛文斌，排产计划管理
+<<<<<<< Updated upstream
 		me.add("/xcxjLc", XcxjLcController.class);//谭请赢
 		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);
+=======
+		me.add("/clproductiondata", ClProductionDataController.class);
+>>>>>>> Stashed changes
 		me.add("/basno", BasNoController.class);//编号管理
+
+
+		me.add("/clxcxjfc", ClXcxjFcController.class);//倪佳琦，悬垂线夹辅材检测管理
+		me.add("/clnzxjgc", ClNzxjGcController.class);//倪佳琦，耐张线夹钢材
+		me.add("/clnzxjlbgx", ClNzxjLbgxController.class);//倪佳琦，耐张线夹铝包钢线
+		me.add("/clfzcfc", ClFzcFcController.class);//倪佳琦，防震锤辅材
+		me.add("/cljgbfc", ClJgbFcController.class);//倪佳琦，间隔棒辅材
+		me.add("/cljyhfc", ClJyhFcController.class);//倪佳琦，均压环辅材
+		me.add("/clljjjfc", ClLjjjFcController.class);//倪佳琦，连接金具辅材
+		me.add("/cljxjjgc", ClJxjjGcController.class);//倪佳琦，接续金具钢材
+		me.add("/clbgxjsbxjlc", ClBgxjsbxjLcController.class);//倪佳琦，并沟线夹设备线夹铝材
+
+
+		me.add("/clbgxjsbxjfc", BgxjsbxjFcController.class);//谭请赢，为并沟线夹设备线夹辅材相关
+		me.add("/clfzclc", FzcLcController.class);//谭请赢，防震锤铝材相关
+		me.add("/cljgbclc", JgbLcController.class);//谭请赢，间隔棒铝材相关
+		me.add("/cljxjjlbgx", JxjjLbgxController.class);//谭请赢，接续金具铝包钢线相关
+		me.add("/cljxjjlc", JxjjLcController.class);//谭请赢，接续金具铝材相关
+		me.add("/cljyhlc", JyhLcController.class);//谭请赢，均压环铝材相关
+		me.add("/clljjjgc", LjjjGcController.class);//谭请赢，连接金具钢材相关
+		me.add("/clnzxjfc", NzxjFcController.class);//谭请赢，耐张线夹辅材相关
+		me.add("/clnzxjlc", NzxjLcController.class);//谭请赢，耐张线夹铝材相关
+		me.add("/clxcxjlc", XcxjLcController.class);//谭请赢，悬垂线夹铝材相关
+
 
 
 
