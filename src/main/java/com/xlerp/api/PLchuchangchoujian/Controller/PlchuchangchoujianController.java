@@ -192,4 +192,25 @@ public class PlchuchangchoujianController extends Controller {
             renderJson(Result.serverError("查询时发生错误: " + e.getMessage()));
         }
     }
+
+    /**
+     * 根据合同号查询合同详细内容,刘国奇，用于出厂抽检检验，获取合同后，获取合同里的电网行号
+     */
+    @ActionKey("/plchuchangchoujian/getcontractitems")
+    @HttpMethod("GET")
+    public void getcontractitems() {
+        String contractno = getPara("contractno");
+
+        if (contractno == null || contractno.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+            return;
+        }
+
+        try {
+            List<Record> items = plchuchangchoujianService.getContractItems(contractno);
+            renderJson(Result.success("查询成功").putData("items", items));
+        } catch (Exception e) {
+            renderJson(Result.serverError("查询时发生错误: " + e.getMessage()));
+        }
+    }
 }

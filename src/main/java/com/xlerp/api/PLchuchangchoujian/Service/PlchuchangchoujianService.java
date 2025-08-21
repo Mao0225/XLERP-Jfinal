@@ -92,4 +92,18 @@ public class PlchuchangchoujianService {
     public List<Record> getByProdWorkOrder(String prodworkorder) {
         return Db.find("select * from plchuchangchoujian where prodworkorder = ?", prodworkorder);
     }
+    /**
+     * 根据合同号查询合同详细内容
+     * @param contractno 合同号
+     * @return 合同详细内容列表
+     */
+    public List<Record> getContractItems(String contractno) {
+        String sql = "select c.id, c.no as contractno, c.itemid, c.itemnum, c.itemunit, " +
+                "c.itemprice, c.itemsum,  c.poItemCode,c.poItemno, c.poItemId, " +
+                "b.no as itemno, b.spec, b.name as itemname, b.inclass " +
+                "from bascontractitem c " +
+                "left join basitem b on c.itemid = b.id " +
+                "where c.no = ?";
+        return Db.find(sql, contractno);
+    }
 }
