@@ -18,6 +18,7 @@ import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
+import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
 import com.xlerp.api.PlManagement.Controller.*;
 import com.xlerp.api.System.Controller.*;
 import com.jfinal.handler.*; // 正确的包路径
@@ -129,16 +130,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/clnzxjfc", NzxjFcController.class);//谭请赢，耐张线夹辅材相关
 		me.add("/clnzxjlc", NzxjLcController.class);//谭请赢，耐张线夹铝材相关
 		me.add("/clxcxjlc", XcxjLcController.class);//谭请赢，悬垂线夹铝材相关
+		me.add("/plchuchangjianyan", PlchuchangchoujianController.class);
 
-
-
-
-
-
-
-
-
-
+ 
 	}
 
 	public void configEngine(Engine me) {
