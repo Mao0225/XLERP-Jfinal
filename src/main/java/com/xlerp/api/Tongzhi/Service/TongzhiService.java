@@ -179,7 +179,7 @@ public class TongzhiService {
         StringBuilder from = new StringBuilder(
                 "FROM XLQCERP.\"bascontractitem\" i " +
                         "LEFT JOIN XLQCERP.\"bascontract\" c ON c.\"no\" = i.\"no\" " +
-                        "WHERE i.\"isdelete\" = 0 and i.\"noticestatus\" >35 "
+                        "WHERE i.\"isdelete\" = 0 and i.\"noticestatus\" >25 "
         );
 
         // 参数收集
