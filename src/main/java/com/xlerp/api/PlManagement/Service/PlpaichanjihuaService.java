@@ -15,26 +15,104 @@ public class PlpaichanjihuaService {
     private static final Plpaichanjihua dao = new Plpaichanjihua();
 
     public Page<Plpaichanjihua> paginate(int pageNumber, int pageSize,String contractNo,String woNo,String ipoNo,String scheduleCode) {
-        String select = "select p.*,gi.amount as gdamount,di.amount as ddamount," +
-                "ci.itemnum as conamount,ci.itemprice,ci.itemRealPrice," +
-                "i.name as itemName ,i.no as itemNo ,i.spec,i.unit";
-        StringBuilder from = new StringBuilder("from plpaichanjihua p ");
-        from.append("left join plgongdanitem gi on gi.id = p.gdItemId ")
-                .append("left join pldingdanitem di on di.id = gi.dingdanitemId ")
-                .append("left join bascontractItem ci on ci.id = di.conitemId ")
-                .append("left join basitem i on i.id = ci.itemid ")
-                .append("where p.isdelete = 0 ");
+        String select = "SELECT p.*, gi.amount AS gdamount, di.amount AS ddamount, di.workshopName, " +
+                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice, " +
+                "i.name AS itemName, i.no AS itemNo, i.spec, i.unit";
+        StringBuilder from = new StringBuilder(
+                "FROM plpaichanjihua p " +
+                        "LEFT JOIN plgongdanitem gi ON gi.id = p.gdItemId " +
+                        "LEFT JOIN pldingdanitem di ON di.id = gi.dingdanitemId " +
+                        "LEFT JOIN bascontractItem ci ON ci.id = di.conitemId " +
+                        "LEFT JOIN basitem i ON i.id = ci.itemid " +
+                        "WHERE p.isdelete = 0 "
+        );
+        List<Object> params = new ArrayList<>();
 
-        from.append("order by p.id desc");
-
-// 准备参数
-        List<Object> params = new java.util.ArrayList<>();
+        // 动态添加条件
+        if (StrKit.notBlank(contractNo)) {
+            from.append(" AND p.contractNo = ?");
+            params.add(contractNo);
+        }
+        if (StrKit.notBlank(woNo)) {
+            from.append(" AND p.woNo = ?");
+            params.add(woNo);
+        }
+        if (StrKit.notBlank(ipoNo)) {
+            from.append(" AND p.ipoNo = ?");
+            params.add(ipoNo);
+        }
+        if (StrKit.notBlank(scheduleCode)) {
+            from.append(" AND p.scheduleCode = ?");
+            params.add(scheduleCode);
+        }
+        // 排序
+        from.append(" ORDER BY p.id DESC");
 
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 
+
+    public Page<Plpaichanjihua> paginateByDepNo(int pageNumber, int pageSize, String contractNo, String woNo, String ipoNo, String scheduleCode, String depNo) {
+        String select = "SELECT p.*, gi.amount AS gdamount, di.amount AS ddamount, di.workshopName, " +
+                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice, " +
+                "i.name AS itemName, i.no AS itemNo, i.spec, i.unit";
+        StringBuilder from = new StringBuilder(
+                "FROM plpaichanjihua p " +
+                        "LEFT JOIN plgongdanitem gi ON gi.id = p.gdItemId " +
+                        "LEFT JOIN pldingdanitem di ON di.id = gi.dingdanitemId " +
+                        "LEFT JOIN bascontractItem ci ON ci.id = di.conitemId " +
+                        "LEFT JOIN basitem i ON i.id = ci.itemid " +
+                        "WHERE p.isdelete = 0 "
+        );
+        List<Object> params = new ArrayList<>();
+
+        // 动态添加条件
+        if (StrKit.notBlank(contractNo)) {
+            from.append(" AND p.contractNo = ?");
+            params.add(contractNo);
+        }
+        if (StrKit.notBlank(woNo)) {
+            from.append(" AND p.woNo = ?");
+            params.add(woNo);
+        }
+        if (StrKit.notBlank(ipoNo)) {
+            from.append(" AND p.ipoNo = ?");
+            params.add(ipoNo);
+        }
+        if (StrKit.notBlank(scheduleCode)) {
+            from.append(" AND p.scheduleCode = ?");
+            params.add(scheduleCode);
+        }
+        if (StrKit.notBlank(depNo)) {
+            from.append(" AND di.workshopName LIKE ?");
+            params.add("%" + depNo + "%");
+        }
+
+        // 排序
+        from.append(" ORDER BY p.id DESC");
+
+        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
+    /**
+     * 根据ID查询排产计划
+     * @param id 排产计划ID
+     * @return 排产计划对象，包含关联信息
+     */
     public Plpaichanjihua findById(int id) {
-        return dao.findFirst("select * from plpaichanjihua where id = ? and isdelete = 0", id);
+        String sql = "select pcjh.*, gi.amount, di.itemname, di.unit, " +
+                "di.productModel,di.workshopName " +
+                "from plpaichanjihua pcjh " +
+                "left join plgongdanitem gi on gi.id = pcjh.gdItemId " +
+                "left join pldingdanitem di on gi.dingdanitemId = di.id " +
+                "where pcjh.id = ? and pcjh.isdelete = 0";
+
+        try {
+            return dao.findFirst(sql, id);
+        } catch (Exception e) {
+            // 简单异常处理，可根据实际情况调整
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean save(Plpaichanjihua plpaichanjihua) {
@@ -82,5 +160,6 @@ public class PlpaichanjihuaService {
 
         return beiliaodao.find(sql.toString(), params.toArray());
     }
+
 
 }

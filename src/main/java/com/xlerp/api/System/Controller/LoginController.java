@@ -58,6 +58,7 @@ public class LoginController extends Controller {
             claims.put("username", user.getStr("username"));
             claims.put("avatar", user.getStr("avatar"));
             claims.put("descr", user.getStr("descr"));
+            claims.put("departmentid", user.getStr("departmentid"));
 
             // 生成 JWT Token
             String token = Jwts.builder()

@@ -38,6 +38,6 @@ public class BasDepartmentService {
     }
 
     public List<Record> getOptions() {
-        return Db.find("select id, name from basdepartment where status = 0 order by id desc");
+        return Db.find("select id, name,no as code from basdepartment where status = 0 order by id desc");
     }
 }

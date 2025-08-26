@@ -46,6 +46,33 @@ public class PlpaichanjihuaController extends Controller {
         }
     }
 
+    @ActionKey("/plpaichanjihua/getpageByDepNo")//根据登录用户的部门进行查询
+    @HttpMethod("GET")
+    public void getpageByDepNo() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String contractNo = getPara("contractNo");
+        String woNo = getPara("woNo");
+        String ipoNo = getPara("ipoNo");
+        String scheduleCode = getPara("scheduleCode");
+        String depNo = getPara("depNo");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson (Result.badRequest ("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page page = plpaichanjihuaService.paginateByDepNo (pageNum, pageSz, contractNo, woNo, ipoNo, scheduleCode, depNo);
+            renderJson (Result.success ("查询成功").putData ("page", page));
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("页码或每页大小格式错误"));
+        }
+    }
+
     @ActionKey("/plpaichanjihua/get")
     @HttpMethod("GET")
     public void get() {

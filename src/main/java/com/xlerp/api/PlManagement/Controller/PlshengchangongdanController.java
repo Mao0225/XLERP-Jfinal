@@ -45,6 +45,32 @@ public class PlshengchangongdanController extends Controller {
         }
     }
 
+
+    @ActionKey("/plshengchangongdan/getpageByDepNo")//根据登录用户所属的部门进行查询
+    @HttpMethod("GET")
+    public void getpageByDepNo() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String woNo = getPara("woNo");//生产工单编码
+        String contractNo = getPara("contractNo");
+        String depNo = getPara("depNo");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson (Result.badRequest ("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page page = plshengchangongdanService.paginateByDepNo(pageNum, pageSz ,woNo, contractNo,depNo);
+            renderJson (Result.success ("查询成功").putData ("page", page));
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("页码或每页大小格式错误"));
+        }
+    }
+
     @ActionKey("/plshengchangongdan/get")
     @HttpMethod("GET")
     public void get() {
@@ -158,7 +184,7 @@ public class PlshengchangongdanController extends Controller {
         }
     }
 
-    //生产订单关联的产品操作
+    //生产工单关联的产品操作
     @ActionKey("/plshengchangongdan/item/getList")
     @HttpMethod("GET")
     public void getGongdanItemList() {
@@ -168,6 +194,23 @@ public class PlshengchangongdanController extends Controller {
         }
         try {
             List<Record> itemList = plshengchangongdanService.getGongdanItemByNo(woNo);
+            renderJson(Result.success("查询物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    //生产工单关联的产品操作---根据登录人员的部门/车间
+    @ActionKey("/plshengchangongdan/item/getListByDepNo")
+    @HttpMethod("GET")
+    public void getGongdanItemListByDepNo() {
+        String woNo = getPara("woNo");//生产工单号
+        String depNo = getPara("depNo");//部门编号
+        if (woNo == null || woNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("订单号不能为空"));
+        }
+        try {
+            List<Record> itemList = plshengchangongdanService.getGongdanItemByNoAndDepNo(woNo,depNo);
             renderJson(Result.success("查询物料列表成功").putData("itemList", itemList));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

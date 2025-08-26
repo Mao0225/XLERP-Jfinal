@@ -8,6 +8,7 @@ import com.xlerp.common.model.Pldingdanitem;
 import com.xlerp.common.model.Plgongdanitem;
 import com.xlerp.common.model.Plshengchangongdan;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,34 @@ public class PlshengchangongdanService {
 
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
+
+    public Page<Record> paginateByDepNo(int pageNumber, int pageSize,String woNo,String contractNo,String depNo) {
+        String select = "SELECT ssgd.*, c.name AS contractName";
+        StringBuilder from = new StringBuilder("FROM plshengchangongdan ssgd " +
+                "LEFT JOIN bascontract c ON ssgd.contractNo = c.no " +
+                "WHERE ssgd.isdelete = 0");
+
+        // 动态构建查询条件
+        List<Object> params = new ArrayList<>();
+
+        if (StrKit.notBlank(woNo)){
+            from.append(" AND ssgd.woNo LIKE ?");
+            params.add("%" + woNo + "%");
+        }
+        if (StrKit.notBlank(contractNo)) {
+            from.append(" AND ssgd.contractNo LIKE ?");
+            params.add("%" + contractNo + "%");
+        }
+        if (StrKit.notBlank(depNo)) {
+            from.append(" AND ssgd.woNo IN (SELECT gi.woNo FROM plgongdanitem gi left join pldingdanitem di on gi.dingdanitemId = di.id WHERE di.workshopName LIKE ?)");
+            params.add("%" + depNo + "%");
+        }
+
+        from.append(" ORDER BY ssgd.id DESC");
+
+        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
+
 
     public Plshengchangongdan findById(int id) {
         return dao.findFirst("select * from plshengchangongdan where id = ? and isdelete = 0", id);
@@ -65,7 +94,7 @@ public class PlshengchangongdanService {
     private static final Plgongdanitem itemDao = new Plgongdanitem();
 
     public List<Record> getGongdanItemByNo(String woNo) {
-        return Db.find("select * from plgongdanitem where woNo = ?", woNo);
+        return Db.find("select gi.*,di.workshopName from plgongdanitem gi left join pldingdanitem di on gi.dingdanitemId = di.id where gi.woNo = ?", woNo);
     }
 
     public boolean saveGongdanItem(Plgongdanitem item) {
@@ -83,5 +112,24 @@ public class PlshengchangongdanService {
     //学姐加的
     public Plshengchangongdan findByWoNo(String woNo) {
         return dao.findFirst("select * from plshengchangongdan where woNo = ? and isdelete = 0", woNo);
+    }
+
+
+    public List<Record> getGongdanItemByNoAndDepNo(String woNo, String depNo) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT gi.*, di.workshopName FROM plgongdanitem gi LEFT JOIN pldingdanitem di ON gi.dingdanitemId = di.id WHERE 1=1"
+        );
+        List<Object> params = new ArrayList<>();
+
+        if (StrKit.notBlank(woNo)) {
+            sql.append(" AND gi.woNo = ?");
+            params.add(woNo);
+        }
+        if (StrKit.notBlank(depNo)) {
+            sql.append(" AND di.workshopName LIKE ?");
+            params.add("%" + depNo + "%");
+        }
+
+        return Db.find(sql.toString(), params.toArray());
     }
 }

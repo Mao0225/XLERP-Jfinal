@@ -40,8 +40,73 @@ public class PlshengchandingdanService {
         return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 
+    //根据登录用户的部门编号查询生产订单
+    public Page<Record> paginateBydep(int pageNumber, int pageSize, String ipoNo, String contractNo, String depNo) {
+        String select = "SELECT ssdd.*, c.name AS contractName";
+        StringBuilder from = new StringBuilder("FROM plshengchandingdan ssdd " +
+                "LEFT JOIN bascontract c ON ssdd.contractNo = c.no " +
+                "WHERE ssdd.isdelete = 0");
+
+        // 动态构建查询条件
+        List<Object> params = new ArrayList<>();
+
+        if (StrKit.notBlank(ipoNo)) {
+            from.append(" AND ssdd.ipoNo LIKE ?");
+            params.add("%" + ipoNo + "%");
+        }
+        if (StrKit.notBlank(contractNo)) {
+            from.append(" AND ssdd.contractNo LIKE ?");
+            params.add("%" + contractNo + "%");
+        }
+        if (StrKit.notBlank(depNo)) {
+            from.append(" AND ssdd.ipoNo IN (SELECT di.ipoNo FROM pldingdanitem di WHERE di.workshopName LIKE ?)");
+            params.add("%" + depNo + "%");
+        }
+
+        from.append(" ORDER BY ssdd.id DESC");
+
+        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
+
+    public List<Record> getDingdanItemByNoAndDepNo(String ipoNo, String depNo) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM pldingdanitem WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (StrKit.notBlank(ipoNo)) {
+            sql.append(" AND ipoNo = ?");
+            params.add(ipoNo);
+        }
+        if (StrKit.notBlank(depNo)) {
+            sql.append(" AND workshopName LIKE ?");
+            params.add("%" + depNo + "%");
+        }
+
+        // 打印完整SQL语句（带参数值）
+        String fullSql = buildFullSql(sql.toString(), params);
+        System.out.println("完整SQL语句: " + fullSql);
+
+        return Db.find(sql.toString(), params.toArray());
+    }
+
+    // 构建完整的SQL语句（将参数值替换到占位符中）
+    private String buildFullSql(String sql, List<Object> params) {
+        String fullSql = sql;
+        for (Object param : params) {
+            // 处理字符串类型的参数
+            if (param instanceof String) {
+                fullSql = fullSql.replaceFirst("\\?", "'" + param + "'");
+            } else {
+                fullSql = fullSql.replaceFirst("\\?", param.toString());
+            }
+        }
+        return fullSql;
+    }
+
     public Plshengchandingdan findById(int id) {
-        return dao.findFirst("select * from plshengchandingdan where id = ? and isdelete = 0", id);
+        return dao.findFirst("SELECT ssdd.*, c.name as contractName " +
+                "FROM plshengchandingdan ssdd " +
+                "LEFT JOIN bascontract c ON ssdd.contractNo = c.no " +
+                "WHERE ssdd.id = ? AND ssdd.isdelete = 0", id);
     }
 
     public boolean save(Plshengchandingdan plshengchandingdan) {
