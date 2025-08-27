@@ -45,11 +45,15 @@ public class FileUploadUtils {
         }
 
         try {
-            // 按日期生成子目录
-            String datePath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-
             // 构建存储路径
-            String uploadPath = BASE_UPLOAD_PATH + "/" + folderName + "/" + datePath;
+            String uploadPath;
+            if ("avatars".equals(folderName)) {
+                uploadPath = BASE_UPLOAD_PATH + "/" + folderName;
+            } else {
+                // 按日期生成子目录
+                String datePath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+                uploadPath = BASE_UPLOAD_PATH + "/" + folderName + "/" + datePath;
+            }
 
             // 获取完整的物理存储路径
             String rootPath = getRootPath();
