@@ -1,4 +1,0 @@
-[2025-08-11 12:22:47.997] update basno set basnum = 2  where id = 1
-[2025-08-11 12:22:51.384] update basno set basnum = 3  where id = 1
-[2025-08-11 12:26:51.515] update basno set basnum = 2  where id = 2
-[2025-08-11 12:26:57.042] update basno set basnum = 3  where id = 2

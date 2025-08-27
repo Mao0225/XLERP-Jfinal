@@ -1,8 +1,0 @@
-[2025-07-29 16:45:43.394] insert into bascontract(no, salesmanid, agent, other, casingcost, transcost, destination, supplierCode, userid, bank, checktype, postalcode, term, fax, bankcode, supplierName, pressurestage, receiver, transtype, picktype, telephone, ecpno, purchaserHqCode, itemsenddate, name, customerid, legalrepresent, equipno, taxnum, isdelete, gridno, signdate, status) values('1', 1087, '', '提出异议期限：
-结算方式及付款期限：
-备品、配件、工具供应办法：
-违约责任：
-因本合同发生纠纷调解不成是，应在（）人民法院进行诉讼
-其他违约事项：', 1, 1, '', '1000014491', 1, '14', '', '14', 201408, '14', '14', '中国电建集团四平线路器材有限公司', 0, '', '', '', '13845511262', '', '', '11', 31610, '', '', '14', 0, '1', 2025-07-03 00:00:00.0, 10, ?)
-[2025-07-29 16:58:29.544] update bascontract set status = '10' where id = '8'
-[2025-07-29 17:02:48.210] insert into bascontractitem(no, poItemNo, itemunit, itemRealSum, poItemCode, itemid, itemnum, itemgrossweight, poItemId, itemmemo, itemprice, itemweight, itemsum, itemRealPrice, isdelete) values('2025070901', '312312', '套', 60.00, '312', 60785, 4, 4.00, '213123', '2313123123', 7.4, 1, 29.60, 15, 0)

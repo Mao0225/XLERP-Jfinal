@@ -1,9 +1,0 @@
-[2025-07-14 21:48:22.298] insert into plinoutstore(orderno, flag, receivedate, deliverunit, handleperson, store, isdelete) values('SFDH20250714214802', 2, 2025-07-03 00:00:00.0, '31232', '', '原材料库', 0)
-[2025-07-14 21:48:34.679] insert into plinoutstore(orderno, flag, receivedate, deliverunit, handleperson, store, isdelete) values('SFDH20250714214822', 2, 2025-07-03 00:00:00.0, '31232', '', '原材料库', 0)
-[2025-07-14 21:50:53.439] insert into plinoutstore(orderno, flag, receivedate, deliverunit, handleperson, store, isdelete) values('SFDH20250714215040', 1, 2025-07-03 00:00:00.0, '5656', '', '原材料库', 0)
-[2025-07-14 21:55:01.084] insert into plinoutstore(orderno, flag, materialname, quantity, materialno, handleperson, store, totalmoney, spec, unit, receivedate, deliverunit, price, isdelete) values('SFDH20250714215437', 1, '重锤螺丝', 4, 'BJM18*595', '', '成品库', 29.6, 'M18*595', '套', 2025-07-02 00:00:00.0, '23123', 7.4, 0)
-[2025-07-14 21:55:11.273] update plinoutstore set isdelete = 1 where id = 7 and isdelete = 0
-[2025-07-14 21:55:13.042] update plinoutstore set isdelete = 1 where id = 6 and isdelete = 0
-[2025-07-14 21:55:14.632] update plinoutstore set isdelete = 1 where id = 5 and isdelete = 0
-[2025-07-14 21:55:30.066] update plinoutstore set isdelete = 1 where id = 4 and isdelete = 0
-[2025-07-14 22:25:37.037] insert into plinoutstore(orderno, flag, materialname, orderstatus, receiveunit, lingliaoperson, memo, rule, totalmoney, type, spec, deliverunit, price, term, contactno, gouhuounitname, qingling, projectname, quantity, leibie, materialno, fuzeren, handleperson, weight, store, tuhao, childorderno, unit, pandian, receivedate, nowprice, isdelete, jianchaunit, fapiao, transportway, isin, status, username) values('SFDH20250714215437', 1, '联板', 1.57, 'BN-2140', '23123', 157.01, 0.01, 'DJBN-2140', '', '成品库', '套', 2025-07-02 00:00:00.0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)

@@ -17,3 +17,4 @@ result*
 /target
 src/main/java/com/xlerp/common/model/
 /src/main/java/com/xlerp/common/model
+log/jfinal_demo_for_maven.log
