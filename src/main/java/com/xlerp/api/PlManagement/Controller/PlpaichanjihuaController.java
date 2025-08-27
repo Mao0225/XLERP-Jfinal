@@ -9,6 +9,8 @@ import com.xlerp.api.PlManagement.Service.PlpaichanjihuaService;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.api.Tongzhi.Service.BeiliaojihuaService;
+import com.xlerp.api.Tuzhi.Service.TuzhiService;
+import com.xlerp.common.model.Bastuzhi;
 import com.xlerp.common.model.Plbeiliaojihua;
 import com.xlerp.common.model.Plpaichanjihua;
 
@@ -87,6 +89,29 @@ public class PlpaichanjihuaController extends Controller {
             Plpaichanjihua plpaichanjihua = plpaichanjihuaService.findById (Integer.parseInt (id));
             if (plpaichanjihua != null && plpaichanjihua.getIsdelete () == 0) {
                 renderJson (Result.success ("查询记录成功").putData ("plpaichanjihua", plpaichanjihua));
+            } else {
+                renderJson (Result.notFound ("记录未找到或已被删除"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        }
+    }
+
+    TuzhiService tuzhiService = new TuzhiService();
+    @ActionKey("/plpaichanjihua/getTuzhiInfo")
+    @HttpMethod("GET")
+    public void getTuzhiInfo() {
+        String tuzhiId = getPara("tuzhiId");
+
+        if (tuzhiId == null || tuzhiId.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("图纸 ID 不能为空"));
+            return;
+        }
+
+        try {
+            Bastuzhi tuzhi = tuzhiService.findById(Integer.parseInt (tuzhiId));
+            if (tuzhi != null) {
+                renderJson (Result.success ("查询记录成功").putData ("tuzhiInfo", tuzhi));
             } else {
                 renderJson (Result.notFound ("记录未找到或已被删除"));
             }

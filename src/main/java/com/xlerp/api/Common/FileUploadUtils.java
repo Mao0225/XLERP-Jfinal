@@ -47,7 +47,7 @@ public class FileUploadUtils {
         try {
             // 构建存储路径
             String uploadPath;
-            if ("avatars".equals(folderName)) {
+            if ("avatars".equals(folderName) || "tuzhi".equals(folderName)) {
                 uploadPath = BASE_UPLOAD_PATH + "/" + folderName;
             } else {
                 // 按日期生成子目录

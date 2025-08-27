@@ -16,7 +16,7 @@ public class PlpaichanjihuaService {
 
     public Page<Plpaichanjihua> paginate(int pageNumber, int pageSize,String contractNo,String woNo,String ipoNo,String scheduleCode) {
         String select = "SELECT p.*, gi.amount AS gdamount, di.amount AS ddamount, di.workshopName, " +
-                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice, " +
+                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice,ci.noticetuzhiid," +
                 "i.name AS itemName, i.no AS itemNo, i.spec, i.unit";
         StringBuilder from = new StringBuilder(
                 "FROM plpaichanjihua p " +
@@ -54,7 +54,7 @@ public class PlpaichanjihuaService {
 
     public Page<Plpaichanjihua> paginateByDepNo(int pageNumber, int pageSize, String contractNo, String woNo, String ipoNo, String scheduleCode, String depNo) {
         String select = "SELECT p.*, gi.amount AS gdamount, di.amount AS ddamount, di.workshopName, " +
-                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice, " +
+                "ci.itemnum AS conamount, ci.itemprice, ci.itemRealPrice,ci.noticetuzhiid," +
                 "i.name AS itemName, i.no AS itemNo, i.spec, i.unit";
         StringBuilder from = new StringBuilder(
                 "FROM plpaichanjihua p " +
