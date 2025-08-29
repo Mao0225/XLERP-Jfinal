@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 public class BasNoService {
     private static final Basno dao = new Basno();
 
-    public Page<Basno> paginate(int pageNumber, int pageSize) {
+    public Page<Basno> paginate(int pageNumber, int pageSize, String basname,String memo) {
         String select = "select *";
-        StringBuilder from = new StringBuilder("from Basno");
-
-// 动态构建查询条件
-
+        StringBuilder from = new StringBuilder("from basno");
+        if (StrKit.notBlank(basname)) {
+            from.append(" where basname like '%").append(basname).append("%'");
+        }
+        if (StrKit.notBlank(memo)) {
+            from.append(" where memo like '%").append(memo).append("%'");
+        }
         from.append(" order by id desc");
-
-// 准备参数
-
         return dao.paginate(pageNumber, pageSize, select, from.toString());
     }
 
     public Basno findById(int id) {
-        return dao.findFirst("select * from Basno where id = ", id);
+        return dao.findFirst("select * from basno where id = ?", id);
     }
 
 
@@ -42,7 +42,7 @@ public class BasNoService {
         // 开启事务处理
         boolean success = Db.tx(() -> {
             // 1. 查询并锁定要修改的记录(使用FOR UPDATE保证并发安全)
-            Basno basno = dao.findFirst("SELECT * FROM Basno WHERE basname = ? FOR UPDATE", basname);
+            Basno basno = dao.findFirst("SELECT * FROM basno WHERE basname = ? FOR UPDATE", basname);
 
             // 2. 验证查询结果的有效性
             if (basno == null || basno.getBasnum() == null

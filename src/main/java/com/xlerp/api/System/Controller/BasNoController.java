@@ -23,6 +23,8 @@ public class BasNoController extends Controller {
     public void getpage() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
+        String basname = getPara("basname");
+        String memo = getPara("memo");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -33,7 +35,7 @@ public class BasNoController extends Controller {
                 return;
             }
 
-            Page page = BasnoService.paginate (pageNum, pageSz);
+            Page page = BasnoService.paginate (pageNum, pageSz, basname, memo);
             renderJson (Result.success ("查询成功").putData ("page", page));
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("页码或每页大小格式错误"));
