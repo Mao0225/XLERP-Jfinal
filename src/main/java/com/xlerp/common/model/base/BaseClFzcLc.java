@@ -381,5 +381,19 @@ public abstract class BaseClFzcLc<M extends BaseClFzcLc<M>> extends Model<M> imp
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 单据号
+	 */
+	public void setBasno(java.lang.String basno) {
+		set("basno", basno);
+	}
+	
+	/**
+	 * 单据号
+	 */
+	public java.lang.String getBasno() {
+		return getStr("basno");
+	}
+	
 }
 

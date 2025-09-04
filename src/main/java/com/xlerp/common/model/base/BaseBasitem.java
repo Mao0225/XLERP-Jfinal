@@ -97,14 +97,6 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return get("weight");
 	}
 	
-	public void setKeeperRule(java.lang.String keeperRule) {
-		set("keeper_rule", keeperRule);
-	}
-	
-	public java.lang.String getKeeperRule() {
-		return getStr("keeper_rule");
-	}
-	
 	public void setPlannedPrice(java.math.BigDecimal plannedPrice) {
 		set("planned_price", plannedPrice);
 	}

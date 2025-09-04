@@ -269,5 +269,19 @@ public abstract class BaseClNzxjLbgx<M extends BaseClNzxjLbgx<M>> extends Model<
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 单据号
+	 */
+	public void setBasno(java.lang.String basno) {
+		set("basno", basno);
+	}
+	
+	/**
+	 * 单据号
+	 */
+	public java.lang.String getBasno() {
+		return getStr("basno");
+	}
+	
 }
 

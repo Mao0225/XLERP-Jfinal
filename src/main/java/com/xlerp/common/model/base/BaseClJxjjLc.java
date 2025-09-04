@@ -437,5 +437,19 @@ public abstract class BaseClJxjjLc<M extends BaseClJxjjLc<M>> extends Model<M> i
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 单据号
+	 */
+	public void setBasno(java.lang.String basno) {
+		set("basno", basno);
+	}
+	
+	/**
+	 * 单据号
+	 */
+	public java.lang.String getBasno() {
+		return getStr("basno");
+	}
+	
 }
 

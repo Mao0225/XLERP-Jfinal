@@ -1,10 +1,19 @@
 package com.xlerp.api.ItemManagement.Service;
 
 import com.jfinal.kit.StrKit;
-import com.xlerp.common.model.Basitem;
 import com.jfinal.plugin.activerecord.Page;
+import com.xlerp.common.model.Basitem;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BasItemService {
     private static final Basitem dao = new Basitem();
@@ -98,4 +107,148 @@ public class BasItemService {
     public boolean deleteById(int id) {
         return dao.deleteById(id);
     }
+
+
+
+
+    /**
+     * 解析Excel文件并导入Basitem数据
+     * @param excelFile Excel文件
+     * @return 包含导入结果的Map，包含成功数量、失败行信息、失败数量和总行数
+     * @throws Exception 文件处理或数据库操作异常
+     */
+    public Map<String, Object> parseBasitemExcel(File excelFile) throws Exception {
+        List<Map<String, Object>> failedRows = new ArrayList<>();
+        int successCount = 0;
+        int totalRows = 0;
+        Workbook workbook = null;
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(excelFile);
+            if (excelFile.getName().endsWith(".xlsx")) {
+                workbook = new XSSFWorkbook(fis);
+            } else if (excelFile.getName().endsWith(".xls")) {
+                workbook = new HSSFWorkbook(fis);
+            } else {
+                throw new IllegalArgumentException("不支持的文件格式，仅支持 .xls 或 .xlsx");
+            }
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Row headerRow = sheet.getRow(0);
+            if (headerRow == null) {
+                throw new IllegalArgumentException("Excel文件第一行不能为空（需包含表头）");
+            }
+
+            Map<String, Integer> headerMap = new HashMap<>();
+            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+                String header = getCellValue(headerRow.getCell(i));
+                if (header != null && !header.isEmpty()) {
+                    headerMap.put(header.trim(), i);
+                }
+            }
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+                totalRows++;
+
+                Map<String, Object> failureInfo = new HashMap<>();
+                failureInfo.put("rowNumber", i + 1);
+                try {
+                    Basitem item = new Basitem();
+
+                    // 设置字符串字段
+                    String itemNo = getCellValue(row.getCell(headerMap.get("物料编号")));
+                    item.set("no", itemNo);
+                    item.set("name", getCellValue(row.getCell(headerMap.get("物料名称"))));
+                    item.set("unit", getCellValue(row.getCell(headerMap.get("计量单位"))));
+                    item.set("type", getCellValue(row.getCell(headerMap.get("物料类型"))));
+                    item.set("inclass", getCellValue(row.getCell(headerMap.get("所属分类"))));
+                    item.set("spec", getCellValue(row.getCell(headerMap.get("规格型号"))));
+                    item.set("description", getCellValue(row.getCell(headerMap.get("物料描述"))));
+                    item.set("color", getCellValue(row.getCell(headerMap.get("颜色"))));
+                    item.set("location", getCellValue(row.getCell(headerMap.get("存放位置"))));
+                    item.set("tech_memo", getCellValue(row.getCell(headerMap.get("技术参数"))));
+                    item.set("memo", getCellValue(row.getCell(headerMap.get("备注信息"))));
+
+                    // 设置数值字段，使用BigDecimal以匹配DECIMAL(20,2)
+                    try {
+                        String weightStr = getCellValue(row.getCell(headerMap.get("重量")));
+                        item.set("weight", weightStr.isEmpty() ? null : new BigDecimal(weightStr));
+                        String plannedPriceStr = getCellValue(row.getCell(headerMap.get("计划价格")));
+                        item.set("planned_price", plannedPriceStr.isEmpty() ? null : new BigDecimal(plannedPriceStr));
+                        String avgPriceStr = getCellValue(row.getCell(headerMap.get("平均价格")));
+                        item.set("avg_price", avgPriceStr.isEmpty() ? null : new BigDecimal(avgPriceStr));
+                    } catch (NumberFormatException e) {
+                        failureInfo.put("error", "数值字段格式错误: " + e.getMessage());
+                        failedRows.add(failureInfo);
+                        continue;
+                    }
+
+                    // 检查物料编号是否为空
+                    if (itemNo == null || itemNo.trim().isEmpty()) {
+                        failureInfo.put("error", "物料编号不能为空");
+                        failedRows.add(failureInfo);
+                        continue;
+                    }
+
+                    // 检查物料编号是否已存在
+                    Basitem existingItem = dao.findFirst("SELECT * FROM basitem WHERE no = ?", itemNo);
+                    if (existingItem != null) {
+                        failureInfo.put("error", "物料编号 " + itemNo + " 已存在");
+                        failedRows.add(failureInfo);
+                        continue;
+                    }
+
+                    if (item.save()) {
+                        successCount++;
+                        System.out.println("保存成功: 行 " + (i + 1));
+                    } else {
+                        failureInfo.put("error", "保存失败，数据库操作错误");
+                        failedRows.add(failureInfo);
+                    }
+                } catch (Exception e) {
+                    failureInfo.put("error", "解析错误: " + e.getMessage());
+                    failedRows.add(failureInfo);
+                }
+            }
+        } finally {
+            if (workbook != null) workbook.close();
+            if (fis != null) fis.close();
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("successCount", successCount);
+        result.put("failedRows", failedRows);
+        result.put("failedCount", failedRows.size());
+        result.put("totalRows", totalRows);
+        return result;
+    }
+
+    /**
+     * 获取单元格值的辅助方法
+     * @param cell 单元格对象
+     * @return 单元格值的字符串表示
+     */
+    private String getCellValue(Cell cell) {
+        if (cell == null) return "";
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.format("%.2f", cell.getNumericCellValue());
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                return cell.getCellFormula();
+            default:
+                return "";
+        }
+    }
+
 }
