@@ -21,8 +21,6 @@ import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
 import com.xlerp.api.PlManagement.Controller.*;
 import com.xlerp.api.System.Controller.*;
-import com.jfinal.handler.*; // 正确的包路径
-
 import com.xlerp.api.Tongzhi.Controller.BeiliaojihuaController;
 import com.xlerp.api.Tongzhi.Controller.TongzhiController;
 import com.xlerp.api.Tuzhi.Controller.TuzhiController;
@@ -77,6 +75,10 @@ public class DemoConfig extends JFinalConfig {
 	 * 配置路由
 	 */
 	public void configRoute(Routes me) {
+		// SPA 路由
+		me.add("/erp", IndexController.class); // 核心修正：controllerKey 为 /erp，无多余参数
+
+
 		// 使用 jfinal 4.9.03 新增的路由扫描功能
 		//接口
 		me.add("/user", UserController.class);
@@ -132,7 +134,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/clxcxjlc", XcxjLcController.class);//谭请赢，悬垂线夹铝材相关
 		me.add("/plchuchangjianyan", PlchuchangchoujianController.class);
 
- 
+
 	}
 
 	public void configEngine(Engine me) {
@@ -197,5 +199,12 @@ public class DemoConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {
 
 
+	}
+
+	public static class IndexController extends Controller {
+		public void index() {
+			System.out.println("跳转");
+			render("/erp/index.html");
+		}
 	}
 }

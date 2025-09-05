@@ -1,0 +1,1 @@
+import{O as e}from"./index-DivwvCM9.js";function t(r){return e("/basorg/getpage",r)}function s(r){return e("/basorg/get",r)}function g(r){return e("/basorg/save",r)}function n(r){return e("/basorg/update",r)}function o(r){return e("/basorg/delete",r)}export{s as a,g as c,o as d,t as g,n as u};

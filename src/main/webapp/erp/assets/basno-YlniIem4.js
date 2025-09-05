@@ -1,0 +1,1 @@
+import{O as a,P as t,Q as n,R as s}from"./index-DivwvCM9.js";function r(e){return a("/Basno/getpage",e)}function u(e){return a("/Basno/get",e)}function N(e){return a(`/Basno/getNewNoNyName?basname=${e}`)}function B(e){return t("/Basno/save",e)}function g(e){return n("/Basno/update",e)}function c(e){return s("/Basno/delete",e)}export{u as a,N as b,B as c,c as d,r as g,g as u};

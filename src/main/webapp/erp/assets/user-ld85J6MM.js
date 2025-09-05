@@ -1,0 +1,1 @@
+import{O as r,P as s,Q as t,R as u}from"./index-DivwvCM9.js";function n(e){return r("/user/getpage",e)}function o(e){return r("/user/get",e)}function c(e){return s("/user/save",e)}function d(e){return t("/user/update",e)}function g(e){return u("/user/delete",e)}function f(e){return r("/user/changePassword",e)}export{n as a,c as b,f as c,g as d,o as g,d as u};

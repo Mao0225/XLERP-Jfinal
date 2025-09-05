@@ -1,0 +1,1 @@
+import{Q as e,O as a}from"./index-DivwvCM9.js";function o(i){return a("/beiliaojihua/getbeiliaojihuapage",i)}function u(i){return e("/beiliaojihua/update",i)}function n(i){return a("/beiliaojihua/getbeiliaojihuabynoticepage",i)}export{n as a,o as g,u as s};

@@ -1,10 +1,9 @@
 package com.xlerp.api.PlManagement.Service;
 
 import com.jfinal.kit.StrKit;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.common.model.Plinoutstore;
-import com.xlerp.common.model.Plpaichanjihua;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,34 +12,35 @@ public class PlinoutstoreService {
     private static final Plinoutstore dao = new Plinoutstore();
 
     public Page<Plinoutstore> paginate(int pageNumber, int pageSize, String storeNo, String storeName, String type) {
-        String select = "select p.* , c.name as contractName";
+        // 选择需要查询的字段，包括公共字段和关联表的合同名称
+        String select = "select p.orderno, p.deliverunit, p.store, p.handleperson, p.receivedate, p.term, p.contractNo, c.name as contractName";
+
+        // 构建SQL的FROM和WHERE部分，关联bascontract表，筛选未删除且isin=1的记录
         StringBuilder from = new StringBuilder("from plinoutstore p ");
         from.append("left join bascontract c on p.contractNo = c.no ")
-                .append("where p.isdelete = 0 ");
+                .append("where p.isdelete = 0 and p.isin = 1 ");
+
         // 动态构建查询条件
+        List<Object> params = new java.util.ArrayList<>();
         if (StrKit.notBlank(storeNo)) {
             from.append(" and p.storeNo like ?");
+            params.add("%" + storeNo + "%"); // 添加仓库编号模糊查询参数
         }
         if (StrKit.notBlank(storeName)) {
             from.append(" and p.storeName like ?");
+            params.add("%" + storeName + "%"); // 添加仓库名称模糊查询参数
         }
         if (StrKit.notBlank(type)) {
             from.append(" and p.type like ?");
-        }
-        from.append(" order by p.id desc");
-
-        // 准备参数
-        List<Object> params = new java.util.ArrayList<>();
-        if (StrKit.notBlank(storeNo)) {
-            params.add("%" + storeNo + "%");
-        }
-        if (StrKit.notBlank(storeName)) {
-            params.add("%" + storeName + "%");
-        }
-        if (StrKit.notBlank(type)) {
-            params.add("%" + type + "%");
+            params.add("%" + type + "%"); // 添加类型模糊查询参数
         }
 
+        // 按orderno和公共字段分组，确保相同orderno的记录合并
+        from.append(" group by p.orderno, p.deliverunit, p.store, p.handleperson, p.receivedate, p.term, p.contractNo, c.name");
+        // 按orderno降序排序
+        from.append(" order by p.orderno desc");
+
+        // 执行分页查询，返回结果
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 
@@ -55,7 +55,7 @@ public class PlinoutstoreService {
 
 
     public Plinoutstore findByOrderNoFirst(String orderNo) {
-        return dao.findFirst("select * from plinoutstore where orderno = ? and isdelete = 0", orderNo);
+        return dao.findFirst("select p.orderno, p.flag,p.deliverunit, p.store, p.handleperson, p.receivedate, p.term, p.contractNo from plinoutstore p where p.orderno = ? and p.isdelete = 0", orderNo);
     }
 
     public boolean save(Plinoutstore plinoutstore) {
@@ -79,4 +79,7 @@ public class PlinoutstoreService {
         return Db.update(sql, ids.toArray()) > 0;
     }
 
+    public boolean deleteByOrderNo(String orderNo) {
+        return Db.update("update plinoutstore set isdelete = 1 where orderno = ? and isdelete = 0", orderNo) > 0;
+    }
 }

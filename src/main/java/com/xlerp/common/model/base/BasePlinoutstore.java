@@ -576,15 +576,15 @@ public abstract class BasePlinoutstore<M extends BasePlinoutstore<M>> extends Mo
 	/**
 	 * 销售总价格
 	 */
-	public void setRealTotalMoney(java.lang.String realTotalMoney) {
+	public void setRealTotalMoney(java.math.BigDecimal realTotalMoney) {
 		set("realTotalMoney", realTotalMoney);
 	}
 	
 	/**
 	 * 销售总价格
 	 */
-	public java.lang.String getRealTotalMoney() {
-		return getStr("realTotalMoney");
+	public java.math.BigDecimal getRealTotalMoney() {
+		return get("realTotalMoney");
 	}
 	
 }

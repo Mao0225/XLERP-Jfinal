@@ -1,0 +1,1 @@
+import{O as e,P as a,Q as s,R as n}from"./index-DivwvCM9.js";function i(t){return e("/basitem/getpage",t)}function m(t){return e("/basitem/get",t)}function u(t){return a("/basitem/save",t)}function o(t){return s("/basitem/update",t)}function p(t){return n("/basitem/delete",t)}function c(t){return a("/basitem/importItem",t)}export{m as a,u as c,p as d,i as g,c as i,o as u};

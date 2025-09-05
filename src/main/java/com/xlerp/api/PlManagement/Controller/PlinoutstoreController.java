@@ -2,15 +2,13 @@ package com.xlerp.api.PlManagement.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
-
 import com.xlerp.api.PlManagement.Service.PlinoutstoreService;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.common.model.Plinoutstore;
-import com.xlerp.common.model.Plpaichanjihua;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +79,7 @@ public class PlinoutstoreController extends Controller {
             Plinoutstore info = plinoutstoreService.findByOrderNoFirst(orderNo);
             List<Plinoutstore> List= plinoutstoreService.findByOrderNo(orderNo);
             if (List != null) {
-                renderJson (Result.success ("查询记录成功").putData ("plinoutstore", List).putData("storeInfo", info));
+                renderJson (Result.success ("查询记录成功").putData ("itemList", List).putData("storeInfo", info));
             } else {
                 renderJson (Result.notFound ("记录未找到或已被删除"));
             }
@@ -133,6 +131,31 @@ public class PlinoutstoreController extends Controller {
 
         try {
             boolean success = plinoutstoreService.logicalDeleteById(Integer.parseInt(id.trim()));
+            if (success) {
+                renderJson(Result.success("库存记录删除成功"));
+            } else {
+                renderJson(Result.notFound("库存记录不存在或删除失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("库存记录ID格式错误"));
+        } catch (Exception e) {
+            renderJson(Result.serverError("删除库存记录时发生错误: " + e.getMessage()));
+        }
+    }
+
+
+    @ActionKey("/plinoutstore/deleteByOrderNo")
+    @HttpMethod("DELETE")
+    public void deleteByOrderNo() {
+        String orderNo = getPara("orderNo");
+
+        if (orderNo == null || orderNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("单号不能为空"));
+            return;
+        }
+
+        try {
+            boolean success = plinoutstoreService.deleteByOrderNo(orderNo);
             if (success) {
                 renderJson(Result.success("库存记录删除成功"));
             } else {

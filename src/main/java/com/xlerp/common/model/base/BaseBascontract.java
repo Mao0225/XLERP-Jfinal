@@ -593,5 +593,19 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 		return getDate("itemsenddate");
 	}
 	
+	/**
+	 * 备注
+	 */
+	public void setMemo(java.lang.String memo) {
+		set("memo", memo);
+	}
+	
+	/**
+	 * 备注
+	 */
+	public java.lang.String getMemo() {
+		return getStr("memo");
+	}
+	
 }
 

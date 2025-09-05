@@ -1,0 +1,1 @@
+import{O as e,P as u,Q as a,R as s}from"./index-DivwvCM9.js";function n(t){return e("/bastuzhi/getpage",t)}function r(t){return e("/bastuzhi/get",t)}function h(t){return u("/bastuzhi/save",t)}function z(t){return a("/bastuzhi/update",t)}function o(t){return s("/bastuzhi/delete",t)}export{r as a,h as c,o as d,n as g,z as u};
