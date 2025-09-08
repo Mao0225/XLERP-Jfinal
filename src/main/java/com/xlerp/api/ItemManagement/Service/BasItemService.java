@@ -154,7 +154,28 @@ public class BasItemService {
                 totalRows++;
 
                 Map<String, Object> failureInfo = new HashMap<>();
+                Map<String, Object> rowData = new HashMap<>();
                 failureInfo.put("rowNumber", i + 1);
+
+                // 收集整行数据
+                rowData.put("index", i + 1);
+                rowData.put("itemNo", getCellValue(row.getCell(headerMap.get("物料编号"))));
+                rowData.put("itemName", getCellValue(row.getCell(headerMap.get("物料名称"))));
+                rowData.put("itemUnit", getCellValue(row.getCell(headerMap.get("计量单位"))));
+                rowData.put("itemType", getCellValue(row.getCell(headerMap.get("物料类型"))));
+                rowData.put("inclass", getCellValue(row.getCell(headerMap.get("所属分类"))));
+                rowData.put("spec", getCellValue(row.getCell(headerMap.get("规格型号"))));
+                rowData.put("description", getCellValue(row.getCell(headerMap.get("物料描述"))));
+                rowData.put("color", getCellValue(row.getCell(headerMap.get("颜色"))));
+                rowData.put("location", getCellValue(row.getCell(headerMap.get("存放位置"))));
+                rowData.put("techMemo", getCellValue(row.getCell(headerMap.get("技术参数"))));
+                rowData.put("memo", getCellValue(row.getCell(headerMap.get("备注信息"))));
+                rowData.put("weight", getCellValue(row.getCell(headerMap.get("重量"))));
+                rowData.put("plannedPrice", getCellValue(row.getCell(headerMap.get("计划价格"))));
+                rowData.put("avgPrice", getCellValue(row.getCell(headerMap.get("平均价格"))));
+
+                failureInfo.put("rowData", rowData);
+
                 try {
                     Basitem item = new Basitem();
 
@@ -171,6 +192,7 @@ public class BasItemService {
                     item.set("location", getCellValue(row.getCell(headerMap.get("存放位置"))));
                     item.set("tech_memo", getCellValue(row.getCell(headerMap.get("技术参数"))));
                     item.set("memo", getCellValue(row.getCell(headerMap.get("备注信息"))));
+                    item.setIsdelete(0);
 
                     // 设置数值字段，使用BigDecimal以匹配DECIMAL(20,2)
                     try {
@@ -194,7 +216,7 @@ public class BasItemService {
                     }
 
                     // 检查物料编号是否已存在
-                    Basitem existingItem = dao.findFirst("SELECT * FROM basitem WHERE no = ?", itemNo);
+                    Basitem existingItem = dao.findFirst("SELECT * FROM basitem WHERE no = ? and isdelete = 0", itemNo);
                     if (existingItem != null) {
                         failureInfo.put("error", "物料编号 " + itemNo + " 已存在");
                         failedRows.add(failureInfo);

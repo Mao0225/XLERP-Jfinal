@@ -184,8 +184,7 @@ public class BasContractService {
 
     private static final Basitem daoBasitem = new Basitem();
 
-    public Map<String, Object> parseContractExcel(File excelFile , String contractNo) throws Exception {
-//        List<Bascontractitem> itemList = new ArrayList<>();
+    public Map<String, Object> parseContractExcel(File excelFile, String contractNo) throws Exception {
         List<Map<String, Object>> failedRows = new ArrayList<>();
         int successCount = 0;
         int totalRows = 0;
@@ -219,35 +218,49 @@ public class BasContractService {
 
                 Map<String, Object> failureInfo = new HashMap<>();
                 failureInfo.put("rowNumber", i + 1); // Excel row number (1-based)
+
+                // 存储所有列的数据
+                Map<String, String> rowData = new HashMap<>();
+                rowData.put("index", getCellValue(row.getCell(0))); // 序号 (第一列)
+                rowData.put("itemName", getCellValue(row.getCell(1))); // 产品名称
+                rowData.put("itemNo", getCellValue(row.getCell(2))); // 订货型号
+                rowData.put("itemNum", getCellValue(row.getCell(3))); // 产品数量
+                rowData.put("itemRealPrice", getCellValue(row.getCell(4))); // 销售单价
+                rowData.put("itemUnit", getCellValue(row.getCell(5))); // 产品单位
+                rowData.put("itemRealSum", getCellValue(row.getCell(6))); // 销售总价
+                rowData.put("itemWeight", getCellValue(row.getCell(7))); // 单重
+                rowData.put("itemGrossWeight", getCellValue(row.getCell(8))); // 总重
+                rowData.put("itemMemo", getCellValue(row.getCell(9))); // 备注
+                rowData.put("poItemNo", getCellValue(row.getCell(10))); // 行订单号
+                rowData.put("poItemId", getCellValue(row.getCell(11))); // 行订单ID
+                rowData.put("poItemCode", getCellValue(row.getCell(12))); // 国网物料编码
+                failureInfo.put("rowData", rowData);
+
                 try {
                     Bascontractitem iteminfo = new Bascontractitem();
-                    String itemNo = getCellValue(row.getCell(1));
-                    Basitem item = getItemInfoByNo(itemNo);
+                    String itemSpec = getCellValue(row.getCell(2));//规格型号
+                    Basitem item = getItemInfoBySpec(itemSpec);
 
                     if (item == null) {
-                        failureInfo.put("error", "物料编号 " + itemNo + " 不存在");
+                        failureInfo.put("error", "订货型号 " + itemSpec + " 不存在");
                         failedRows.add(failureInfo);
                         continue;
                     }
 
                     iteminfo.set("no", contractNo); // 合同编号
                     iteminfo.set("itemid", item.getId()); // 对应basitem里面的ID
-                    iteminfo.set("itemunit", getCellValue(row.getCell(2))); // 产品单位
                     iteminfo.set("itemnum", getCellValue(row.getCell(3))); // 产品数量
-                    iteminfo.set("itemprice", getCellValue(row.getCell(4))); // 计划单价
-                    iteminfo.set("itemsum", getCellValue(row.getCell(5))); // 计划总价
-                    iteminfo.set("itemRealPrice", getCellValue(row.getCell(6))); // 销售单价
-                    iteminfo.set("itemRealSum", getCellValue(row.getCell(7))); // 销售总价
-                    iteminfo.set("itemweight", getCellValue(row.getCell(8))); // 单重
-                    iteminfo.set("itemgrossweight", getCellValue(row.getCell(9))); // 总重
+                    iteminfo.set("itemRealPrice", getCellValue(row.getCell(4))); // 销售单价
+                    iteminfo.set("itemunit", getCellValue(row.getCell(5))); // 产品单位
+                    iteminfo.set("itemRealSum", getCellValue(row.getCell(6))); // 销售总价
+                    iteminfo.set("itemweight", getCellValue(row.getCell(7))); // 单重
+                    iteminfo.set("itemgrossweight", getCellValue(row.getCell(8))); // 总重
+                    iteminfo.set("itemmemo", getCellValue(row.getCell(9))); // 备注
                     iteminfo.set("poItemNo", getCellValue(row.getCell(10))); // 行订单号
                     iteminfo.set("poItemId", getCellValue(row.getCell(11))); // 行订单ID
-                    iteminfo.set("poItemCode", getCellValue(row.getCell(12))); // 行订单编码
-                    iteminfo.set("itemmemo", getCellValue(row.getCell(13))); // 备注
-
+                    iteminfo.set("poItemCode", getCellValue(row.getCell(12))); // 国网物料编码
                     if (iteminfo.save()) {
                         successCount++;
-//                        itemList.add(iteminfo);//暂时不用返回添加的详细数据
                         System.out.println("保存成功: 行 " + (i + 1));
                     } else {
                         failureInfo.put("error", "保存失败，数据库操作错误");
@@ -269,13 +282,17 @@ public class BasContractService {
         result.put("failedRows", failedRows);
         result.put("failedCount", failedRows.size());
         result.put("totalRows", totalRows);
-//        result.put("itemList", itemList);//暂时不用返回添加的详细数据
         return result;
     }
 
     // 根据itemNo从basItem里面获取物料信息
     public Basitem getItemInfoByNo(String itemNo) {
         return daoBasitem.findFirst("SELECT * FROM basitem WHERE no = ?", itemNo);
+    }
+
+    // 根据itemSpec从basItem里面获取物料信息
+    public Basitem getItemInfoBySpec(String itemSpec) {
+        return daoBasitem.findFirst("SELECT * FROM basitem WHERE spec = ?", itemSpec);
     }
 
     // 获取单元格值的辅助方法
