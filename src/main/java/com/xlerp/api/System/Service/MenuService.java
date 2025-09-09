@@ -59,6 +59,9 @@ public class MenuService {
         
         Sysusermenu  usermenu = new Sysusermenu();
         List<Sysusermenu> usermenus = usermenu.find("select menuid from sysusermenu where userid = ?", userId);
+        System.out.println("========================================用户拥有的菜单数量: " + usermenus.size());
+        if(usermenus == null || usermenus.isEmpty())
+            return new ArrayList<>();
         return getMenuTree(usermenus);
     }
     public List<Record> getMenuTree(List<Sysusermenu> usermenus) {

@@ -2,15 +2,14 @@ package com.xlerp.api.System.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.System.Service.MenuService;
 import com.xlerp.api.System.Service.UserService;
 import com.xlerp.common.model.Sysmenu;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 
 import java.util.List;
 
@@ -120,20 +119,14 @@ public class MenuController extends Controller {
         try {
             List<Record> menuTree;
             String successMsg;
-            if (userIdStr == null || userIdStr.trim().isEmpty()) {
-                System.out.println("获取所有菜单树");
-                menuTree = menuService.getMenuTree(null);
-                successMsg = "获取菜单树成功";
-            } else {
-                System.out.println("获取用户菜单树");
-                int userId = Integer.parseInt(userIdStr.trim());
-                if (userId < 1) {
-                    renderJson(Result.badRequest("用户ID必须为正整数"));
-                    return;
-                }
-                menuTree = menuService.getMenuTreeByUserId(userId);
-                successMsg = "获取用户菜单树成功";
+            System.out.println("获取用户菜单树");
+            int userId = Integer.parseInt(userIdStr.trim());
+            if (userId < 1) {
+                renderJson(Result.badRequest("用户ID必须为正整数"));
+                return;
             }
+            menuTree = menuService.getMenuTreeByUserId(userId);
+            successMsg = "获取用户菜单树成功";
             renderJson(Result.success(successMsg).putData("menuTree", menuTree));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("用户ID格式错误"));
@@ -141,6 +134,26 @@ public class MenuController extends Controller {
             String errorMsg = userIdStr == null || userIdStr.trim().isEmpty() ?
                     "获取菜单树失败: " + e.getMessage() :
                     "获取用户菜单树失败: " + e.getMessage();
+            renderJson(Result.serverError(errorMsg));
+        }
+    }
+
+
+    @ActionKey("/menu/getAllMenuTree")
+    @HttpMethod("GET")
+    public void getAllMenuTree() {
+        try {
+            List<Record> menuTree;
+            String successMsg;
+            System.out.println("获取所有菜单树");
+            menuTree = menuService.getMenuTree(null);
+            successMsg = "获取菜单树成功";
+
+            renderJson(Result.success(successMsg).putData("menuTree", menuTree));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("服务器错误"));
+        } catch (Exception e) {
+            String errorMsg = "获取菜单树失败: " + e.getMessage();
             renderJson(Result.serverError(errorMsg));
         }
     }
