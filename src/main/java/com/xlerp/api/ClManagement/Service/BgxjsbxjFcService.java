@@ -16,7 +16,7 @@ public class BgxjsbxjFcService {
 
     public Page<ClBgxjsbxjFc> paginate(int pageNumber, int pageSize, String maQuality, String mafactory, String orderno, String matRecheckNo, String testType, String leavefactoryDate, String detectionTime, String certificate, String contractNo, String woNo, String ipoNo, String writer, String writeTime) {
         String select = "select *";
-        StringBuilder from = new StringBuilder("from cl_bgxjsbxj_fc where isdelete = 0");
+        StringBuilder from = new StringBuilder("from cl_bgxjsbxj_fc where 1 = 1");
 
         // 动态构建查询条件
         if (StrKit.notBlank(maQuality)) {
@@ -156,4 +156,6 @@ public class BgxjsbxjFcService {
         // 执行分页查询
         return Db.paginate(pageNumber, pageSize, select.toString(), from.toString(), params.toArray());
     }
+
+
 }

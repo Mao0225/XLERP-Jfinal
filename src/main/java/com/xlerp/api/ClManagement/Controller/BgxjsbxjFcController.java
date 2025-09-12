@@ -3,20 +3,10 @@ package com.xlerp.api.ClManagement.Controller;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.upload.UploadFile;
 import com.xlerp.api.ClManagement.Service.BgxjsbxjFcService;
-import com.xlerp.api.Common.FileUploadUtils;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.Result;
 import com.xlerp.common.model.ClBgxjsbxjFc;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BgxjsbxjFcController extends Controller {
 
@@ -145,32 +135,31 @@ public class BgxjsbxjFcController extends Controller {
         }
     }
 
-
-
-
-    @ActionKey("/bgxjsbxjFc/getWoNoList")
-    @HttpMethod("GET")
-    public void getWoNoList() {
-        String pageNumber = getPara("pageNumber");
-        String pageSize = getPara("pageSize");
-        String woNo = getPara("woNo");//获取合同的场内编号
-        String ipoNo = getPara("ipoNo");
-        String contractNo = getPara("cntractNo");
-
-        try {
-            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
-            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
-
-            if (pageNum < 1 || pageSz < 1) {
-                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
-                return;
-            }
-
-            // 调用服务层方法获取合同号列表，将 gridno 替换为 no
-            Page page = bgxjsbxjFcService.getWoNoList(pageNum, pageSz, woNo, ipoNo, contractNo);
-            renderJson(Result.success("查询成功").putData("page", page));
-        } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("页码或每页大小格式错误"));
-        }
-    }
+//    @ActionKey("/bgxjsbxjFc/getContractList")
+//    @HttpMethod("GET")
+//    @ActionKey("/bgxjsbxjFc/getWoNoList")
+//    @HttpMethod("GET")
+//    public void getWoNoList() {
+//        String pageNumber = getPara("pageNumber");
+//        String pageSize = getPara("pageSize");
+//        String woNo = getPara("woNo");//获取合同的场内编号
+//        String ipoNo = getPara("ipoNo");
+//        String contractNo = getPara("cntractNo");
+//
+//        try {
+//            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+//            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+//
+//            if (pageNum < 1 || pageSz < 1) {
+//                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+//                return;
+//            }
+//
+//            // 调用服务层方法获取合同号列表，将 gridno 替换为 no
+//            Page page = bgxjsbxjFcService.getWoNoList(pageNum, pageSz, woNo, ipoNo, contractNo);
+//            renderJson(Result.success("查询成功").putData("page", page));
+//        } catch (NumberFormatException e) {
+//            renderJson(Result.badRequest("页码或每页大小格式错误"));
+//        }
+//    }
 }

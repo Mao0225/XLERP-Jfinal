@@ -315,4 +315,49 @@ public class BasContractService {
                 return "";
         }
     }
+
+
+
+    public Page<Record> getConfirmedList(int pageNumber, int pageSize, String contractNo, String projectName) {
+        // SELECT部分
+        String select = "SELECT c.id,c.no,c.gridno, c.ecpno,c.equipno," +
+                "c.name, " +
+                "o.descr AS customerName, " +
+                "u.name AS salesmanName, " +
+                "bci.contractSum, " +
+                "DATE_FORMAT(c.signdate, '%Y-%m-%d') AS signDate, " +
+                "c.status, " +
+                "c.term AS term, " +
+                "su.descr AS writer";
+
+        // FROM和JOIN部分
+        StringBuilder from = new StringBuilder(
+                "FROM bascontract c " +
+                        "LEFT JOIN basorg o ON c.customerid = o.id " +
+                        "LEFT JOIN hruser u ON c.salesmanid = u.id " +
+                        "LEFT JOIN sysuser su ON c.userid = su.id " +
+                        "LEFT JOIN (SELECT no, SUM(itemsum) AS contractSum FROM bascontractitem WHERE isdelete = 0 GROUP BY no) bci ON c.no = bci.no " +
+                        "WHERE c.isdelete = 0 AND c.type = 0 AND c.status = 20"
+        );
+
+        // 参数收集
+        List<Object> params = new ArrayList<>();
+        Boolean flag  = true;//是否添加最后的状态条件，假如是搜索条件都为空，则不添加状态条件，搜索条件不为空的情况下说明这个合同的状态不确定如果加上状态条件，可能查不出来
+        // 动态条件
+        if (contractNo != null && !contractNo.trim().isEmpty()) {
+            flag  = false;
+            from.append(" AND c.no LIKE ?");
+            params.add("%" + contractNo.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+        if (projectName != null && !projectName.trim().isEmpty()) {
+            flag  = false;
+            from.append(" AND c.name LIKE ?");
+            params.add("%" + projectName.trim() + "%"); // 模糊查询（前后都加通配符）
+        }
+
+        // 排序
+        from.append(" ORDER BY c.indate DESC");
+
+        return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
 }

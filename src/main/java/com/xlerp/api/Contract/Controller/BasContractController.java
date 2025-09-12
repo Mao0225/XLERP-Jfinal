@@ -262,6 +262,30 @@ public class BasContractController extends Controller {
         }
     }
 
+    //获取确认后的合同列表
+    @ActionKey("/bascontract/getConfirmedList")
+    @HttpMethod("GET")
+    public void getConfirmedList() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String contractNo = getPara("contractNo");
+        String projectName = getPara("projectName");
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Record> page = bascontractService.getConfirmedList(pageNum, pageSz, contractNo, projectName);
+            renderJson(Result.success("查询合同列表成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
 
     //上传表格文件自动导入合同物料信息
     @ActionKey("/bascontract/importContractItem")
