@@ -242,14 +242,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 录入人，关联telemetry登录用户realName
+	 * 录入人-登录用户
 	 */
 	public void setWriter(java.lang.String writer) {
 		set("writer", writer);
 	}
 	
 	/**
-	 * 录入人，关联telemetry登录用户realName
+	 * 录入人-登录用户
 	 */
 	public java.lang.String getWriter() {
 		return getStr("writer");
@@ -309,6 +309,132 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	 */
 	public java.lang.String getBasno() {
 		return getStr("basno");
+	}
+	
+	/**
+	 * 炉批号
+	 */
+	public void setBatchNo(java.lang.String batchNo) {
+		set("batchNo", batchNo);
+	}
+	
+	/**
+	 * 炉批号
+	 */
+	public java.lang.String getBatchNo() {
+		return getStr("batchNo");
+	}
+	
+	/**
+	 * 数量
+	 */
+	public void setQuantity(java.lang.String quantity) {
+		set("quantity", quantity);
+	}
+	
+	/**
+	 * 数量
+	 */
+	public java.lang.String getQuantity() {
+		return getStr("quantity");
+	}
+	
+	/**
+	 * 抽检数量
+	 */
+	public void setSampleQuantity(java.lang.String sampleQuantity) {
+		set("sampleQuantity", sampleQuantity);
+	}
+	
+	/**
+	 * 抽检数量
+	 */
+	public java.lang.String getSampleQuantity() {
+		return getStr("sampleQuantity");
+	}
+	
+	/**
+	 * 材质
+	 */
+	public void setMaterial(java.lang.String material) {
+		set("material", material);
+	}
+	
+	/**
+	 * 材质
+	 */
+	public java.lang.String getMaterial() {
+		return getStr("material");
+	}
+	
+	/**
+	 * 型号
+	 */
+	public void setType(java.lang.String type) {
+		set("type", type);
+	}
+	
+	/**
+	 * 型号
+	 */
+	public java.lang.String getType() {
+		return getStr("type");
+	}
+	
+	/**
+	 * 检验标准
+	 */
+	public void setStandard(java.lang.String standard) {
+		set("standard", standard);
+	}
+	
+	/**
+	 * 检验标准
+	 */
+	public java.lang.String getStandard() {
+		return getStr("standard");
+	}
+	
+	/**
+	 * 外观尺寸
+	 */
+	public void setAppearanceSize(java.lang.String appearanceSize) {
+		set("appearanceSize", appearanceSize);
+	}
+	
+	/**
+	 * 外观尺寸
+	 */
+	public java.lang.String getAppearanceSize() {
+		return getStr("appearanceSize");
+	}
+	
+	/**
+	 * 审核人
+	 */
+	public void setAuditor(java.lang.String auditor) {
+		set("auditor", auditor);
+	}
+	
+	/**
+	 * 审核人
+	 */
+	public java.lang.String getAuditor() {
+		return getStr("auditor");
+	}
+	
+	/**
+	 * 检验人
+	 */
+	public void setChecker(java.lang.String checker) {
+		set("checker", checker);
+	}
+	
+	/**
+	 * 检验人
+	 */
+	public java.lang.String getChecker() {
+		return getStr("checker");
 	}
 	
 }
