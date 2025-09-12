@@ -27,28 +27,12 @@ public class _MappingKit {
 		arp.addMapping("basPurchaseOrder", "id", BasPurchaseOrder.class);
 		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
 		arp.addMapping("bastuzhicailiao", "id", Bastuzhicailiao.class);
-		arp.addMapping("cl_bgxjsbxj_fc", "id", ClBgxjsbxjFc.class);
-		arp.addMapping("cl_bgxjsbxj_lc", "id", ClBgxjsbxjLc.class);
-		arp.addMapping("cl_fzc_fc", "id", ClFzcFc.class);
-		arp.addMapping("cl_fzc_lc", "id", ClFzcLc.class);
-		arp.addMapping("cl_jgb_fc", "id", ClJgbFc.class);
-		arp.addMapping("cl_jgb_lc", "id", ClJgbLc.class);
-		arp.addMapping("cl_jxjj_gc", "id", ClJxjjGc.class);
-		arp.addMapping("cl_jxjj_lbgx", "id", ClJxjjLbgx.class);
-		arp.addMapping("cl_jxjj_lc", "id", ClJxjjLc.class);
-		arp.addMapping("cl_jyh_fc", "id", ClJyhFc.class);
-		arp.addMapping("cl_jyh_lc", "id", ClJyhLc.class);
-		arp.addMapping("cl_ljjj_fc", "id", ClLjjjFc.class);
-		arp.addMapping("cl_ljjj_gc", "id", ClLjjjGc.class);
-		arp.addMapping("cl_nzxj_fc", "id", ClNzxjFc.class);
-		arp.addMapping("cl_nzxj_gc", "id", ClNzxjGc.class);
-		arp.addMapping("cl_nzxj_lbgx", "id", ClNzxjLbgx.class);
-		arp.addMapping("cl_nzxj_lc", "id", ClNzxjLc.class);
-		arp.addMapping("cl_production_data", "id", ClProductionData.class);
-		arp.addMapping("cl_xcxj_fc", "id", ClXcxjFc.class);
-		arp.addMapping("cl_xcxj_lc", "id", ClXcxjLc.class);
+
+		arp.addMapping("cl_ld", "id", ClLd.class);
+
 		arp.addMapping("hruser", "id", Hruser.class);
 		arp.addMapping("pl_production_order", "id", PlProductionOrder.class);
+		arp.addMapping("pl_report_work_order", "id", PlReportWorkOrder.class);
 		arp.addMapping("pl_schedule_plan", "id", PlSchedulePlan.class);
 		arp.addMapping("pl_work_order", "id", PlWorkOrder.class);
 		arp.addMapping("plbaogongdan", "id", Plbaogongdan.class);
