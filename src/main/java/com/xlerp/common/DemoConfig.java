@@ -21,6 +21,7 @@ import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
 import com.xlerp.api.PlManagement.Controller.*;
 import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
+import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
 import com.xlerp.api.PlSchedulePlan.Controller.PlSchedulePlanController;
 import com.xlerp.api.PlWorkOrder.Controller.PlWorkOrderController;
 import com.xlerp.api.System.Controller.*;
@@ -112,6 +113,8 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/pl_schedule_plan", PlSchedulePlanController.class);//毛文斌，排产计划管理
 		me.add("/pl_production_order", PlProductionOrderController.class);//毛文斌，生产订单管理
 		me.add("/pl_work_order", PlWorkOrderController.class);//毛文斌，生产工单管理
+		me.add("/pl_report_work_order", PlReportWorkOrderController.class);//毛文斌，生产工单管理
+
 
 
 

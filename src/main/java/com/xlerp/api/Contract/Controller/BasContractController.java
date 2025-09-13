@@ -327,4 +327,27 @@ public class BasContractController extends Controller {
             renderJson(Result.badRequest("文件解析失败: " + e.getMessage()));
         }
     }
+
+
+    //获取合同物料分页列表
+    @ActionKey("/bascontract/getContractItemPage")
+    @HttpMethod("GET")
+
+    public void getContractItemPage() {
+        String contractNo = getPara("contractNo");
+        String pageNumber = getPara("pageNumber");
+        String itemName = getPara("itemName");
+        String pageSize = getPara("pageSize");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+        int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+        try {
+            Page<Record> itemList = bascontractService.getContractItemPage(contractNo, itemName, pageNum, pageSz);
+            renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
 }

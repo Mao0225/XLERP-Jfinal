@@ -360,4 +360,32 @@ public class BasContractService {
 
         return Db.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
+
+    public Page<Record> getContractItemPage(String contractNo, String itemName, int pageNumber, int pageSize) {
+        // 构建SQL语句和参数列表
+        StringBuilder selectSql = new StringBuilder("SELECT c.id,c.itemnum,c.itemunit, " +
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec");
+
+        StringBuilder fromSql = new StringBuilder("FROM bascontractitem c " +
+                "LEFT JOIN basitem i ON c.itemid = i.id " +
+                "WHERE c.no = ? AND c.isdelete = 0 ");
+
+        List<Object> params = new ArrayList<>();
+        params.add(contractNo);
+
+        // 添加物品名称过滤条件
+        if (itemName != null && !itemName.trim().isEmpty()) {
+            fromSql.append("AND i.name LIKE ? ");
+            params.add("%" + itemName.trim() + "%");
+        }
+
+        // 添加排序条件
+        fromSql.append("ORDER BY c.id");
+
+        // 执行分页查询
+        return Db.paginate(pageNumber, pageSize,
+                selectSql.toString(),
+                fromSql.toString(),
+                params.toArray());
+    }
 }

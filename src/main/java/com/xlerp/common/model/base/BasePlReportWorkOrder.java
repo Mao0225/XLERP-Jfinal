@@ -415,5 +415,19 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 		return getDate("updatedTime");
 	}
 	
+	/**
+	 * 报工单编号
+	 */
+	public void setReportNo(java.lang.String reportNo) {
+		set("reportNo", reportNo);
+	}
+	
+	/**
+	 * 报工单编号
+	 */
+	public java.lang.String getReportNo() {
+		return getStr("reportNo");
+	}
+	
 }
 
