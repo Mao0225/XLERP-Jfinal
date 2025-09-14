@@ -21,24 +21,62 @@ public class PlProductionOrderController extends Controller {
     @ActionKey("/pl_production_order/getpage")
     @HttpMethod("GET")
     public void getpage() {
+        // 获取分页参数
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
-    
+
+        // 获取查询条件参数
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String scheduleCode = getPara("scheduleCode");
+        String ipoNo = getPara("ipoNo");
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
 
             if (pageNum < 1 || pageSz < 1) {
-                renderJson (Result.badRequest ("页码或每页大小必须为正整数"));
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
                 return;
             }
 
-            Page page = proOrderService.paginate (pageNum, pageSz);
-            renderJson (Result.success ("查询成功").putData ("page", page));
+            // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
+            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,null);
+            renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("页码或每页大小格式错误"));
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
+
+    //获取确认后的生产订单列表
+    @ActionKey("/pl_production_order/getConfirmedList")
+    @HttpMethod("GET")
+    public void getConfirmedList() {
+        // 获取分页参数
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+
+        // 获取查询条件参数
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String scheduleCode = getPara("scheduleCode");
+        String ipoNo = getPara("ipoNo");
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
+            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,"20");
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
 
     @ActionKey("/pl_production_order/get")
     @HttpMethod("GET")
@@ -148,6 +186,31 @@ public class PlProductionOrderController extends Controller {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("批量删除记录时发生错误:" + e.getMessage ()));
+        }
+    }
+
+
+
+    //更新状态
+    @ActionKey("/pl_production_order/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        if (id == null || id.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = proOrderService.updateStatus(id,status);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            } else {
+                renderJson(Result.serverError("更新状态失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        } catch (Exception e) {
+            renderJson (Result.serverError ("确认排产计划时发生错误:" + e.getMessage ()));
         }
     }
 }

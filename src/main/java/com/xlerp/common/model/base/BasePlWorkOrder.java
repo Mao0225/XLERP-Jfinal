@@ -423,5 +423,33 @@ public abstract class BasePlWorkOrder<M extends BasePlWorkOrder<M>> extends Mode
 		return getStr("writer");
 	}
 	
+	/**
+	 * 厂家物料名称
+	 */
+	public void setMaterialsName(java.lang.String materialsName) {
+		set("materialsName", materialsName);
+	}
+	
+	/**
+	 * 厂家物料名称
+	 */
+	public java.lang.String getMaterialsName() {
+		return getStr("materialsName");
+	}
+	
+	/**
+	 * 厂家物料单位
+	 */
+	public void setMaterialsUnit(java.lang.String materialsUnit) {
+		set("materialsUnit", materialsUnit);
+	}
+	
+	/**
+	 * 厂家物料单位
+	 */
+	public java.lang.String getMaterialsUnit() {
+		return getStr("materialsUnit");
+	}
+	
 }
 
