@@ -132,15 +132,15 @@ public abstract class BasePlbeiliaojihua<M extends BasePlbeiliaojihua<M>> extend
 	/**
 	 * 订货套数
 	 */
-	public void setDinghuotaoshu(java.lang.Integer dinghuotaoshu) {
+	public void setDinghuotaoshu(java.lang.String dinghuotaoshu) {
 		set("dinghuotaoshu", dinghuotaoshu);
 	}
 	
 	/**
 	 * 订货套数
 	 */
-	public java.lang.Integer getDinghuotaoshu() {
-		return getInt("dinghuotaoshu");
+	public java.lang.String getDinghuotaoshu() {
+		return getStr("dinghuotaoshu");
 	}
 	
 	/**
@@ -174,15 +174,15 @@ public abstract class BasePlbeiliaojihua<M extends BasePlbeiliaojihua<M>> extend
 	/**
 	 * 所需材料数量
 	 */
-	public void setSxclshuliang(java.lang.Integer sxclshuliang) {
+	public void setSxclshuliang(java.lang.String sxclshuliang) {
 		set("sxclshuliang", sxclshuliang);
 	}
 	
 	/**
 	 * 所需材料数量
 	 */
-	public java.lang.Integer getSxclshuliang() {
-		return getInt("sxclshuliang");
+	public java.lang.String getSxclshuliang() {
+		return getStr("sxclshuliang");
 	}
 	
 	/**
@@ -286,15 +286,15 @@ public abstract class BasePlbeiliaojihua<M extends BasePlbeiliaojihua<M>> extend
 	/**
 	 * 所需材料实际数量
 	 */
-	public void setSxclshijishuliang(java.lang.Integer sxclshijishuliang) {
+	public void setSxclshijishuliang(java.lang.String sxclshijishuliang) {
 		set("sxclshijishuliang", sxclshijishuliang);
 	}
 	
 	/**
 	 * 所需材料实际数量
 	 */
-	public java.lang.Integer getSxclshijishuliang() {
-		return getInt("sxclshijishuliang");
+	public java.lang.String getSxclshijishuliang() {
+		return getStr("sxclshijishuliang");
 	}
 	
 	/**

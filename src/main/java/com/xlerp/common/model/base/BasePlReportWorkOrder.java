@@ -54,43 +54,43 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 	/**
 	 * 生产订单编号（必选）
 	 */
-	public void setProductionOrderNo(java.lang.String productionOrderNo) {
-		set("productionOrderNo", productionOrderNo);
+	public void setIpoNo(java.lang.String ipoNo) {
+		set("ipoNo", ipoNo);
 	}
 	
 	/**
 	 * 生产订单编号（必选）
 	 */
-	public java.lang.String getProductionOrderNo() {
-		return getStr("productionOrderNo");
+	public java.lang.String getIpoNo() {
+		return getStr("ipoNo");
 	}
 	
 	/**
 	 * 生产工单编号（必选）
 	 */
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("workOrderNo", workOrderNo);
+	public void setWoNo(java.lang.String woNo) {
+		set("woNo", woNo);
 	}
 	
 	/**
 	 * 生产工单编号（必选）
 	 */
-	public java.lang.String getWorkOrderNo() {
-		return getStr("workOrderNo");
+	public java.lang.String getWoNo() {
+		return getStr("woNo");
 	}
 	
 	/**
 	 * 生产批次号（必选）
 	 */
-	public void setProductionBatchNo(java.lang.String productionBatchNo) {
-		set("productionBatchNo", productionBatchNo);
+	public void setProductBatchNo(java.lang.String productBatchNo) {
+		set("productBatchNo", productBatchNo);
 	}
 	
 	/**
 	 * 生产批次号（必选）
 	 */
-	public java.lang.String getProductionBatchNo() {
-		return getStr("productionBatchNo");
+	public java.lang.String getProductBatchNo() {
+		return getStr("productBatchNo");
 	}
 	
 	/**
@@ -166,71 +166,71 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 	/**
 	 * 来源数据创建时间（必选）
 	 */
-	public void setSourceCreateTime(java.util.Date sourceCreateTime) {
-		set("sourceCreateTime", sourceCreateTime);
+	public void setDataSourceCreateTime(java.util.Date dataSourceCreateTime) {
+		set("dataSourceCreateTime", dataSourceCreateTime);
 	}
 	
 	/**
 	 * 来源数据创建时间（必选）
 	 */
-	public java.util.Date getSourceCreateTime() {
-		return getDate("sourceCreateTime");
+	public java.util.Date getDataSourceCreateTime() {
+		return getDate("dataSourceCreateTime");
 	}
 	
 	/**
 	 * 客户所属省份（必选）
 	 */
-	public void setCustomerProvince(java.lang.String customerProvince) {
-		set("customerProvince", customerProvince);
+	public void setBuyerProvince(java.lang.String buyerProvince) {
+		set("buyerProvince", buyerProvince);
 	}
 	
 	/**
 	 * 客户所属省份（必选）
 	 */
-	public java.lang.String getCustomerProvince() {
-		return getStr("customerProvince");
+	public java.lang.String getBuyerProvince() {
+		return getStr("buyerProvince");
 	}
 	
 	/**
 	 * 产品内部ID号（可选）
 	 */
-	public void setProductInternalId(java.lang.String productInternalId) {
-		set("productInternalId", productInternalId);
+	public void setInsideNo(java.lang.String insideNo) {
+		set("insideNo", insideNo);
 	}
 	
 	/**
 	 * 产品内部ID号（可选）
 	 */
-	public java.lang.String getProductInternalId() {
-		return getStr("productInternalId");
+	public java.lang.String getInsideNo() {
+		return getStr("insideNo");
 	}
 	
 	/**
 	 * 设备编号（可选）
 	 */
-	public void setEquipmentNo(java.lang.String equipmentNo) {
-		set("equipmentNo", equipmentNo);
+	public void setDeviceNo(java.lang.String deviceNo) {
+		set("deviceNo", deviceNo);
 	}
 	
 	/**
 	 * 设备编号（可选）
 	 */
-	public java.lang.String getEquipmentNo() {
-		return getStr("equipmentNo");
+	public java.lang.String getDeviceNo() {
+		return getStr("deviceNo");
 	}
 	
 	/**
 	 * 生产工艺路线编码（可选）
 	 */
-	public void setProductionRouteCode(java.lang.String productionRouteCode) {
-		set("productionRouteCode", productionRouteCode);
+	public void setProcessNo(java.lang.String processNo) {
+		set("processNo", processNo);
 	}
 	
 	/**
 	 * 生产工艺路线编码（可选）
 	 */
-	public java.lang.String getProductionRouteCode() {
-		return getStr("productionRouteCode");
+	public java.lang.String getProcessNo() {
+		return getStr("processNo");
 	}
 	
 	/**
@@ -320,29 +320,29 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 	/**
 	 * 实际开始时间（可选）
 	 */
-	public void setActualStartTime(java.util.Date actualStartTime) {
-		set("actualStartTime", actualStartTime);
+	public void setActualStartDate(java.util.Date actualStartDate) {
+		set("actualStartDate", actualStartDate);
 	}
 	
 	/**
 	 * 实际开始时间（可选）
 	 */
-	public java.util.Date getActualStartTime() {
-		return getDate("actualStartTime");
+	public java.util.Date getActualStartDate() {
+		return getDate("actualStartDate");
 	}
 	
 	/**
 	 * 实际结束时间（可选）
 	 */
-	public void setActualEndTime(java.util.Date actualEndTime) {
-		set("actualEndTime", actualEndTime);
+	public void setActualFinishDate(java.util.Date actualFinishDate) {
+		set("actualFinishDate", actualFinishDate);
 	}
 	
 	/**
 	 * 实际结束时间（可选）
 	 */
-	public java.util.Date getActualEndTime() {
-		return getDate("actualEndTime");
+	public java.util.Date getActualFinishDate() {
+		return getDate("actualFinishDate");
 	}
 	
 	/**
