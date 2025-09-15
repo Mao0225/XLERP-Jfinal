@@ -27,7 +27,7 @@ public class BeiliaojihuaService {
         StringBuilder from = new StringBuilder();
         from.append("FROM plbeiliaojihua p ")
                 .append("LEFT JOIN basitem b ON p.itemno = b.no ")
-                .append("LEFT JOIN basitem i ON p.itemno = i.no ") // 添加JOIN子句
+                .append("LEFT JOIN basitem i ON p.sxclitemno = i.no ") // 添加JOIN子句
                 .append("WHERE 1=1");
 
         // 使用预编译语句的参数化查询，避免SQL注入

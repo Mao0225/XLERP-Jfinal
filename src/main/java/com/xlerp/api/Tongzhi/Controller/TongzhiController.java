@@ -83,42 +83,95 @@ public class TongzhiController extends Controller {
     @HttpMethod("PUT")
 //修改单条通知信息
     public void updateitem(Bascontractitem bascontractitem) {
+        // 调试日志：方法开始执行
+        System.out.println("===== updateitem 方法开始执行 =====");
+
+        // 打印接收的参数信息
+        System.out.println("接收的Bascontractitem对象: " + bascontractitem);
+        if (bascontractitem != null) {
+            System.out.println("物料ID(主键): " + bascontractitem.getId());
+            System.out.println("通知编号: " + bascontractitem.getNoticeid());
+            System.out.println("图纸编号: " + bascontractitem.getNoticedrawno());
+        } else {
+            System.out.println("警告：接收的Bascontractitem对象为null");
+        }
+
         try {
+            // 验证主键是否存在且格式正确
+            if (bascontractitem == null) {
+                System.out.println("错误：Bascontractitem对象为null，无法执行更新");
+                renderJson(Result.badRequest("物料信息不能为空"));
+                return;
+            }
+
+            Integer itemId = Math.toIntExact(bascontractitem.getId());
+            System.out.println("准备验证物料ID: " + itemId);
+            if (itemId == null) {
+                System.out.println("错误：物料ID为null");
+                renderJson(Result.badRequest("物料ID不能为空"));
+                return;
+            }
+            if (itemId <= 0) {
+                System.out.println("错误：物料ID为非正数，值为: " + itemId);
+                renderJson(Result.badRequest("物料ID必须为正整数"));
+                return;
+            }
+
+            // 执行更新操作
+            System.out.println("开始执行更新操作，物料ID: " + itemId);
             boolean success = tongzhiService.updateitem(bascontractitem);
+
             if (success) {
+                System.out.println("更新成功，物料ID: " + itemId);
                 renderJson(Result.success("物料更新成功"));
 
-                // 新增：在更新成功后，执行SQL查询并保存数据
+                // 处理备料计划数据
                 String noticeid = bascontractitem.getNoticeid();
                 String noticedrawno = bascontractitem.getNoticedrawno();
+                System.out.println("更新成功后，准备处理备料计划: noticeid=" + noticeid + ", noticedrawno=" + noticedrawno);
 
                 if (noticeid != null && !noticeid.trim().isEmpty() &&
                         noticedrawno != null && !noticedrawno.trim().isEmpty()) {
 
-                    // 创建BeiliaojihuaController实例
                     BeiliaojihuaController beiliaoController = new BeiliaojihuaController();
-
-                    // 检查是否已存在相同的noticeid和noticedrawno的数据
                     boolean exists = beiliaoController.checkExists(noticeid, noticedrawno);
+                    System.out.println("备料计划数据是否已存在: " + (exists ? "是" : "否"));
 
                     if (!exists) {
-                        // 执行SQL查询
                         List<Record> resultList = tongzhiService.getBeiliaoData(noticeid, noticedrawno);
+                        System.out.println("从数据库查询到的备料计划数据条数: " + (resultList != null ? resultList.size() : 0));
 
-                        // 保存查询结果
                         for (Record record : resultList) {
                             Plbeiliaojihua beiliaojihua = convertToPlbeiliaojihua(record);
                             beiliaoController.save(beiliaojihua);
+                            System.out.println("已保存备料计划数据: " + beiliaojihua);
                         }
                     }
+                } else {
+                    System.out.println("noticeid或noticedrawno为空，不执行备料计划处理");
                 }
             } else {
+                System.out.println("更新失败，数据库操作未成功执行，物料ID: " + itemId);
                 renderJson(Result.serverError("更新物料失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("物料ID格式错误"));
+            // 捕获数字格式异常，打印详细信息
+            System.out.println("===== 发生NumberFormatException =====");
+            System.out.println("错误描述: " + e.getMessage());
+            System.out.println("错误位置: ");
+            e.printStackTrace();
+            System.out.println("触发异常的物料ID: " + (bascontractitem != null ? bascontractitem.getId() : "null"));
+            renderJson(Result.badRequest("物料ID格式错误: " + e.getMessage()));
         } catch (Exception e) {
+            // 捕获其他所有异常
+            System.out.println("===== 发生未知异常 =====");
+            System.out.println("错误描述: " + e.getMessage());
+            System.out.println("错误位置: ");
+            e.printStackTrace();
+            System.out.println("异常发生时的物料信息: " + bascontractitem);
             renderJson(Result.serverError("更新物料时发生错误: " + e.getMessage()));
+        } finally {
+            System.out.println("===== updateitem 方法执行结束 =====");
         }
     }
 
@@ -130,11 +183,11 @@ public class TongzhiController extends Controller {
         beiliaojihua.setXiaoshouitemid(record.getInt("xiaoshouitemid"));
         beiliaojihua.setContractname(record.getStr("contractname"));
         beiliaojihua.setDaiyongxinghao(record.getStr("daiyongxinghao"));
-        beiliaojihua.setDinghuotaoshu(record.getInt("dinghuotaoshu"));
+        beiliaojihua.setDinghuotaoshu(record.getStr("dinghuotaoshu"));
         beiliaojihua.setItemno(record.getStr("itemno"));
         beiliaojihua.setNoticedrawno(record.getStr("noticedrawno"));
         beiliaojihua.setNoticeid(record.getStr("noticeid"));
-        beiliaojihua.setSxclshuliang(record.getInt("sxclshuliang"));
+        beiliaojihua.setSxclshuliang(record.getStr("sxclshuliang"));
         beiliaojihua.setSxclitemno(record.getStr("sxclitemno"));
 
         // 设置其他必要字段
