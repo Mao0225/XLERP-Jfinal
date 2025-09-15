@@ -5,7 +5,6 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.upload.UploadFile;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
@@ -14,11 +13,6 @@ import com.xlerp.common.model.Bascontractitem;
 import com.xlerp.common.model.Bastuzhi;
 import com.xlerp.common.model.Plbeiliaojihua;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Before(HttpMethodInterceptor.class)

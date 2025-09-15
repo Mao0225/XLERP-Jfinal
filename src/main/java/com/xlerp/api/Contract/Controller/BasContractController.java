@@ -33,8 +33,7 @@ public class BasContractController extends Controller {
         String contractNo = getPara("contractNo");
         String projectName = getPara("projectName");
         String salesmanNo = getPara("salesmanNo");
-        String rule = getPara("rule");
-        String owenr = getPara("owenr");
+        String status = getPara("status");
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
@@ -44,7 +43,7 @@ public class BasContractController extends Controller {
                 return;
             }
 
-            Page<Record> page = bascontractService.getContractList(pageNum, pageSz, term, contractNo, projectName, salesmanNo, rule,owenr);
+            Page<Record> page = bascontractService.getContractList(pageNum, pageSz, term, contractNo, projectName, salesmanNo,status);
             renderJson(Result.success("查询合同列表成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -68,20 +67,20 @@ public class BasContractController extends Controller {
         }
     }
 
-    @ActionKey("/bascontract/get")
+    @ActionKey("/bascontract/getContractByNo")
     @HttpMethod("GET")
-    public void get() {
-        String id = getPara("id");
+    public void getContractByNo() {
+        String contractNo = getPara("contractNo");
 
-        if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("合同ID不能为空"));
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
             return;
         }
 
         try {
-            Bascontract bascontract = bascontractService.findById(Integer.parseInt(id.trim()));
-            if (bascontract != null) {
-                renderJson(Result.success("查询合同成功").putData("bascontract", bascontract));
+            Record contractInfo = bascontractService.getContractInfoByNo(contractNo);;
+            if (contractInfo != null) {
+                renderJson(Result.success("查询合同成功").putData("contractInfo", contractInfo));
             } else {
                 renderJson(Result.notFound("合同未找到"));
             }
@@ -268,8 +267,11 @@ public class BasContractController extends Controller {
     public void getConfirmedList() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
+        String term = getPara("term");
         String contractNo = getPara("contractNo");
         String projectName = getPara("projectName");
+        String salesmanNo = getPara("salesmanNo");
+        String status = getPara("status");
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
@@ -279,7 +281,7 @@ public class BasContractController extends Controller {
                 return;
             }
 
-            Page<Record> page = bascontractService.getConfirmedList(pageNum, pageSz, contractNo, projectName);
+            Page<Record> page = bascontractService.getContractList(pageNum, pageSz, term, contractNo, projectName, salesmanNo,"20");
             renderJson(Result.success("查询合同列表成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -350,4 +352,21 @@ public class BasContractController extends Controller {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
+
+    @ActionKey("/bascontract/getContractItemSummary")
+    @HttpMethod("GET")
+    public void getContractItemSummary() {
+        String contractNo = getPara("contractNo");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        try {
+            Record sumData = bascontractService.getContractItemSummary(contractNo);
+            renderJson(Result.success("查询合同物料列表成功").putData("sumData", sumData));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    
 }

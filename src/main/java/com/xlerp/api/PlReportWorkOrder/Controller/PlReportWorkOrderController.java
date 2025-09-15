@@ -23,7 +23,10 @@ public class PlReportWorkOrderController extends Controller {
     public void getpage() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
-
+        String status = getPara("status");
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String reportNo = getPara("reportNo");
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
@@ -33,7 +36,7 @@ public class PlReportWorkOrderController extends Controller {
                 return;
             }
 
-            Page page = orderService.paginate (pageNum, pageSz);
+            Page page = orderService.paginate (pageNum, pageSz, contractNo, contractName, reportNo,status);
             renderJson (Result.success ("查询成功").putData ("page", page));
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("页码或每页大小格式错误"));
@@ -148,6 +151,28 @@ public class PlReportWorkOrderController extends Controller {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("批量删除记录时发生错误:" + e.getMessage ()));
+        }
+    }
+
+    @ActionKey("/pl_report_work_order/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        if (id == null || id.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = orderService.updateStatus(id,status);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            } else {
+                renderJson(Result.serverError("更新状态失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        } catch (Exception e) {
+            renderJson (Result.serverError ("确认排产计划时发生错误:" + e.getMessage ()));
         }
     }
 }
