@@ -130,7 +130,6 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_wfg", WfgController.class);//无缝钢板--倪佳琪
 		me.add("/cl_gb", GbController.class);//钢板材料检验--谭请赢
 		me.add("/cl_yg", YgController.class);//圆钢--谭请赢
- 		me.add("/cl_ld", LdController.class);
 		me.add("/cl_xj", XjController.class);//刘国奇，增加，橡胶检测功能
 
 
