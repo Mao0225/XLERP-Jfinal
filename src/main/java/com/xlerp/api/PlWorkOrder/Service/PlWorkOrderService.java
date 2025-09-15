@@ -14,7 +14,9 @@ public class PlWorkOrderService {
                                             String contractNo, String contractName, String woNo,
                                             String status) {
         // 构建查询字段
-        String select = "select p.*,bc.no as contractNo,bc.name as contractName,bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec,bci.itemunit as itemUnit ";
+        String select = "select p.*,bc.no as contractNo,bc.name as contractName," +
+                "bci.itemnum as contractAmount, bi.name as itemName," +
+                "bi.spec as itemSpec,bci.itemunit as itemUnit ";
 
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_work_order p ");
