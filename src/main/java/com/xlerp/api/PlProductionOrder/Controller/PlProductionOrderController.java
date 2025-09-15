@@ -30,6 +30,8 @@ public class PlProductionOrderController extends Controller {
         String contractName = getPara("contractName");
         String scheduleCode = getPara("scheduleCode");
         String ipoNo = getPara("ipoNo");
+        String status = getPara("status");
+
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
@@ -40,7 +42,7 @@ public class PlProductionOrderController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
-            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,null);
+            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,status);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
