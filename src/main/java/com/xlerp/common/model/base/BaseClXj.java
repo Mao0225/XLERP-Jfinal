@@ -891,5 +891,89 @@ public abstract class BaseClXj<M extends BaseClXj<M>> extends Model<M> implement
 		return getStr("checker");
 	}
 	
+	/**
+	 * 长度标准值
+	 */
+	public void setMatlongsizebiaozhun(java.math.BigDecimal matlongsizebiaozhun) {
+		set("matlongsizebiaozhun", matlongsizebiaozhun);
+	}
+	
+	/**
+	 * 长度标准值
+	 */
+	public java.math.BigDecimal getMatlongsizebiaozhun() {
+		return get("matlongsizebiaozhun");
+	}
+	
+	/**
+	 * 宽度标准值
+	 */
+	public void setMatlenghsizebiaozhun(java.math.BigDecimal matlenghsizebiaozhun) {
+		set("matlenghsizebiaozhun", matlenghsizebiaozhun);
+	}
+	
+	/**
+	 * 宽度标准值
+	 */
+	public java.math.BigDecimal getMatlenghsizebiaozhun() {
+		return get("matlenghsizebiaozhun");
+	}
+	
+	/**
+	 * 线径标准值
+	 */
+	public void setMatxianjingbiaozhun(java.math.BigDecimal matxianjingbiaozhun) {
+		set("matxianjingbiaozhun", matxianjingbiaozhun);
+	}
+	
+	/**
+	 * 线径标准值
+	 */
+	public java.math.BigDecimal getMatxianjingbiaozhun() {
+		return get("matxianjingbiaozhun");
+	}
+	
+	/**
+	 * 厚度标准值
+	 */
+	public void setMatheightsizebiaozhun(java.math.BigDecimal matheightsizebiaozhun) {
+		set("matheightsizebiaozhun", matheightsizebiaozhun);
+	}
+	
+	/**
+	 * 厚度标准值
+	 */
+	public java.math.BigDecimal getMatheightsizebiaozhun() {
+		return get("matheightsizebiaozhun");
+	}
+	
+	/**
+	 * 柱径标准值
+	 */
+	public void setMatzhujingsizebiaozhun(java.math.BigDecimal matzhujingsizebiaozhun) {
+		set("matzhujingsizebiaozhun", matzhujingsizebiaozhun);
+	}
+	
+	/**
+	 * 柱径标准值
+	 */
+	public java.math.BigDecimal getMatzhujingsizebiaozhun() {
+		return get("matzhujingsizebiaozhun");
+	}
+	
+	/**
+	 * 柱高标准值
+	 */
+	public void setMatzhugaosizebiaozhun(java.math.BigDecimal matzhugaosizebiaozhun) {
+		set("matzhugaosizebiaozhun", matzhugaosizebiaozhun);
+	}
+	
+	/**
+	 * 柱高标准值
+	 */
+	public java.math.BigDecimal getMatzhugaosizebiaozhun() {
+		return get("matzhugaosizebiaozhun");
+	}
+	
 }
 
