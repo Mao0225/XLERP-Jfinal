@@ -1,5 +1,6 @@
 package com.xlerp.api.ClManagement.Service;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.common.model.ClLd;  // 假设铝锭对应的模型类为ClLd（cl_ld表）
 
@@ -12,7 +13,9 @@ public class LdService {
     /**
      * 分页查询铝锭数据
      */
-    public Page<ClLd> paginate(int pageNumber, int pageSize, String mafactory, String inNo, String matMaterial, String matRecheckNo) {
+    public Page<ClLd> paginate(int pageNumber, int pageSize, String mafactory, String inNo,
+                               String matMaterial, String matRecheckNo, String contractNo,
+                               String contractName,String material,String type ,String status) {
         String select = "select *";
         StringBuilder from = new StringBuilder(" from cl_ld");
         List<Object> params = new java.util.ArrayList<>();
@@ -39,6 +42,33 @@ public class LdService {
             params.add("%" + matRecheckNo + "%");
             hasCondition = true;
         }
+        if (contractNo != null && !contractNo.trim().isEmpty()) {
+            from.append(hasCondition ? " and" : " where").append(" contractNo like ?");
+            params.add("%" + contractNo + "%");
+            hasCondition = true;
+        }
+        if (contractName != null && !contractName.trim().isEmpty()) {
+            from.append(hasCondition ? " and" : " where").append(" contractName like ?");
+            params.add("%" + contractName + "%");
+            hasCondition = true;
+        }
+        if (material != null && !material.trim().isEmpty()) {
+            from.append(hasCondition ? " and" : " where").append(" material like ?");
+            params.add("%" + material + "%");
+            hasCondition = true;
+        }
+        if (type != null && !type.trim().isEmpty()) {
+            from.append(hasCondition ? " and" : " where").append(" type like ?");
+            params.add("%" + type + "%");
+            hasCondition = true;
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            //应该判断是否大于这个状态从10-50
+            from.append(hasCondition ? " and" : " where").append(" status >= ?");
+            params.add(status);
+            hasCondition = true;
+        }
+
 
         from.append(" order by id desc");
 
@@ -78,5 +108,9 @@ public class LdService {
      */
     public boolean batchDelete(List<Integer> ids) {
         return dao.deleteByIds(ids);
+    }
+
+    public boolean updateStatus(String id, String status) {
+        return Db.update("update cl_ld set status = ? where id = ?", status, id) > 0;
     }
 }

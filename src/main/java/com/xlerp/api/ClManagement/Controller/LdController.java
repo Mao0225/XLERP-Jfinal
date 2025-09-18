@@ -31,6 +31,13 @@ public class LdController extends Controller {
         String inNo = getPara("inNo");
         String matMaterial = getPara("matMaterial");
         String matRecheckNo = getPara("matRecheckNo");
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String material = getPara("material");
+        String type = getPara("type");
+        String status = getPara("status");
+
+
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -42,7 +49,7 @@ public class LdController extends Controller {
             }
 
             // 查询铝锭数据分页
-            Page<ClLd> page = ldService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo);
+            Page<ClLd> page = ldService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo, contractNo, contractName, material, type, status);
             renderJson(Result.success("铝锭数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -157,6 +164,28 @@ public class LdController extends Controller {
             renderJson (Result.badRequest ("铝锭记录ID格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("批量删除铝锭记录时发生错误:" + e.getMessage ()));
+        }
+    }
+
+    @ActionKey("/cl_ld/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        if (id == null || id.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = ldService.updateStatus(id,status);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            }
+            else {
+                renderJson(Result.badRequest("更新状态失败"));
+            }
+        }
+        catch (Exception e) {
+            renderJson (Result.serverError ("更新状态时发生错误:" + e.getMessage ()));
         }
     }
 }
