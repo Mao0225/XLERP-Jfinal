@@ -11,7 +11,7 @@ public class TuzhicailiaoService {
     private static final Bastuzhicailiao dao = new Bastuzhicailiao();
 
     public Page<Record> paginate(int pageNumber, int pageSize, String tuzhiid) {
-        String select = "select b.\"id\",b.\"tuzhiid\",b.\"basitemid\",b.\"shuliang\",b.\"flag\",b.\"type\" as tuzhitype,b.\"memo\",b.\"writetime\",b.\"writer\",t.\"tuzhibianhao\",i.\"no\", i.\"name\", i.\"unit\",i.\"spec\",i.\"description\",i.\"color\",i.\"weight\",i.\"inclass\",i.\"type\" as cailiaotype";
+        String select = "select b.\"id\",b.\"tuzhiid\",b.\"basitemid\",b.\"shuliang\",b.\"flag\",b.\"type\" as tuzhitype,b.\"memo\",b.\"writetime\",b.\"writer\",t.\"tuzhibianhao\",i.\"no\", i.\"name\", i.\"unit\",i.\"spec\",i.\"description\",i.\"color\",i.\"weight\",i.\"tech_memo\",i.\"inclass\",i.\"type\" as cailiaotype";
         String from = "from XLQCERP.\"bastuzhicailiao\" b " +
                 "LEFT JOIN XLQCERP.\"bastuzhi\" t on b.\"tuzhiid\" = t.\"id\" " +
                 "LEFT JOIN XLQCERP.\"basitem\" i on b.\"basitemid\" = i.\"id\" " +
