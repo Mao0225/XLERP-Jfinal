@@ -80,12 +80,14 @@ public class matInoutService {
         return itemDao.find("select * from pl_mat_inout_item where docNo=?", docNo);
     }
 
-    public Page<PlMatInoutItem> itemPaginate(int pageNumber, int pageSize, String docNo) {
-        // 构建查询字段
-        String select = "select m.*";
+    public Page<PlMatInoutItem> itemPaginate(int pageNumber, int pageSize, String docNo,String materialCode,String materialName,String materialSpec,String inOutType) {
+        // 选择需要的字段（避免使用*）
+        String select = "select m.*, d.inOutType, d.deliveryOrg, d.term, d.handler,d.status as docStatus";
 
         // 构建 FROM 和 WHERE 子句
-        StringBuilder from = new StringBuilder("from pl_mat_inout_item m where 1=1 ");
+        StringBuilder from = new StringBuilder("from pl_mat_inout_item m ");
+        from.append("left join pl_mat_inout_doc d on d.docNo = m.docNo ");
+        from.append("where 1 = 1 ");
 
         // 构建参数列表
         List<Object> params = new ArrayList<>();
@@ -94,9 +96,25 @@ public class matInoutService {
             from.append("and m.docNo = ? ");
             params.add(docNo);
         }
+        if (materialCode != null && !materialCode.trim().isEmpty()) {
+            from.append("and m.materialCode = ? ");
+            params.add(materialCode);
+        }
+        if (materialName != null && !materialName.trim().isEmpty()) {
+            from.append("and m.materialName like ? ");
+            params.add("%" + materialName + "%");
+        }
+        if (materialSpec != null && !materialSpec.trim().isEmpty()) {
+            from.append("and m.materialSpec = ? ");
+            params.add(materialSpec);
+        }
+        if (inOutType != null && !inOutType.trim().isEmpty()) {
+            from.append("and d.inOutType = ? ");
+            params.add(inOutType);
+        }
 
-        // 排序
-        from.append("order by m.id desc");
+        // 关键改进：先按docNo排序（相同的放一起），再按id排序
+        from.append("order by m.docNo, m.id desc");
 
         // 执行分页查询
         return itemDao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
