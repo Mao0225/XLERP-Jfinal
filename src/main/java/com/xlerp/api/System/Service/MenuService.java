@@ -56,12 +56,14 @@ public class MenuService {
     }
     public List<Record> getMenuTreeByUserId(int userId) {
         System.out.println("开始根据用户ID获取菜单树，用户ID: " + userId);
-        
+        if(userId == 1)
+            return getMenuTree(null);//管理员获取全部菜单
         Sysusermenu  usermenu = new Sysusermenu();
         List<Sysusermenu> usermenus = usermenu.find("select menuid from sysusermenu where userid = ?", userId);
         System.out.println("========================================用户拥有的菜单数量: " + usermenus.size());
         if(usermenus == null || usermenus.isEmpty())
             return new ArrayList<>();
+
         return getMenuTree(usermenus);
     }
     public List<Record> getMenuTree(List<Sysusermenu> usermenus) {

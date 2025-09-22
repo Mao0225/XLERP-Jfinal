@@ -111,6 +111,7 @@ public class MenuController extends Controller {
         }
     }
 
+    // 获取用户菜单树
     @ActionKey("/menu/getMenuTree")
     @HttpMethod("GET")
     public void getMenuTree() {
@@ -138,7 +139,7 @@ public class MenuController extends Controller {
         }
     }
 
-
+// 获取所有菜单树
     @ActionKey("/menu/getAllMenuTree")
     @HttpMethod("GET")
     public void getAllMenuTree() {

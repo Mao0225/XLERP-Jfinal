@@ -40,17 +40,10 @@ public class _MappingKit {
 		arp.addMapping("pl_report_work_order", "id", PlReportWorkOrder.class);
 		arp.addMapping("pl_schedule_plan", "id", PlSchedulePlan.class);
 		arp.addMapping("pl_work_order", "id", PlWorkOrder.class);
-		arp.addMapping("plbaogongdan", "id", Plbaogongdan.class);
 		arp.addMapping("plbeiliaojihua", "id", Plbeiliaojihua.class);
 		arp.addMapping("plchuchangchoujian", "id", Plchuchangchoujian.class);
 		arp.addMapping("plchuchangshiyanshuju", "id", Plchuchangshiyanshuju.class);
-		arp.addMapping("pldingdanitem", "id", Pldingdanitem.class);
 		arp.addMapping("plentityid", "id", Plentityid.class);
-		arp.addMapping("plgongdanitem", "id", Plgongdanitem.class);
-		arp.addMapping("plinoutstore", "id", Plinoutstore.class);
-		arp.addMapping("plpaichanjihua", "id", Plpaichanjihua.class);
-		arp.addMapping("plshengchandingdan", "id", Plshengchandingdan.class);
-		arp.addMapping("plshengchangongdan", "id", Plshengchangongdan.class);
 		arp.addMapping("sysmenu", "id", Sysmenu.class);
 		arp.addMapping("systerm", "id", Systerm.class);
 		arp.addMapping("sysuser", "id", Sysuser.class);

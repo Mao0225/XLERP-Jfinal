@@ -103,18 +103,14 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/baspurchaseorder", BasPurchaseOrderController.class);
 		me.add("/bastuzhi", TuzhiController.class);  //刘国奇，基本图纸管理
 		me.add("/bastuzhicailiao", TuzhicailiaoController.class);  //刘国奇，基本图纸材料管理，根据图纸 id，获取这个图纸所有的材料信息
-		me.add("/plinoutstore", PlinoutstoreController.class);//毛文斌，入库出库管理
 		me.add("/tongzhi", TongzhiController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
 		me.add("/beiliaojihua", BeiliaojihuaController.class);  //刘国奇，通知管理，这个是第一个功能，获取合同列表，但是是确认状态以上的合同
-		me.add("/plshengchandingdan", PlshengchandingdanController.class);//毛文斌，生产订单管理
-		me.add("/plshengchangongdan", PlshengchangongdanController.class);//毛文斌，生产工单管理
-		me.add("/plpaichanjihua", PlpaichanjihuaController.class);//毛文斌，排产计划管理
 		me.add("/plentityid", PlentityIdController.class);//实物ID
 
 		me.add("/pl_schedule_plan", PlSchedulePlanController.class);//毛文斌，排产计划管理
 		me.add("/pl_production_order", PlProductionOrderController.class);//毛文斌，生产订单管理
 		me.add("/pl_work_order", PlWorkOrderController.class);//毛文斌，生产工单管理
-		me.add("/pl_report_work_order", PlReportWorkOrderController.class);//毛文斌，生产工单管理
+		me.add("/pl_report_work_order", PlReportWorkOrderController.class);//毛文斌，报工单管理
 		me.add("/pl_mat_inout", matInoutController.class);
 
 
