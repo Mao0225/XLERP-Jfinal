@@ -34,15 +34,15 @@ public abstract class BasePlProductionOrder<M extends BasePlProductionOrder<M>> 
 	/**
 	 * 订单类型
 	 */
-	public void setIpoType(java.lang.Integer ipoType) {
+	public void setIpoType(java.lang.String ipoType) {
 		set("ipoType", ipoType);
 	}
 	
 	/**
 	 * 订单类型
 	 */
-	public java.lang.Integer getIpoType() {
-		return getInt("ipoType");
+	public java.lang.String getIpoType() {
+		return getStr("ipoType");
 	}
 	
 	/**

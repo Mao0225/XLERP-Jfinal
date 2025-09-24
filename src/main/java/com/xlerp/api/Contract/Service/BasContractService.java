@@ -118,10 +118,7 @@ public class BasContractService {
 
     public List<Record> getContractItemByNo(String contractNo) {
         String sql = "SELECT c.*, " +
-                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, " +
-                "(SELECT COALESCE(SUM(d.amount), 0) " +
-                " FROM pldingdanitem d " +
-                " WHERE d.conitemId = c.id) AS allocatedOrderAmount " +
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec " +
                 "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "WHERE c.no = ? " +
@@ -307,10 +304,11 @@ public class BasContractService {
         // 构建SQL语句和参数列表
         StringBuilder selectSql = new StringBuilder("SELECT c.id,c.itemnum,c.itemunit," +
                 "c.itemRealPrice,c.itemRealSum,c.itemweight,c.itemgrossweight,c.poItemCode,c.poItemId,c.poItemNo,c.itemmemo, " +
-                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec ");
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,psp.scheduleCode ");
 
         StringBuilder fromSql = new StringBuilder("FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
+                "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId "+
                 "WHERE c.no = ? AND c.isdelete = 0 ");
 
         List<Object> params = new ArrayList<>();
