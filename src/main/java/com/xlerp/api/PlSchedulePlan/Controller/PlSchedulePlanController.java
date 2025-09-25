@@ -72,7 +72,7 @@ public class PlSchedulePlanController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
-            Page page = planService.paginate(pageNum, pageSz, contractNo, contractName, purchaserHqCode, scheduleCode,"20");
+            Page page = planService.paginate(pageNum, pageSz, contractNo, contractName, purchaserHqCode, scheduleCode,"30");
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

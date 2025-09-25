@@ -16,7 +16,8 @@ public class PlProductionOrderService {
                                          String scheduleCode, String ipoNo,
                                          String status) {
         // 构建查询字段
-        String select = "select p.*,bc.no as contractNo,bc.name as contractName,bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec,bci.itemunit as itemUnit";
+        String select = "select p.*,bc.no as contractNo,bc.name as contractName,bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec,bci.itemunit as itemUnit," +
+                "(select COALESCE(sum(pwo.amount), 0) from pl_work_order pwo where pwo.ipoNo = p.ipoNo) as allocatedAmount";
 
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_production_order p ");

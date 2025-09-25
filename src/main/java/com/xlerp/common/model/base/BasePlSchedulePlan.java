@@ -381,5 +381,19 @@ public abstract class BasePlSchedulePlan<M extends BasePlSchedulePlan<M>> extend
 		return getStr("writer");
 	}
 	
+	/**
+	 * 产品名称
+	 */
+	public void setItemName(java.lang.String itemName) {
+		set("itemName", itemName);
+	}
+	
+	/**
+	 * 产品名称
+	 */
+	public java.lang.String getItemName() {
+		return getStr("itemName");
+	}
+	
 }
 

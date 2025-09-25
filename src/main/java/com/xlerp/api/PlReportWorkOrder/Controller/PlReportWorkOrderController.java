@@ -65,6 +65,30 @@ public class PlReportWorkOrderController extends Controller {
         }
     }
 
+
+    //根据工单编号获取报工单列表
+    @ActionKey("/pl_report_work_order/getListByWoNo")
+    @HttpMethod("GET")
+    public void getByWoNo() {
+        String woNo = getPara("woNo");
+
+        if (woNo == null || woNo.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("工单编号不能为空"));
+            return;
+        }
+
+        try {
+            List<PlReportWorkOrder> orderList = orderService.findBywoNo (woNo);
+            if (orderList != null ) {
+                renderJson (Result.success ("查询记录成功").putData ("orderList", orderList));
+            } else {
+                renderJson (Result.notFound ("记录未找到或已被删除"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        }
+    }
+
     @ActionKey ("/pl_report_work_order/save")
     @HttpMethod ("POST")
     public void save (PlReportWorkOrder pl_report_work_order) {

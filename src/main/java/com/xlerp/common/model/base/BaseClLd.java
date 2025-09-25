@@ -374,56 +374,56 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 复检单录入人
+	 * 请检单录入人
 	 */
-	public void setWriter(java.lang.String writer) {
-		set("writer", writer);
+	public void setRequestWriter(java.lang.String requestWriter) {
+		set("requestWriter", requestWriter);
 	}
 	
 	/**
-	 * 复检单录入人
+	 * 请检单录入人
 	 */
-	public java.lang.String getWriter() {
-		return getStr("writer");
+	public java.lang.String getRequestWriter() {
+		return getStr("requestWriter");
 	}
 	
 	/**
-	 * 复检单录入时间
+	 * 请检单录入时间
 	 */
 	public void setWriteTime(java.util.Date writeTime) {
 		set("writeTime", writeTime);
 	}
 	
 	/**
-	 * 复检单录入时间
+	 * 请检单录入时间
 	 */
 	public java.util.Date getWriteTime() {
 		return getDate("writeTime");
 	}
 	
 	/**
-	 * 状态，10检验单录入，20检验单确认，30检验数据录入完成，40检验数据审核完成，50已入库
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过待入库，60确认入库，待审核，70审核入库通过入库成功
 	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态，10检验单录入，20检验单确认，30检验数据录入完成，40检验数据审核完成，50已入库
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过待入库，60确认入库，待审核，70审核入库通过入库成功
 	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
 	}
 	
 	/**
-	 * 备注
+	 * 请检单备注
 	 */
 	public void setMemo(java.lang.String memo) {
 		set("memo", memo);
 	}
 	
 	/**
-	 * 备注
+	 * 请检单备注
 	 */
 	public java.lang.String getMemo() {
 		return getStr("memo");
@@ -458,28 +458,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 实际来货数量
-	 */
-	public void setQuantity(java.math.BigDecimal quantity) {
-		set("quantity", quantity);
-	}
-	
-	/**
-	 * 实际来货数量
-	 */
-	public java.math.BigDecimal getQuantity() {
-		return get("quantity");
-	}
-	
-	/**
-	 * 抽检数量, 成分检测一件，力学性能三件
+	 * 抽检数量总
 	 */
 	public void setSampleQuantity(java.math.BigDecimal sampleQuantity) {
 		set("sampleQuantity", sampleQuantity);
 	}
 	
 	/**
-	 * 抽检数量, 成分检测一件，力学性能三件
+	 * 抽检数量总
 	 */
 	public java.math.BigDecimal getSampleQuantity() {
 		return get("sampleQuantity");
@@ -544,29 +530,29 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	/**
 	 * 检验完成审核人
 	 */
-	public void setAuditor(java.lang.String auditor) {
-		set("auditor", auditor);
+	public void setCheckAuditor(java.lang.String checkAuditor) {
+		set("checkAuditor", checkAuditor);
 	}
 	
 	/**
 	 * 检验完成审核人
 	 */
-	public java.lang.String getAuditor() {
-		return getStr("auditor");
+	public java.lang.String getCheckAuditor() {
+		return getStr("checkAuditor");
 	}
 	
 	/**
 	 * 检验数据录入人
 	 */
-	public void setChecker(java.lang.String checker) {
-		set("checker", checker);
+	public void setCheckWriter(java.lang.String checkWriter) {
+		set("checkWriter", checkWriter);
 	}
 	
 	/**
 	 * 检验数据录入人
 	 */
-	public java.lang.String getChecker() {
-		return getStr("checker");
+	public java.lang.String getCheckWriter() {
+		return getStr("checkWriter");
 	}
 	
 	/**
@@ -640,48 +626,6 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 材质书
-	 */
-	public void setMaterialDoc(java.lang.String materialDoc) {
-		set("materialDoc", materialDoc);
-	}
-	
-	/**
-	 * 材质书
-	 */
-	public java.lang.String getMaterialDoc() {
-		return getStr("materialDoc");
-	}
-	
-	/**
-	 * 合格证
-	 */
-	public void setQualificationCert(java.lang.String qualificationCert) {
-		set("qualificationCert", qualificationCert);
-	}
-	
-	/**
-	 * 合格证
-	 */
-	public java.lang.String getQualificationCert() {
-		return getStr("qualificationCert");
-	}
-	
-	/**
-	 * 出厂报告
-	 */
-	public void setFactoryReport(java.lang.String factoryReport) {
-		set("factoryReport", factoryReport);
-	}
-	
-	/**
-	 * 出厂报告
-	 */
-	public java.lang.String getFactoryReport() {
-		return getStr("factoryReport");
-	}
-	
-	/**
 	 * 最终检验结论（合格/不合格/复检等）
 	 */
 	public void setFinalConclusion(java.lang.String finalConclusion) {
@@ -707,6 +651,90 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	 */
 	public java.util.Date getStorageTime() {
 		return getDate("storageTime");
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public void setCheckMemo(java.lang.String checkMemo) {
+		set("checkMemo", checkMemo);
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public java.lang.String getCheckMemo() {
+		return getStr("checkMemo");
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public void setCompInspQty(java.math.BigDecimal compInspQty) {
+		set("compInspQty", compInspQty);
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public java.math.BigDecimal getCompInspQty() {
+		return get("compInspQty");
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public void setMechInspQty(java.math.BigDecimal mechInspQty) {
+		set("mechInspQty", mechInspQty);
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public java.math.BigDecimal getMechInspQty() {
+		return get("mechInspQty");
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public void setBatchNum(java.lang.String batchNum) {
+		set("batchNum", batchNum);
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public java.lang.String getBatchNum() {
+		return getStr("batchNum");
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public void setRequestAuditor(java.lang.String requestAuditor) {
+		set("requestAuditor", requestAuditor);
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public java.lang.String getRequestAuditor() {
+		return getStr("requestAuditor");
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public void setUnit(java.lang.String unit) {
+		set("unit", unit);
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public java.lang.String getUnit() {
+		return getStr("unit");
 	}
 	
 }

@@ -10,29 +10,18 @@ import java.util.List;
 public class PlReportWorkOrderService {
     private static final PlReportWorkOrder dao = new PlReportWorkOrder();
 
-    public Page<PlReportWorkOrder> paginate(int pageNumber, int pageSize) {
-        String select = "select *";
-        StringBuilder from = new StringBuilder("from pl_report_work_order");
-
-
-        from.append(" order by id desc");
-
-// 准备参数
-        List<Object> params = new java.util.ArrayList<>();
-
-        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
-    }
-
 
     public Page<PlReportWorkOrder> paginate(int pageNumber, int pageSize,
                                             String contractNo, String contractName, String reportNo,
                                             String status) {
         // 构建查询字段
-        String select = "select p.*,bc.no as contractNo,bc.name as contractName,bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec,bci.itemunit as itemUnit";
+        String select = "select p.*,bc.no as contractNo,bc.name as contractName,bci.itemnum as contractAmount, bi.name as itemName," +
+                " bi.spec as itemSpec,bci.itemunit as itemUnit,pwo.amount as woAmount,pwo.materialsCode as itemCode";
 
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_report_work_order p ");
         from.append("left join pl_production_order ppo on ppo.ipoNo = p.ipoNo ");
+        from.append("left join pl_work_order pwo on pwo.woNo = p.woNo ");
         from.append("left join bascontractitem bci on ppo.poItemId = bci.id ");
         from.append("left join bascontract bc on bc.no = bci.no ");
         from.append("left join basitem bi on bci.itemid = bi.id ");
@@ -91,5 +80,9 @@ public class PlReportWorkOrderService {
 
     public boolean updateStatus(String id, String status) {
         return Db.update("update pl_report_work_order set status = ? where id = ? ", status, id) > 0;
+    }
+
+    public List<PlReportWorkOrder> findBywoNo(String woNo) {
+        return dao.find("select * from pl_report_work_order where woNo = ? ", woNo);
     }
 }
