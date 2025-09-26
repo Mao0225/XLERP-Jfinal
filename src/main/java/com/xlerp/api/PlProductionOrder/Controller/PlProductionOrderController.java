@@ -102,6 +102,28 @@ public class PlProductionOrderController extends Controller {
         }
     }
 
+    @ActionKey("/pl_production_order/getListByScheduleCode")
+    @HttpMethod("GET")
+    public void getListByScheduleCode() {
+        String scheduleCode = getPara("scheduleCode");
+
+        if (scheduleCode == null || scheduleCode.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("排产计划号不能为空"));
+            return;
+        }
+
+        try {
+            List<PlProductionOrder> orderList = proOrderService.findByScheduleCode(scheduleCode);
+            if (orderList != null ) {
+                renderJson (Result.success ("查询记录成功").putData ("orderList", orderList));
+            } else {
+                renderJson (Result.notFound ("记录未找到或已被删除"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        }
+    }
+
     @ActionKey ("/pl_production_order/save")
     @HttpMethod ("POST")
     public void save (PlProductionOrder pl_production_order) {

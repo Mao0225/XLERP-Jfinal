@@ -86,4 +86,8 @@ public class PlProductionOrderService {
     public boolean updateStatus(String id, String status) {
         return Db.update("update pl_production_order set status = ? where id = ? ", status, id) > 0;
     }
+
+    public List<PlProductionOrder> findByScheduleCode(String scheduleCode) {
+        return dao.find("select * from pl_production_order where scheduleCode = ? ", scheduleCode);
+    }
 }

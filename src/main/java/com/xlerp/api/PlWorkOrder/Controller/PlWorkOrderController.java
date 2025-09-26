@@ -98,6 +98,29 @@ public class PlWorkOrderController extends Controller {
         }
     }
 
+    //通过生产订单号查询关联的工单
+    @ActionKey("/pl_work_order/getListByIpoNo")
+    @HttpMethod("GET")
+    public void getListByIpoNo() {
+        String ipoNo = getPara("ipoNo");
+
+        if (ipoNo == null || ipoNo.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("生产订单号不能为空"));
+            return;
+        }
+
+        try {
+            List<PlWorkOrder> orderList = workOrderService.findByIpoNo(ipoNo);
+            if (orderList != null) {
+                renderJson (Result.success ("查询记录成功").putData ("orderList", orderList));
+            } else {
+                renderJson (Result.notFound ("记录未找到或已被删除"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        }
+    }
+
     @ActionKey ("/pl_work_order/save")
     @HttpMethod ("POST")
     public void save (PlWorkOrder pl_work_order) {

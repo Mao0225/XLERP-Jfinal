@@ -80,4 +80,8 @@ public class PlWorkOrderService {
     public boolean updateStatus(String id, String status) {
         return Db.update("update pl_work_order set status = ? where id = ? ", status, id) > 0;
     }
+
+    public List<PlWorkOrder> findByIpoNo(String ipoNo) {
+        return dao.find("select * from pl_work_order where ipoNo = ? ", ipoNo);
+    }
 }
