@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Before(HttpMethodInterceptor.class)
 public class TuzhiController extends Controller {
@@ -192,6 +193,44 @@ public class TuzhiController extends Controller {
             renderJson(Result.badRequest("图纸ID格式错误"));
         } catch (Exception e) {
             renderJson(Result.serverError("删除图纸时发生错误: " + e.getMessage()));
+        }
+    }
+
+    //上传表格文件自动导入基础图纸信息
+    @ActionKey("/bastuzhi/importTuzhi")
+    @HttpMethod("POST")
+    public void importTuzhi() {
+        try {
+            UploadFile file = getFile("tuzhiListFile"); // "tuzhiListFile" is the form field name
+            if (file == null) {
+                renderJson(Result.badRequest("未上传文件"));
+                return;
+            }
+
+            // 验证文件大小 (e.g., max 10MB)
+            String fileName = file.getFileName().toLowerCase();
+            if (!fileName.endsWith(".xls") && !fileName.endsWith(".xlsx")) {
+                file.getFile().delete();
+                renderJson(Result.badRequest("仅支持 .xls 或 .xlsx 文件"));
+                return;
+            }
+            if (file.getFile().length() > 10 * 1024 * 1024) { // 10MB limit
+                file.getFile().delete();
+                renderJson(Result.badRequest("文件大小超过10MB限制"));
+                return;
+            }
+
+            // Parse file and get result
+            Map<String, Object> result = TuzhiService.parseBastuzhiExcel(file.getFile());
+            file.getFile().delete(); //清除上传文件
+
+            renderJson(Result.success("文件解析完成")
+                    .putData("successCount", result.get("successCount"))
+                    .putData("failedRows", result.get("failedRows"))
+                    .putData("failedCount", result.get("failedCount"))
+                    .putData("totalRows", result.get("totalRows")));
+        } catch (Exception e) {
+            renderJson(Result.badRequest("文件解析失败: " + e.getMessage()));
         }
     }
 }

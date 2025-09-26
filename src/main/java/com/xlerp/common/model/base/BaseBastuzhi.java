@@ -157,5 +157,13 @@ public abstract class BaseBastuzhi<M extends BaseBastuzhi<M>> extends Model<M> i
 		return getStr("tuzhiurl");
 	}
 	
+	public void setIsdelete(java.lang.Integer isdelete) {
+		set("isdelete", isdelete);
+	}
+	
+	public java.lang.Integer getIsdelete() {
+		return getInt("isdelete");
+	}
+	
 }
 
