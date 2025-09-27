@@ -16,62 +16,41 @@ public class LdService {
     /**
      * 分页查询铝锭数据
      */
-    public Page<ClLd> paginate(int pageNumber, int pageSize, String mafactory, String inNo,
-                               String matMaterial, String matRecheckNo, String contractNo,
-                               String contractName,String material,String type ,String status) {
+    public Page<ClLd> paginate(int pageNumber, int pageSize, String mafactory, String matRecheckNo, String contractNo,
+                               String contractName, String material, String type, String status) {
         String select = "select *";
-        StringBuilder from = new StringBuilder(" from cl_ld");
+        StringBuilder from = new StringBuilder(" from cl_ld where 1 = 1");
         List<Object> params = new java.util.ArrayList<>();
 
         // 添加搜索条件
-        boolean hasCondition = false;
         if (mafactory != null && !mafactory.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" mafactory like ?");
+            from.append(" and mafactory like ?");
             params.add("%" + mafactory + "%");
-            hasCondition = true;
-        }
-        if (inNo != null && !inNo.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" inNo like ?");
-            params.add("%" + inNo + "%");
-            hasCondition = true;
-        }
-        if (matMaterial != null && !matMaterial.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" matMaterial like ?");
-            params.add("%" + matMaterial + "%");
-            hasCondition = true;
         }
         if (matRecheckNo != null && !matRecheckNo.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" matRecheckNo like ?");
+            from.append(" and matRecheckNo like ?");
             params.add("%" + matRecheckNo + "%");
-            hasCondition = true;
         }
         if (contractNo != null && !contractNo.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" contractNo like ?");
+            from.append(" and contractNo like ?");
             params.add("%" + contractNo + "%");
-            hasCondition = true;
         }
         if (contractName != null && !contractName.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" contractName like ?");
+            from.append(" and contractName like ?");
             params.add("%" + contractName + "%");
-            hasCondition = true;
         }
         if (material != null && !material.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" material like ?");
+            from.append(" and material like ?");
             params.add("%" + material + "%");
-            hasCondition = true;
         }
         if (type != null && !type.trim().isEmpty()) {
-            from.append(hasCondition ? " and" : " where").append(" type like ?");
+            from.append(" and type like ?");
             params.add("%" + type + "%");
-            hasCondition = true;
         }
         if (status != null && !status.trim().isEmpty()) {
-            //应该判断是否大于这个状态从10-50
-            from.append(hasCondition ? " and" : " where").append(" status >= ?");
+            from.append(" and status >= ?");
             params.add(status);
-            hasCondition = true;
         }
-
 
         from.append(" order by id desc");
 

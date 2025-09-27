@@ -28,8 +28,6 @@ public class LdController extends Controller {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String mafactory = getPara("mafactory");
-        String inNo = getPara("inNo");
-        String matMaterial = getPara("matMaterial");
         String matRecheckNo = getPara("matRecheckNo");
         String contractNo = getPara("contractNo");
         String contractName = getPara("contractName");
@@ -49,7 +47,7 @@ public class LdController extends Controller {
             }
 
             // 查询铝锭数据分页
-            Page<ClLd> page = ldService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo, contractNo, contractName, material, type, status);
+            Page<ClLd> page = ldService.paginate(pageNum, pageSz, mafactory, matRecheckNo, contractNo, contractName, material, type, status);
             renderJson(Result.success("铝锭数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
