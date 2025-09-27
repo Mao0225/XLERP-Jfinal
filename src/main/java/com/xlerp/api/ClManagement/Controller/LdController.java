@@ -172,11 +172,12 @@ public class LdController extends Controller {
     public void updateStatus() {
         String id = getPara("id");
         String status = getPara("status");
+        String updatePerson = getPara("updatePerson");
         if (id == null || id.trim ().isEmpty ()) {
             renderJson (Result.badRequest ("记录 ID 不能为空"));
         }
         try {
-            boolean success = ldService.updateStatus(id,status);
+            boolean success = ldService.updateStatus(id,status,updatePerson);
             if (success) {
                 renderJson(Result.success("状态更新成功"));
             }
