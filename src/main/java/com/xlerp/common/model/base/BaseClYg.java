@@ -17,26 +17,44 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 		return getLong("id");
 	}
 	
+	/**
+	 * 复检单号
+	 */
 	public void setMatRecheckNo(java.lang.String matRecheckNo) {
 		set("matRecheckNo", matRecheckNo);
 	}
 	
+	/**
+	 * 复检单号
+	 */
 	public java.lang.String getMatRecheckNo() {
 		return getStr("matRecheckNo");
 	}
 	
+	/**
+	 * 原材料制造商
+	 */
 	public void setMafactory(java.lang.String mafactory) {
 		set("mafactory", mafactory);
 	}
 	
+	/**
+	 * 原材料制造商
+	 */
 	public java.lang.String getMafactory() {
 		return getStr("mafactory");
 	}
 	
+	/**
+	 * 牌号
+	 */
 	public void setMatMaterial(java.lang.String matMaterial) {
 		set("matMaterial", matMaterial);
 	}
 	
+	/**
+	 * 牌号
+	 */
 	public java.lang.String getMatMaterial() {
 		return getStr("matMaterial");
 	}
@@ -167,34 +185,30 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 		return getStr("certificate");
 	}
 	
-	public void setWriter(java.lang.String writer) {
-		set("writer", writer);
-	}
-	
-	public java.lang.String getWriter() {
-		return getStr("writer");
-	}
-	
-	public void setWriteTime(java.util.Date writeTime) {
-		set("writeTime", writeTime);
-	}
-	
-	public java.util.Date getWriteTime() {
-		return getDate("writeTime");
-	}
-	
+	/**
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
+	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
+	/**
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
+	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
 	}
 	
+	/**
+	 * 请检单备注
+	 */
 	public void setMemo(java.lang.String memo) {
 		set("memo", memo);
 	}
 	
+	/**
+	 * 请检单备注
+	 */
 	public java.lang.String getMemo() {
 		return getStr("memo");
 	}
@@ -235,10 +249,16 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 		return getStr("quantity");
 	}
 	
+	/**
+	 * 总抽检数量
+	 */
 	public void setSampleQuantity(java.lang.String sampleQuantity) {
 		set("sampleQuantity", sampleQuantity);
 	}
 	
+	/**
+	 * 总抽检数量
+	 */
 	public java.lang.String getSampleQuantity() {
 		return getStr("sampleQuantity");
 	}
@@ -279,34 +299,6 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 	 */
 	public java.lang.String getAppearanceSize() {
 		return getStr("appearanceSize");
-	}
-	
-	/**
-	 * 审核人
-	 */
-	public void setAuditor(java.lang.String auditor) {
-		set("auditor", auditor);
-	}
-	
-	/**
-	 * 审核人
-	 */
-	public java.lang.String getAuditor() {
-		return getStr("auditor");
-	}
-	
-	/**
-	 * 检验人
-	 */
-	public void setChecker(java.lang.String checker) {
-		set("checker", checker);
-	}
-	
-	/**
-	 * 检验人
-	 */
-	public java.lang.String getChecker() {
-		return getStr("checker");
 	}
 	
 	/**
@@ -405,6 +397,356 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 	 */
 	public java.lang.String getLength() {
 		return getStr("length");
+	}
+	
+	/**
+	 * 合同编号
+	 */
+	public void setContractNo(java.lang.String contractNo) {
+		set("contractNo", contractNo);
+	}
+	
+	/**
+	 * 合同编号
+	 */
+	public java.lang.String getContractNo() {
+		return getStr("contractNo");
+	}
+	
+	/**
+	 * 合同名称
+	 */
+	public void setContractName(java.lang.String contractName) {
+		set("contractName", contractName);
+	}
+	
+	/**
+	 * 合同名称
+	 */
+	public java.lang.String getContractName() {
+		return getStr("contractName");
+	}
+	
+	/**
+	 * 送货数量
+	 */
+	public void setDeliveryQuantity(java.math.BigDecimal deliveryQuantity) {
+		set("deliveryQuantity", deliveryQuantity);
+	}
+	
+	/**
+	 * 送货数量
+	 */
+	public java.math.BigDecimal getDeliveryQuantity() {
+		return get("deliveryQuantity");
+	}
+	
+	/**
+	 * 验收数量
+	 */
+	public void setAcceptQuantity(java.math.BigDecimal acceptQuantity) {
+		set("acceptQuantity", acceptQuantity);
+	}
+	
+	/**
+	 * 验收数量
+	 */
+	public java.math.BigDecimal getAcceptQuantity() {
+		return get("acceptQuantity");
+	}
+	
+	/**
+	 * 最终检验结论（合格/不合格/复检等）
+	 */
+	public void setFinalConclusion(java.lang.String finalConclusion) {
+		set("finalConclusion", finalConclusion);
+	}
+	
+	/**
+	 * 最终检验结论（合格/不合格/复检等）
+	 */
+	public java.lang.String getFinalConclusion() {
+		return getStr("finalConclusion");
+	}
+	
+	/**
+	 * 入库时间
+	 */
+	public void setStorageTime(java.util.Date storageTime) {
+		set("storageTime", storageTime);
+	}
+	
+	/**
+	 * 入库时间
+	 */
+	public java.util.Date getStorageTime() {
+		return getDate("storageTime");
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public void setCheckMemo(java.lang.String checkMemo) {
+		set("checkMemo", checkMemo);
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public java.lang.String getCheckMemo() {
+		return getStr("checkMemo");
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public void setCompInspQty(java.math.BigDecimal compInspQty) {
+		set("compInspQty", compInspQty);
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public java.math.BigDecimal getCompInspQty() {
+		return get("compInspQty");
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public void setMeInspQty(java.math.BigDecimal meInspQty) {
+		set("meInspQty", meInspQty);
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public java.math.BigDecimal getMeInspQty() {
+		return get("meInspQty");
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public void setBatchNum(java.lang.String batchNum) {
+		set("batchNum", batchNum);
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public java.lang.String getBatchNum() {
+		return getStr("batchNum");
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public void setRequestAuditor(java.lang.String requestAuditor) {
+		set("requestAuditor", requestAuditor);
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public java.lang.String getRequestAuditor() {
+		return getStr("requestAuditor");
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public void setUnit(java.lang.String unit) {
+		set("unit", unit);
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public java.lang.String getUnit() {
+		return getStr("unit");
+	}
+	
+	/**
+	 * 化学成分要求值-C
+	 */
+	public void setChemCRequired(java.math.BigDecimal chemCRequired) {
+		set("chemCRequired", chemCRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-C
+	 */
+	public java.math.BigDecimal getChemCRequired() {
+		return get("chemCRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Si
+	 */
+	public void setChemSiRequired(java.math.BigDecimal chemSiRequired) {
+		set("chemSiRequired", chemSiRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Si
+	 */
+	public java.math.BigDecimal getChemSiRequired() {
+		return get("chemSiRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Mn
+	 */
+	public void setChemMnRequired(java.math.BigDecimal chemMnRequired) {
+		set("chemMnRequired", chemMnRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Mn
+	 */
+	public java.math.BigDecimal getChemMnRequired() {
+		return get("chemMnRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-P
+	 */
+	public void setChemPRequired(java.math.BigDecimal chemPRequired) {
+		set("chemPRequired", chemPRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-P
+	 */
+	public java.math.BigDecimal getChemPRequired() {
+		return get("chemPRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-S
+	 */
+	public void setChemSRequired(java.math.BigDecimal chemSRequired) {
+		set("chemSRequired", chemSRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-S
+	 */
+	public java.math.BigDecimal getChemSRequired() {
+		return get("chemSRequired");
+	}
+	
+	/**
+	 * 请检单录入人
+	 */
+	public void setRequestWriter(java.lang.String requestWriter) {
+		set("requestWriter", requestWriter);
+	}
+	
+	/**
+	 * 请检单录入人
+	 */
+	public java.lang.String getRequestWriter() {
+		return getStr("requestWriter");
+	}
+	
+	/**
+	 * 请检单录入时间
+	 */
+	public void setWriteTime(java.util.Date writeTime) {
+		set("writeTime", writeTime);
+	}
+	
+	/**
+	 * 请检单录入时间
+	 */
+	public java.util.Date getWriteTime() {
+		return getDate("writeTime");
+	}
+	
+	/**
+	 * 检验完成审核人
+	 */
+	public void setCheckAuditor(java.lang.String checkAuditor) {
+		set("checkAuditor", checkAuditor);
+	}
+	
+	/**
+	 * 检验完成审核人
+	 */
+	public java.lang.String getCheckAuditor() {
+		return getStr("checkAuditor");
+	}
+	
+	/**
+	 * 检验数据录入人
+	 */
+	public void setCheckWriter(java.lang.String checkWriter) {
+		set("checkWriter", checkWriter);
+	}
+	
+	/**
+	 * 检验数据录入人
+	 */
+	public java.lang.String getCheckWriter() {
+		return getStr("checkWriter");
+	}
+	
+	/**
+	 * 检验完成时间
+	 */
+	public void setCheckFinishTime(java.util.Date checkFinishTime) {
+		set("checkFinishTime", checkFinishTime);
+	}
+	
+	/**
+	 * 检验完成时间
+	 */
+	public java.util.Date getCheckFinishTime() {
+		return getDate("checkFinishTime");
+	}
+	
+	/**
+	 * 抗拉强度要求值
+	 */
+	public void setMechtensileStrengthRequired(java.math.BigDecimal mechtensileStrengthRequired) {
+		set("mechtensileStrengthRequired", mechtensileStrengthRequired);
+	}
+	
+	/**
+	 * 抗拉强度要求值
+	 */
+	public java.math.BigDecimal getMechtensileStrengthRequired() {
+		return get("mechtensileStrengthRequired");
+	}
+	
+	/**
+	 * 屈服强度要求值
+	 */
+	public void setMechyieldStrengthRequired(java.math.BigDecimal mechyieldStrengthRequired) {
+		set("mechyieldStrengthRequired", mechyieldStrengthRequired);
+	}
+	
+	/**
+	 * 屈服强度要求值
+	 */
+	public java.math.BigDecimal getMechyieldStrengthRequired() {
+		return get("mechyieldStrengthRequired");
+	}
+	
+	/**
+	 * 断后伸长率要求值
+	 */
+	public void setMechelongationRequired(java.math.BigDecimal mechelongationRequired) {
+		set("mechelongationRequired", mechelongationRequired);
+	}
+	
+	/**
+	 * 断后伸长率要求值
+	 */
+	public java.math.BigDecimal getMechelongationRequired() {
+		return get("mechelongationRequired");
 	}
 	
 }

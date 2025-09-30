@@ -28,9 +28,12 @@ public class WfgController extends Controller {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String mafactory = getPara("mafactory");
-        String inNo = getPara("inNo");
-        String matMaterial = getPara("matMaterial");
         String matRecheckNo = getPara("matRecheckNo");
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String material = getPara("material");
+        String type = getPara("type");
+        String status = getPara("status");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -42,7 +45,7 @@ public class WfgController extends Controller {
             }
 
             // 查询铝锭数据分页
-            Page<ClWfg> page = wfgService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo);
+            Page<ClWfg> page = wfgService.paginate(pageNum, pageSz, mafactory, matRecheckNo, contractNo, contractName, material, type, status);
             renderJson(Result.success("无缝管数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -157,6 +160,28 @@ public class WfgController extends Controller {
             renderJson (Result.badRequest ("无缝管记录ID格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("批量删除无缝管记录时发生错误:" + e.getMessage ()));
+        }
+    }
+    @ActionKey("/cl_wfg/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        String updatePerson = getPara("updatePerson");
+        if (id == null || id.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = wfgService.updateStatus(id,status,updatePerson);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            }
+            else {
+                renderJson(Result.badRequest("更新状态失败"));
+            }
+        }
+        catch (Exception e) {
+            renderJson (Result.serverError ("更新状态时发生错误:" + e.getMessage ()));
         }
     }
 }

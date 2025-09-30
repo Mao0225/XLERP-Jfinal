@@ -24,14 +24,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 复检单号？来料检验批次号
+	 * 复检单号
 	 */
 	public void setMatRecheckNo(java.lang.String matRecheckNo) {
 		set("matRecheckNo", matRecheckNo);
 	}
 	
 	/**
-	 * 复检单号？来料检验批次号
+	 * 复检单号
 	 */
 	public java.lang.String getMatRecheckNo() {
 		return getStr("matRecheckNo");
@@ -63,20 +63,6 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	 */
 	public java.lang.String getMatMaterial() {
 		return getStr("matMaterial");
-	}
-	
-	/**
-	 * 入库编号
-	 */
-	public void setInNo(java.lang.String inNo) {
-		set("inNo", inNo);
-	}
-	
-	/**
-	 * 入库编号
-	 */
-	public java.lang.String getInNo() {
-		return getStr("inNo");
 	}
 	
 	/**
@@ -402,14 +388,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过待入库，60确认入库，待审核，70审核入库通过入库成功
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
 	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过待入库，60确认入库，待审核，70审核入库通过入库成功
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
 	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
@@ -430,14 +416,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 单据号
+	 * 单据号，录入请检单用
 	 */
 	public void setBasNo(java.lang.String basNo) {
 		set("basNo", basNo);
 	}
 	
 	/**
-	 * 单据号
+	 * 单据号，录入请检单用
 	 */
 	public java.lang.String getBasNo() {
 		return getStr("basNo");
@@ -458,14 +444,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 抽检数量总
+	 * 总抽检数量
 	 */
 	public void setSampleQuantity(java.math.BigDecimal sampleQuantity) {
 		set("sampleQuantity", sampleQuantity);
 	}
 	
 	/**
-	 * 抽检数量总
+	 * 总抽检数量
 	 */
 	public java.math.BigDecimal getSampleQuantity() {
 		return get("sampleQuantity");
@@ -514,14 +500,14 @@ public abstract class BaseClLd<M extends BaseClLd<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 外观尺寸
+	 * 外观尺寸是否合格
 	 */
 	public void setAppearanceSize(java.lang.String appearanceSize) {
 		set("appearanceSize", appearanceSize);
 	}
 	
 	/**
-	 * 外观尺寸
+	 * 外观尺寸是否合格
 	 */
 	public java.lang.String getAppearanceSize() {
 		return getStr("appearanceSize");

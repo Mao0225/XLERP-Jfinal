@@ -18,14 +18,14 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 来料检验批次号
+	 * 复检单号
 	 */
 	public void setMatRecheckNo(java.lang.String matRecheckNo) {
 		set("matRecheckNo", matRecheckNo);
 	}
 	
 	/**
-	 * 来料检验批次号
+	 * 复检单号
 	 */
 	public java.lang.String getMatRecheckNo() {
 		return getStr("matRecheckNo");
@@ -60,112 +60,98 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 入库单号
-	 */
-	public void setInNo(java.lang.String inNo) {
-		set("inNo", inNo);
-	}
-	
-	/**
-	 * 入库单号
-	 */
-	public java.lang.String getInNo() {
-		return getStr("inNo");
-	}
-	
-	/**
-	 * 化学成分分析-C
+	 * 化学成分实测值-C
 	 */
 	public void setChemC(java.math.BigDecimal chemC) {
 		set("chemC", chemC);
 	}
 	
 	/**
-	 * 化学成分分析-C
+	 * 化学成分实测值-C
 	 */
 	public java.math.BigDecimal getChemC() {
 		return get("chemC");
 	}
 	
 	/**
-	 * 化学成分分析-Si
+	 * 化学成分实测值-Si
 	 */
 	public void setChemSi(java.math.BigDecimal chemSi) {
 		set("chemSi", chemSi);
 	}
 	
 	/**
-	 * 化学成分分析-Si
+	 * 化学成分实测值-Si
 	 */
 	public java.math.BigDecimal getChemSi() {
 		return get("chemSi");
 	}
 	
 	/**
-	 * 化学成分分析-Mn
+	 * 化学成分实测值-Mn
 	 */
 	public void setChemMn(java.math.BigDecimal chemMn) {
 		set("chemMn", chemMn);
 	}
 	
 	/**
-	 * 化学成分分析-Mn
+	 * 化学成分实测值-Mn
 	 */
 	public java.math.BigDecimal getChemMn() {
 		return get("chemMn");
 	}
 	
 	/**
-	 * 化学成分分析-P
+	 * 化学成分实测值-P
 	 */
 	public void setChemP(java.math.BigDecimal chemP) {
 		set("chemP", chemP);
 	}
 	
 	/**
-	 * 化学成分分析-P
+	 * 化学成分实测值-P
 	 */
 	public java.math.BigDecimal getChemP() {
 		return get("chemP");
 	}
 	
 	/**
-	 * 化学成分分析-S
+	 * 化学成分实测值-S
 	 */
 	public void setChemS(java.math.BigDecimal chemS) {
 		set("chemS", chemS);
 	}
 	
 	/**
-	 * 化学成分分析-S
+	 * 化学成分实测值-S
 	 */
 	public java.math.BigDecimal getChemS() {
 		return get("chemS");
 	}
 	
 	/**
-	 * 化学成分分析-Cr
+	 * 化学成分实测值-Cr
 	 */
 	public void setChemCr(java.math.BigDecimal chemCr) {
 		set("chemCr", chemCr);
 	}
 	
 	/**
-	 * 化学成分分析-Cr
+	 * 化学成分实测值-Cr
 	 */
 	public java.math.BigDecimal getChemCr() {
 		return get("chemCr");
 	}
 	
 	/**
-	 * 化学成分分析-Ni
+	 * 化学成分实测值-Ni
 	 */
 	public void setChemNi(java.math.BigDecimal chemNi) {
 		set("chemNi", chemNi);
 	}
 	
 	/**
-	 * 化学成分分析-Ni
+	 * 化学成分实测值-Ni
 	 */
 	public java.math.BigDecimal getChemNi() {
 		return get("chemNi");
@@ -214,17 +200,17 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 录入人-登录用户
+	 * 请检单录入人
 	 */
-	public void setWriter(java.lang.String writer) {
-		set("writer", writer);
+	public void setRequestWriter(java.lang.String requestWriter) {
+		set("requestWriter", requestWriter);
 	}
 	
 	/**
-	 * 录入人-登录用户
+	 * 请检单录入人
 	 */
-	public java.lang.String getWriter() {
-		return getStr("writer");
+	public java.lang.String getRequestWriter() {
+		return getStr("requestWriter");
 	}
 	
 	/**
@@ -241,34 +227,32 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 		return getDate("writeTime");
 	}
 	
+	/**
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
+	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
+	/**
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
+	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
 	}
 	
+	/**
+	 * 请检单备注
+	 */
 	public void setMemo(java.lang.String memo) {
 		set("memo", memo);
 	}
 	
+	/**
+	 * 请检单备注
+	 */
 	public java.lang.String getMemo() {
 		return getStr("memo");
-	}
-	
-	/**
-	 * 单据号
-	 */
-	public void setBasno(java.lang.String basno) {
-		set("basno", basno);
-	}
-	
-	/**
-	 * 单据号
-	 */
-	public java.lang.String getBasno() {
-		return getStr("basno");
 	}
 	
 	/**
@@ -286,31 +270,17 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 数量
+	 * 总抽检数量
 	 */
-	public void setQuantity(java.lang.String quantity) {
-		set("quantity", quantity);
-	}
-	
-	/**
-	 * 数量
-	 */
-	public java.lang.String getQuantity() {
-		return getStr("quantity");
-	}
-	
-	/**
-	 * 抽检数量
-	 */
-	public void setSampleQuantity(java.lang.String sampleQuantity) {
+	public void setSampleQuantity(java.math.BigDecimal sampleQuantity) {
 		set("sampleQuantity", sampleQuantity);
 	}
 	
 	/**
-	 * 抽检数量
+	 * 总抽检数量
 	 */
-	public java.lang.String getSampleQuantity() {
-		return getStr("sampleQuantity");
+	public java.math.BigDecimal getSampleQuantity() {
+		return get("sampleQuantity");
 	}
 	
 	/**
@@ -370,115 +340,521 @@ public abstract class BaseClWfg<M extends BaseClWfg<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 审核人
+	 * 检验完成审核人
 	 */
-	public void setAuditor(java.lang.String auditor) {
-		set("auditor", auditor);
+	public void setCheckAuditor(java.lang.String checkAuditor) {
+		set("checkAuditor", checkAuditor);
 	}
 	
 	/**
-	 * 审核人
+	 * 检验完成审核人
 	 */
-	public java.lang.String getAuditor() {
-		return getStr("auditor");
+	public java.lang.String getCheckAuditor() {
+		return getStr("checkAuditor");
 	}
 	
 	/**
-	 * 检验人
+	 * 检验数据录入人
 	 */
-	public void setChecker(java.lang.String checker) {
-		set("checker", checker);
+	public void setCheckWriter(java.lang.String checkWriter) {
+		set("checkWriter", checkWriter);
 	}
 	
 	/**
-	 * 检验人
+	 * 检验数据录入人
 	 */
-	public java.lang.String getChecker() {
-		return getStr("checker");
+	public java.lang.String getCheckWriter() {
+		return getStr("checkWriter");
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度测量值1#
 	 */
-	public void setTensileStrength(java.lang.String tensileStrength) {
-		set("tensileStrength", tensileStrength);
+	public void setTensileStrength1(java.lang.String tensileStrength1) {
+		set("tensileStrength1", tensileStrength1);
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度测量值1#
 	 */
-	public java.lang.String getTensileStrength() {
-		return getStr("tensileStrength");
+	public java.lang.String getTensileStrength1() {
+		return getStr("tensileStrength1");
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度测量值1#
 	 */
-	public void setYieldStrength(java.lang.String yieldStrength) {
-		set("yieldStrength", yieldStrength);
+	public void setYieldStrength1(java.lang.String yieldStrength1) {
+		set("yieldStrength1", yieldStrength1);
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度测量值1#
 	 */
-	public java.lang.String getYieldStrength() {
-		return getStr("yieldStrength");
+	public java.lang.String getYieldStrength1() {
+		return getStr("yieldStrength1");
 	}
 	
 	/**
-	 * 延伸率
+	 * 延伸率测量值1#
 	 */
-	public void setElongation(java.lang.String elongation) {
-		set("elongation", elongation);
+	public void setElongation1(java.lang.String elongation1) {
+		set("elongation1", elongation1);
 	}
 	
 	/**
-	 * 延伸率
+	 * 延伸率测量值1#
 	 */
-	public java.lang.String getElongation() {
-		return getStr("elongation");
+	public java.lang.String getElongation1() {
+		return getStr("elongation1");
 	}
 	
 	/**
-	 * 冲击测试1#
+	 * 检验完成时间
 	 */
-	public void setImpact1(java.lang.String impact1) {
-		set("impact1", impact1);
+	public void setCheckFinishTime(java.util.Date checkFinishTime) {
+		set("checkFinishTime", checkFinishTime);
 	}
 	
 	/**
-	 * 冲击测试1#
+	 * 检验完成时间
 	 */
-	public java.lang.String getImpact1() {
-		return getStr("impact1");
+	public java.util.Date getCheckFinishTime() {
+		return getDate("checkFinishTime");
 	}
 	
 	/**
-	 * 冲击测试2#
+	 * 合同编号
 	 */
-	public void setImpact2(java.lang.String impact2) {
-		set("impact2", impact2);
+	public void setContractNo(java.lang.String contractNo) {
+		set("contractNo", contractNo);
 	}
 	
 	/**
-	 * 冲击测试2#
+	 * 合同编号
 	 */
-	public java.lang.String getImpact2() {
-		return getStr("impact2");
+	public java.lang.String getContractNo() {
+		return getStr("contractNo");
 	}
 	
 	/**
-	 * 冲击测试3#
+	 * 合同名称
 	 */
-	public void setImpact3(java.lang.String impact3) {
-		set("impact3", impact3);
+	public void setContractName(java.lang.String contractName) {
+		set("contractName", contractName);
 	}
 	
 	/**
-	 * 冲击测试3#
+	 * 合同名称
 	 */
-	public java.lang.String getImpact3() {
-		return getStr("impact3");
+	public java.lang.String getContractName() {
+		return getStr("contractName");
+	}
+	
+	/**
+	 * 送货数量
+	 */
+	public void setDeliveryQuantity(java.math.BigDecimal deliveryQuantity) {
+		set("deliveryQuantity", deliveryQuantity);
+	}
+	
+	/**
+	 * 送货数量
+	 */
+	public java.math.BigDecimal getDeliveryQuantity() {
+		return get("deliveryQuantity");
+	}
+	
+	/**
+	 * 验收数量
+	 */
+	public void setAcceptQuantity(java.math.BigDecimal acceptQuantity) {
+		set("acceptQuantity", acceptQuantity);
+	}
+	
+	/**
+	 * 验收数量
+	 */
+	public java.math.BigDecimal getAcceptQuantity() {
+		return get("acceptQuantity");
+	}
+	
+	/**
+	 * 最终检验结论（合格/不合格/复检等）
+	 */
+	public void setFinalConclusion(java.lang.String finalConclusion) {
+		set("finalConclusion", finalConclusion);
+	}
+	
+	/**
+	 * 最终检验结论（合格/不合格/复检等）
+	 */
+	public java.lang.String getFinalConclusion() {
+		return getStr("finalConclusion");
+	}
+	
+	/**
+	 * 入库时间
+	 */
+	public void setStorageTime(java.util.Date storageTime) {
+		set("storageTime", storageTime);
+	}
+	
+	/**
+	 * 入库时间
+	 */
+	public java.util.Date getStorageTime() {
+		return getDate("storageTime");
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public void setCheckMemo(java.lang.String checkMemo) {
+		set("checkMemo", checkMemo);
+	}
+	
+	/**
+	 * 检验数据备注
+	 */
+	public java.lang.String getCheckMemo() {
+		return getStr("checkMemo");
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public void setCompInspQty(java.math.BigDecimal compInspQty) {
+		set("compInspQty", compInspQty);
+	}
+	
+	/**
+	 * 成分检验抽检数量，默认为一件
+	 */
+	public java.math.BigDecimal getCompInspQty() {
+		return get("compInspQty");
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public void setMechInspQty(java.math.BigDecimal mechInspQty) {
+		set("mechInspQty", mechInspQty);
+	}
+	
+	/**
+	 * 力学性能检验抽检数量，默认为三件
+	 */
+	public java.math.BigDecimal getMechInspQty() {
+		return get("mechInspQty");
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public void setBatchNum(java.lang.String batchNum) {
+		set("batchNum", batchNum);
+	}
+	
+	/**
+	 * 批次号
+	 */
+	public java.lang.String getBatchNum() {
+		return getStr("batchNum");
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public void setRequestAuditor(java.lang.String requestAuditor) {
+		set("requestAuditor", requestAuditor);
+	}
+	
+	/**
+	 * 请检单审核人
+	 */
+	public java.lang.String getRequestAuditor() {
+		return getStr("requestAuditor");
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public void setUnit(java.lang.String unit) {
+		set("unit", unit);
+	}
+	
+	/**
+	 * 单位，请检单用默认为kg
+	 */
+	public java.lang.String getUnit() {
+		return getStr("unit");
+	}
+	
+	/**
+	 * 化学成分实测值-Cu
+	 */
+	public void setChemCu(java.math.BigDecimal chemCu) {
+		set("chemCu", chemCu);
+	}
+	
+	/**
+	 * 化学成分实测值-Cu
+	 */
+	public java.math.BigDecimal getChemCu() {
+		return get("chemCu");
+	}
+	
+	/**
+	 * 化学成分要求值-Cu
+	 */
+	public void setChemCuRequired(java.lang.String chemCuRequired) {
+		set("chemCuRequired", chemCuRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Cu
+	 */
+	public java.lang.String getChemCuRequired() {
+		return getStr("chemCuRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-C
+	 */
+	public void setChemCRequired(java.lang.String chemCRequired) {
+		set("chemCRequired", chemCRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-C
+	 */
+	public java.lang.String getChemCRequired() {
+		return getStr("chemCRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Si
+	 */
+	public void setChemSiRequired(java.lang.String chemSiRequired) {
+		set("chemSiRequired", chemSiRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Si
+	 */
+	public java.lang.String getChemSiRequired() {
+		return getStr("chemSiRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Mn
+	 */
+	public void setChemMnRequired(java.lang.String chemMnRequired) {
+		set("chemMnRequired", chemMnRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Mn
+	 */
+	public java.lang.String getChemMnRequired() {
+		return getStr("chemMnRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-P
+	 */
+	public void setChemPRequired(java.lang.String chemPRequired) {
+		set("chemPRequired", chemPRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-P
+	 */
+	public java.lang.String getChemPRequired() {
+		return getStr("chemPRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-S
+	 */
+	public void setChemSRequired(java.lang.String chemSRequired) {
+		set("chemSRequired", chemSRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-S
+	 */
+	public java.lang.String getChemSRequired() {
+		return getStr("chemSRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Cr
+	 */
+	public void setChemCrRequired(java.lang.String chemCrRequired) {
+		set("chemCrRequired", chemCrRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Cr
+	 */
+	public java.lang.String getChemCrRequired() {
+		return getStr("chemCrRequired");
+	}
+	
+	/**
+	 * 化学成分要求值-Ni
+	 */
+	public void setChemNiRequired(java.lang.String chemNiRequired) {
+		set("chemNiRequired", chemNiRequired);
+	}
+	
+	/**
+	 * 化学成分要求值-Ni
+	 */
+	public java.lang.String getChemNiRequired() {
+		return getStr("chemNiRequired");
+	}
+	
+	/**
+	 * 抗拉强度要求值
+	 */
+	public void setTensileStrengthRequired(java.lang.String tensileStrengthRequired) {
+		set("tensileStrengthRequired", tensileStrengthRequired);
+	}
+	
+	/**
+	 * 抗拉强度要求值
+	 */
+	public java.lang.String getTensileStrengthRequired() {
+		return getStr("tensileStrengthRequired");
+	}
+	
+	/**
+	 * 屈服强度要求值
+	 */
+	public void setYieldStrengthRequired(java.lang.String yieldStrengthRequired) {
+		set("yieldStrengthRequired", yieldStrengthRequired);
+	}
+	
+	/**
+	 * 屈服强度要求值
+	 */
+	public java.lang.String getYieldStrengthRequired() {
+		return getStr("yieldStrengthRequired");
+	}
+	
+	/**
+	 * 延伸率要求值
+	 */
+	public void setElongationRequired(java.lang.String elongationRequired) {
+		set("elongationRequired", elongationRequired);
+	}
+	
+	/**
+	 * 延伸率要求值
+	 */
+	public java.lang.String getElongationRequired() {
+		return getStr("elongationRequired");
+	}
+	
+	/**
+	 * 单据号，录入请检单用
+	 */
+	public void setBasNo(java.lang.String basNo) {
+		set("basNo", basNo);
+	}
+	
+	/**
+	 * 单据号，录入请检单用
+	 */
+	public java.lang.String getBasNo() {
+		return getStr("basNo");
+	}
+	
+	/**
+	 * 抗拉强度测量值2#
+	 */
+	public void setTensileStrength2(java.lang.String tensileStrength2) {
+		set("tensileStrength2", tensileStrength2);
+	}
+	
+	/**
+	 * 抗拉强度测量值2#
+	 */
+	public java.lang.String getTensileStrength2() {
+		return getStr("tensileStrength2");
+	}
+	
+	/**
+	 * 抗拉强度测量值3#
+	 */
+	public void setTensileStrength3(java.lang.String tensileStrength3) {
+		set("tensileStrength3", tensileStrength3);
+	}
+	
+	/**
+	 * 抗拉强度测量值3#
+	 */
+	public java.lang.String getTensileStrength3() {
+		return getStr("tensileStrength3");
+	}
+	
+	/**
+	 * 屈服强度测量值2#
+	 */
+	public void setYieldStrength2(java.lang.String yieldStrength2) {
+		set("yieldStrength2", yieldStrength2);
+	}
+	
+	/**
+	 * 屈服强度测量值2#
+	 */
+	public java.lang.String getYieldStrength2() {
+		return getStr("yieldStrength2");
+	}
+	
+	/**
+	 * 屈服强度测量值3#
+	 */
+	public void setYieldStrength3(java.lang.String yieldStrength3) {
+		set("yieldStrength3", yieldStrength3);
+	}
+	
+	/**
+	 * 屈服强度测量值3#
+	 */
+	public java.lang.String getYieldStrength3() {
+		return getStr("yieldStrength3");
+	}
+	
+	/**
+	 * 延伸率测量值2#
+	 */
+	public void setElongation2(java.lang.String elongation2) {
+		set("elongation2", elongation2);
+	}
+	
+	/**
+	 * 延伸率测量值2#
+	 */
+	public java.lang.String getElongation2() {
+		return getStr("elongation2");
+	}
+	
+	/**
+	 * 延伸率测量值3#
+	 */
+	public void setElongation3(java.lang.String elongation3) {
+		set("elongation3", elongation3);
+	}
+	
+	/**
+	 * 延伸率测量值3#
+	 */
+	public java.lang.String getElongation3() {
+		return getStr("elongation3");
 	}
 	
 }
