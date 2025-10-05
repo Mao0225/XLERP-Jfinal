@@ -159,6 +159,44 @@ public class XjController extends Controller {
         }
     }
 
+    /**
+     * 根据状态统计橡胶检验记录数量
+     */
+    @ActionKey("/cl_xj/countByStatus")
+    @HttpMethod("GET")
+    public void countByStatus() {
+        String status = getPara("status");
+        try {
+            long count = xjService.countByStatus(status);
+            renderJson(Result.success("统计成功").putData("count", count));
+        } catch (Exception e) {
+            renderJson(Result.serverError("统计橡胶检验记录数量时发生错误:" + e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 导出橡胶检验记录
+     */
+    @ActionKey("/cl_xj/export")
+    @HttpMethod("GET")
+    public void export() {
+        String mafactoryname = getPara("mafactoryname");
+        String matRecheckNo = getPara("matRecheckNo");
+        String contractno = getPara("contractno");
+        String material = getPara("material");
+        String mattype = getPara("mattype");
+        String status = getPara("status");
+
+        try {
+            List<ClXj> list = xjService.findForExport(mafactoryname, matRecheckNo, contractno, material, mattype, status);
+            // 导出逻辑实现
+            renderJson(Result.success("导出成功"));
+        } catch (Exception e) {
+            renderJson(Result.serverError("导出橡胶检验记录时发生错误:" + e.getMessage()));
+        }
+    }
+
     @ActionKey("/cl_xj/updateStatus")
     @HttpMethod("GET")
     public void updateStatus() {
