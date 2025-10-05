@@ -13,23 +13,24 @@ import com.xlerp.common.model.ClXj;  // 对应cl_xj表的模型类
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Before(HttpMethodInterceptor.class)
 public class XjController extends Controller {
-    // 使用xj服务类
     private final XjService xjService = new XjService();
 
     /**
-     * 分页查询xj数据
+     * 分页查询橡胶检验数据
      */
     @ActionKey("/cl_xj/getpage")
     @HttpMethod("GET")
     public void getpage() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
-        String inNo = getPara("inNo");
         String mafactoryname = getPara("mafactoryname");
-        String detectionTime = getPara("detectionTime");
+        String matRecheckNo = getPara("matRecheckNo");
+        String contractno = getPara("contractno");
+        String material = getPara("material");
+        String mattype = getPara("mattype");
+        String status = getPara("status");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -40,9 +41,8 @@ public class XjController extends Controller {
                 return;
             }
 
-            // 查询xj数据分页
-            Page<ClXj> page = xjService.paginate(pageNum, pageSz, inNo, mafactoryname, detectionTime);
-            renderJson(Result.success("xj数据查询成功").putData("page", page));
+            Page<ClXj> page = xjService.paginate(pageNum, pageSz, mafactoryname, matRecheckNo, contractno, material, mattype, status);
+            renderJson(Result.success("橡胶检验数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
@@ -54,19 +54,19 @@ public class XjController extends Controller {
         String id = getPara("id");
 
         if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("xj记录ID不能为空"));
+            renderJson(Result.badRequest("橡胶检验记录ID不能为空"));
             return;
         }
 
         try {
             ClXj xj = xjService.findById(Integer.parseInt(id));
             if (xj != null) {
-                renderJson(Result.success("xj记录查询成功").putData("record", xj));
+                renderJson(Result.success("橡胶检验记录查询成功").putData("record", xj));
             } else {
-                renderJson(Result.notFound("xj记录未找到或已被删除"));
+                renderJson(Result.notFound("橡胶检验记录未找到或已被删除"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("xj记录ID格式错误"));
+            renderJson(Result.badRequest("橡胶检验记录ID格式错误"));
         }
     }
 
@@ -76,12 +76,12 @@ public class XjController extends Controller {
         try {
             boolean success = xjService.save(xj);
             if (success) {
-                renderJson(Result.success("xj记录保存成功").putData("recordId", xj.getId()));
+                renderJson(Result.success("橡胶检验记录保存成功").putData("recordId", xj.getId()));
             } else {
-                renderJson(Result.serverError("xj记录保存失败"));
+                renderJson(Result.serverError("橡胶检验记录保存失败"));
             }
         } catch (Exception e) {
-            renderJson(Result.serverError("保存xj记录时发生错误:" + e.getMessage()));
+            renderJson(Result.serverError("保存橡胶检验记录时发生错误:" + e.getMessage()));
         }
     }
 
@@ -91,12 +91,12 @@ public class XjController extends Controller {
         try {
             boolean success = xjService.update(xj);
             if (success) {
-                renderJson(Result.success("xj记录更新成功"));
+                renderJson(Result.success("橡胶检验记录更新成功"));
             } else {
-                renderJson(Result.serverError("xj记录更新失败"));
+                renderJson(Result.serverError("橡胶检验记录更新失败"));
             }
         } catch (Exception e) {
-            renderJson(Result.serverError("更新xj记录时发生错误:" + e.getMessage()));
+            renderJson(Result.serverError("更新橡胶检验记录时发生错误:" + e.getMessage()));
         }
     }
 
@@ -106,21 +106,21 @@ public class XjController extends Controller {
         String id = getPara("id");
 
         if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("xj记录ID不能为空"));
+            renderJson(Result.badRequest("橡胶检验记录ID不能为空"));
             return;
         }
 
         try {
             boolean success = xjService.deleteById(Integer.parseInt(id.trim()));
             if (success) {
-                renderJson(Result.success("xj记录删除成功"));
+                renderJson(Result.success("橡胶检验记录删除成功"));
             } else {
-                renderJson(Result.notFound("xj记录不存在或删除失败"));
+                renderJson(Result.notFound("橡胶检验记录不存在或删除失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("xj记录ID格式错误"));
+            renderJson(Result.badRequest("橡胶检验记录ID格式错误"));
         } catch (Exception e) {
-            renderJson(Result.serverError("删除xj记录时发生错误:" + e.getMessage()));
+            renderJson(Result.serverError("删除橡胶检验记录时发生错误:" + e.getMessage()));
         }
     }
 
@@ -130,7 +130,7 @@ public class XjController extends Controller {
         String ids = getPara("ids");
 
         if (ids == null || ids.trim().isEmpty()) {
-            renderJson(Result.badRequest("xj记录ID列表不能为空"));
+            renderJson(Result.badRequest("橡胶检验记录ID列表不能为空"));
             return;
         }
 
@@ -142,20 +142,41 @@ public class XjController extends Controller {
                     .collect(Collectors.toList());
 
             if (idList.isEmpty()) {
-                renderJson(Result.badRequest("xj记录ID列表不能为空"));
+                renderJson(Result.badRequest("橡胶检验记录ID列表不能为空"));
                 return;
             }
 
             boolean success = xjService.batchDelete(idList);
             if (success) {
-                renderJson(Result.success("批量删除xj记录成功"));
+                renderJson(Result.success("批量删除橡胶检验记录成功"));
             } else {
-                renderJson(Result.serverError("批量删除xj记录失败"));
+                renderJson(Result.serverError("批量删除橡胶检验记录失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("xj记录ID格式错误"));
+            renderJson(Result.badRequest("橡胶检验记录ID格式错误"));
         } catch (Exception e) {
-            renderJson(Result.serverError("批量删除xj记录时发生错误:" + e.getMessage()));
+            renderJson(Result.serverError("批量删除橡胶检验记录时发生错误:" + e.getMessage()));
+        }
+    }
+
+    @ActionKey("/cl_xj/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        String updatePerson = getPara("updatePerson");
+        if (id == null || id.trim().isEmpty()) {
+            renderJson(Result.badRequest("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = xjService.updateStatus(id, status, updatePerson);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            } else {
+                renderJson(Result.badRequest("更新状态失败"));
+            }
+        } catch (Exception e) {
+            renderJson(Result.serverError("更新状态时发生错误:" + e.getMessage()));
         }
     }
 }
