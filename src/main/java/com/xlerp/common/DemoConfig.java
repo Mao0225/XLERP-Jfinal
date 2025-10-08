@@ -133,6 +133,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_xj", XjController.class);//刘国奇，增加，橡胶检测功能
 		me.add("/cl_bkx", BkxController.class);//闭口销--谭请赢
 
+		me.add("/cl_lhjx", LhjxController.class);//铝合金线--蒙千惠
+		me.add("/cl_tb", TbController.class);//张凌佳 --铜板
+
 
 	}
 
