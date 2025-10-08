@@ -20,12 +20,51 @@ public class TuzhiService {
     private static final Bastuzhi dao = new Bastuzhi().dao();
 
     public Page<Bastuzhi> paginate(int pageNumber, int pageSize, String tuzhimingcheng) {
-        String select = "select *";
-        StringBuilder from = new StringBuilder("from bastuzhi");
+        // 1. 构建SELECT子句句：列出bastuzhi所有字段 + 统计数量字段
+        String select = "select " +
+                "bastuzhi.id, " +
+                "bastuzhi.tuzhibianhao, " +
+                "bastuzhi.tuzhimingcheng, " +
+                "bastuzhi.tuzhizuozhe, " +
+                "bastuzhi.chuangzuoriqi, " +
+                "bastuzhi.tuzhimiaoshu, " +
+                "bastuzhi.memo, " +
+                "bastuzhi.flag, " +
+                "bastuzhi.type, " +
+                "bastuzhi.writer, " +
+                "bastuzhi.tuzhiurl, " +
+                "bastuzhi.isdelete, " +
+                "count(bastuzhicailiao.id) as zicailiaoshuliang";
+
+        // 2. 构建FROM子句：左连接bastuzhicailiao表 + 条件 + GROUP BY + ORDER BY
+        StringBuilder from = new StringBuilder();
+        from.append("from XLQCerp.bastuzhi ");  // 关联schema
+        from.append("left join xlqcerp.bastuzhicailiao on bastuzhi.id = bastuzhicailiao.tuzhiid ");  // 左连接关联
+
+        // 3. 处理查询条件（tuzhimingcheng模糊匹配）
         if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
-            from.append(" where tuzhimingcheng like ?");
+            from.append("where bastuzhi.tuzhimingcheng like ? ");  // 注意空格分隔
         }
-        from.append(" order by id desc");
+
+        // 4. 必须包含GROUP BY（达梦要求所有非聚合字段都在GROUP BY中）
+        from.append("group by " +
+                "bastuzhi.id, " +
+                "bastuzhi.tuzhibianhao, " +
+                "bastuzhi.tuzhimingcheng, " +
+                "bastuzhi.tuzhizuozhe, " +
+                "bastuzhi.chuangzuoriqi, " +
+                "bastuzhi.tuzhimiaoshu, " +
+                "bastuzhi.memo, " +
+                "bastuzhi.flag, " +
+                "bastuzhi.type, " +
+                "bastuzhi.writer, " +
+                "bastuzhi.tuzhiurl, " +
+                "bastuzhi.isdelete ");
+
+        // 5. 保持原排序逻辑（按id降序）
+        from.append("order by bastuzhi.id desc");
+
+        // 6. 分页查询（带条件或不带条件）
         if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
             return dao.paginate(pageNumber, pageSize, select, from.toString(), "%" + tuzhimingcheng + "%");
         } else {
