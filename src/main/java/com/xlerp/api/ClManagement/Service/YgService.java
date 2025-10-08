@@ -1,9 +1,13 @@
 package com.xlerp.api.ClManagement.Service;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.ClYg;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class YgService {
     // 数据库访问对象，对应cl_yg表
@@ -78,5 +82,34 @@ public class YgService {
      */
     public boolean batchDelete(List<Integer> ids) {
         return dao.deleteByIds(ids);
+    }
+
+    public boolean updateStatus(String id, String status, String updatePerson) {
+        // 合法状态和对应字段映射
+        Map<String, String> statusToField = new HashMap<>();
+        statusToField.put("30", "requestAuditor");
+        statusToField.put("40", "checkWriter");
+        statusToField.put("50", "checkAuditor");
+
+        // 获取记录
+        Record record = Db.findById("cl_yg", id);
+        if (record == null) {
+            return false;
+        }
+
+        // 默认只更新 status
+        record.set("status", status);
+
+        // 如果 status 在映射中，检查对应字段是否为空
+        String field = statusToField.get(status);
+        if (field != null) {
+            String currentValue = record.getStr(field);
+            if (currentValue == null || currentValue.isEmpty()) {
+                record.set(field, updatePerson);
+            }
+        }
+
+        // 更新记录
+        return Db.update("cl_yg", record);
     }
 }

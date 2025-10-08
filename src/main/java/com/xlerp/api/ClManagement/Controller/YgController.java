@@ -159,4 +159,27 @@ public class YgController extends Controller {
             renderJson (Result.serverError ("批量删除圆钢记录时发生错误:" + e.getMessage ()));
         }
     }
+
+    @ActionKey("/cl_yg/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        String updatePerson = getPara("updatePerson");
+        if (id == null || id.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("记录 ID 不能为空"));
+        }
+        try {
+            boolean success = ygService.updateStatus(id,status,updatePerson);
+            if (success) {
+                renderJson(Result.success("状态更新成功"));
+            }
+            else {
+                renderJson(Result.badRequest("更新状态失败"));
+            }
+        }
+        catch (Exception e) {
+            renderJson (Result.serverError ("更新状态时发生错误:" + e.getMessage ()));
+        }
+    }
 }

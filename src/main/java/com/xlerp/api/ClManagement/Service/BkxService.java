@@ -3,22 +3,22 @@ package com.xlerp.api.ClManagement.Service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.xlerp.common.model.ClGb;
+import com.xlerp.common.model.ClBkx;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GbService {
-    // 数据库访问对象，对应cl_gb表
-    private static final ClGb dao = new ClGb();
+public class BkxService {
+    // 数据库访问对象，对应cl_bkx表
+    private static final ClBkx dao = new ClBkx();
 
     /**
-     * 分页查询钢板数据
+     * 分页查询闭口销数据
      */
-    public Page<ClGb> paginate(int pageNumber, int pageSize, String mafactory, String inNo, String matMaterial, String matRecheckNo) {
+    public Page<ClBkx> paginate(int pageNumber, int pageSize, String mafactory, String inNo, String matMaterial, String matRecheckNo) {
         String select = "select *";
-        StringBuilder from = new StringBuilder(" from cl_gb");
+        StringBuilder from = new StringBuilder(" from cl_bkx");
         List<Object> params = new java.util.ArrayList<>();
 
         // 添加搜索条件
@@ -50,35 +50,35 @@ public class GbService {
     }
 
     /**
-     * 根据ID查询钢板记录
+     * 根据ID查询闭口销记录
      */
-    public ClGb findById(int id) {
-        return dao.findFirst("select * from cl_gb where id = ? ", id);  // 表名改为cl_gb
+    public ClBkx findById(int id) {
+        return dao.findFirst("select * from cl_bkx where id = ? ", id);  // 表名改为cl_bkx
     }
 
     /**
-     * 保存钢板记录
+     * 保存闭口销记录
      */
-    public boolean save(ClGb gb) {
-        return gb.save();
+    public boolean save(ClBkx yg) {
+        return yg.save();
     }
 
     /**
-     * 更新钢板记录
+     * 更新闭口销记录
      */
-    public boolean update(ClGb gb) {
-        return gb.update();
+    public boolean update(ClBkx yg) {
+        return yg.update();
     }
 
     /**
-     * 根据ID删除钢板记录（修正方法名首字母小写）
+     * 根据ID删除闭口销记录（修正方法名首字母小写）
      */
     public boolean deleteById(int id) {
         return dao.deleteById(id);
     }
 
     /**
-     * 批量删除钢板记录
+     * 批量删除闭口销记录
      */
     public boolean batchDelete(List<Integer> ids) {
         return dao.deleteByIds(ids);
@@ -92,7 +92,7 @@ public class GbService {
         statusToField.put("50", "checkAuditor");
 
         // 获取记录
-        Record record = Db.findById("cl_gb", id);
+        Record record = Db.findById("cl_bkx", id);
         if (record == null) {
             return false;
         }
@@ -110,7 +110,6 @@ public class GbService {
         }
 
         // 更新记录
-        return Db.update("cl_gb", record);
+        return Db.update("cl_bkx", record);
     }
 }
-

@@ -808,14 +808,14 @@ public abstract class BaseClXj<M extends BaseClXj<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 状态
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
 	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态
+	 * 状态，10检验单录入，20检验单确认，待审核，30请检单审核通过，待录入检验数据，40录入数据确认，待审核，50审核通过检验完成
 	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
@@ -973,6 +973,84 @@ public abstract class BaseClXj<M extends BaseClXj<M>> extends Model<M> implement
 	 */
 	public java.math.BigDecimal getMatzhugaosizebiaozhun() {
 		return get("matzhugaosizebiaozhun");
+	}
+	
+	/**
+	 * 合同编号
+	 */
+	public void setContractno(java.lang.String contractno) {
+		set("contractno", contractno);
+	}
+	
+	/**
+	 * 合同编号
+	 */
+	public java.lang.String getContractno() {
+		return getStr("contractno");
+	}
+	
+	/**
+	 * 实际单价
+	 */
+	public void setShijidanjia(java.math.BigDecimal shijidanjia) {
+		set("shijidanjia", shijidanjia);
+	}
+	
+	/**
+	 * 实际单价
+	 */
+	public java.math.BigDecimal getShijidanjia() {
+		return get("shijidanjia");
+	}
+	
+	/**
+	 * 实际总价
+	 */
+	public void setShijiamount(java.math.BigDecimal shijiamount) {
+		set("shijiamount", shijiamount);
+	}
+	
+	/**
+	 * 实际总价
+	 */
+	public java.math.BigDecimal getShijiamount() {
+		return get("shijiamount");
+	}
+	
+	/**
+	 * 单重
+	 */
+	public void setDanzhong(java.math.BigDecimal danzhong) {
+		set("danzhong", danzhong);
+	}
+	
+	/**
+	 * 单重
+	 */
+	public java.math.BigDecimal getDanzhong() {
+		return get("danzhong");
+	}
+	
+	/**
+	 * 总重
+	 */
+	public void setZongzhong(java.math.BigDecimal zongzhong) {
+		set("zongzhong", zongzhong);
+	}
+	
+	/**
+	 * 总重
+	 */
+	public java.math.BigDecimal getZongzhong() {
+		return get("zongzhong");
+	}
+	
+	public void setContractName(java.lang.String contractName) {
+		set("contractName", contractName);
+	}
+	
+	public java.lang.String getContractName() {
+		return getStr("contractName");
 	}
 	
 }

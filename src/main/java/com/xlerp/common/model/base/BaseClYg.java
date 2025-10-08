@@ -304,43 +304,43 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 	/**
 	 * 抗拉强度
 	 */
-	public void setTensileStrength(java.math.BigDecimal tensileStrength) {
-		set("tensileStrength", tensileStrength);
+	public void setMechtensileStrength(java.math.BigDecimal mechtensileStrength) {
+		set("mechtensileStrength", mechtensileStrength);
 	}
 	
 	/**
 	 * 抗拉强度
 	 */
-	public java.math.BigDecimal getTensileStrength() {
-		return get("tensileStrength");
+	public java.math.BigDecimal getMechtensileStrength() {
+		return get("mechtensileStrength");
 	}
 	
 	/**
 	 * 屈服强度
 	 */
-	public void setYieldStrength(java.math.BigDecimal yieldStrength) {
-		set("yieldStrength", yieldStrength);
+	public void setMechyieldStrength(java.math.BigDecimal mechyieldStrength) {
+		set("mechyieldStrength", mechyieldStrength);
 	}
 	
 	/**
 	 * 屈服强度
 	 */
-	public java.math.BigDecimal getYieldStrength() {
-		return get("yieldStrength");
+	public java.math.BigDecimal getMechyieldStrength() {
+		return get("mechyieldStrength");
 	}
 	
 	/**
 	 * 断后伸长率
 	 */
-	public void setElongation(java.math.BigDecimal elongation) {
-		set("elongation", elongation);
+	public void setMechelongation(java.math.BigDecimal mechelongation) {
+		set("mechelongation", mechelongation);
 	}
 	
 	/**
 	 * 断后伸长率
 	 */
-	public java.math.BigDecimal getElongation() {
-		return get("elongation");
+	public java.math.BigDecimal getMechelongation() {
+		return get("mechelongation");
 	}
 	
 	/**

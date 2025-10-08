@@ -4,25 +4,25 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
-import com.xlerp.api.ClManagement.Service.GbService;
+import com.xlerp.api.ClManagement.Service.BkxService;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
-import com.xlerp.common.model.ClGb;
+import com.xlerp.common.model.ClBkx;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Before(HttpMethodInterceptor.class)
-public class GbController extends Controller {
-    // 使用钢板服务类
-    private final GbService gbService = new GbService();
+public class BkxController extends Controller {
+    // 使用闭口销服务类
+    private final BkxService bkxService = new BkxService();
 
     /**
-     * 分页查询钢板数据
+     * 分页查询闭口销数据
      */
-    @ActionKey("/cl_gb/getpage")
+    @ActionKey("/cl_bkx/getpage")
     @HttpMethod("GET")
     public void getpage() {
         String pageNumber = getPara("pageNumber");
@@ -41,97 +41,97 @@ public class GbController extends Controller {
                 return;
             }
 
-            // 查询钢板数据分页
-            Page<ClGb> page = gbService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo);
-            renderJson(Result.success("钢板数据查询成功").putData("page", page));
+            // 查询圆闭口销数据分页
+            Page<ClBkx> page = bkxService.paginate(pageNum, pageSz, mafactory, inNo, matMaterial, matRecheckNo);
+            renderJson(Result.success("闭口销数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
 
-    @ActionKey("/cl_gb/get")
+    @ActionKey("/cl_bkx/get")
     @HttpMethod("GET")
     public void get() {
         String id = getPara("id");
 
         if (id == null || id.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("钢板记录ID不能为空"));
+            renderJson (Result.badRequest ("闭口销记录ID不能为空"));
             return;
         }
 
         try {
-            ClGb gb = gbService.findById (Integer.parseInt (id));
-            if (gb != null ) {
-                renderJson (Result.success ("钢板记录查询成功").putData ("record", gb));
+            ClBkx bkx = bkxService.findById (Integer.parseInt (id));
+            if (bkx != null ) {
+                renderJson (Result.success ("闭口销记录查询成功").putData ("record", bkx));
             } else {
-                renderJson (Result.notFound ("钢板记录未找到或已被删除"));
+                renderJson (Result.notFound ("闭口销记录未找到或已被删除"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("钢板记录ID格式错误"));
+            renderJson (Result.badRequest ("闭口销记录ID格式错误"));
         }
     }
 
-    @ActionKey ("/cl_gb/save")
+    @ActionKey ("/cl_bkx/save")
     @HttpMethod ("POST")
-    public void save (ClGb gb) {
+    public void save (ClBkx bkx) {
         try {
-            boolean success = gbService.save (gb);
+            boolean success = bkxService.save (bkx);
             if (success) {
-                renderJson (Result.success ("钢板记录保存成功").putData ("recordId", gb.getId ()));
+                renderJson (Result.success ("闭口销记录保存成功").putData ("recordId", bkx.getId ()));
             } else {
-                renderJson (Result.serverError ("钢板记录保存失败"));
+                renderJson (Result.serverError ("闭口销记录保存失败"));
             }
         } catch (Exception e) {
-            renderJson (Result.serverError ("保存钢板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("保存闭口销记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey ("/cl_gb/update")
+    @ActionKey ("/cl_bkx/update")
     @HttpMethod ("PUT")
-    public void update (ClGb gb) {
+    public void update (ClBkx bkx) {
         try {
-            boolean success = gbService.update (gb);
+            boolean success = bkxService.update (bkx);
             if (success) {
-                renderJson (Result.success ("钢板记录更新成功"));
+                renderJson (Result.success ("闭口销记录更新成功"));
             } else {
-                renderJson (Result.serverError ("钢板记录更新失败"));
+                renderJson (Result.serverError ("闭口销记录更新失败"));
             }
         } catch (Exception e) {
-            renderJson (Result.serverError ("更新钢板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("更新闭口销记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_gb/delete")
+    @ActionKey("/cl_bkx/delete")
     @HttpMethod("DELETE")
     public void delete() {
         String id = getPara("id");
 
         if (id == null || id.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("钢板记录ID不能为空"));
+            renderJson (Result.badRequest ("闭口销记录ID不能为空"));
             return;
         }
 
         try {
-            boolean success = gbService.deleteById (Integer.parseInt (id.trim ()));
+            boolean success = bkxService.deleteById (Integer.parseInt (id.trim ()));
             if (success) {
-                renderJson (Result.success ("钢板记录删除成功"));
+                renderJson (Result.success ("闭口销记录删除成功"));
             } else {
-                renderJson (Result.notFound ("钢板记录不存在或删除失败"));
+                renderJson (Result.notFound ("闭口销记录不存在或删除失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("钢板记录ID格式错误"));
+            renderJson (Result.badRequest ("闭口销记录ID格式错误"));
         } catch (Exception e) {
-            renderJson (Result.serverError ("删除钢板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("删除闭口销记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_gb/batchdelete")
+    @ActionKey("/cl_bkx/batchdelete")
     @HttpMethod("DELETE")
     public void batchDelete() {
         String ids = getPara("ids");
 
         if (ids == null || ids.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("钢板记录ID列表不能为空"));
+            renderJson (Result.badRequest ("闭口销记录ID列表不能为空"));
             return;
         }
 
@@ -143,24 +143,24 @@ public class GbController extends Controller {
                     .collect(Collectors.toList());
 
             if (idList.isEmpty ()) {
-                renderJson (Result.badRequest ("钢板记录ID列表不能为空"));
+                renderJson (Result.badRequest ("闭口销记录ID列表不能为空"));
                 return;
             }
 
-            boolean success = gbService.batchDelete(idList);
+            boolean success = bkxService.batchDelete(idList);
             if (success) {
-                renderJson (Result.success ("批量删除钢板记录成功"));
+                renderJson (Result.success ("批量删除闭口销记录成功"));
             } else {
-                renderJson (Result.serverError ("批量删除钢板记录失败"));
+                renderJson (Result.serverError ("批量删除闭口销记录失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("钢板记录ID格式错误"));
+            renderJson (Result.badRequest ("闭口销记录ID格式错误"));
         } catch (Exception e) {
-            renderJson (Result.serverError ("批量删除钢板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("批量删除闭口销记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_gb/updateStatus")
+    @ActionKey("/cl_bkx/updateStatus")
     @HttpMethod("GET")
     public void updateStatus() {
         String id = getPara("id");
@@ -170,7 +170,7 @@ public class GbController extends Controller {
             renderJson (Result.badRequest ("记录 ID 不能为空"));
         }
         try {
-            boolean success = gbService.updateStatus(id,status,updatePerson);
+            boolean success = bkxService.updateStatus(id,status,updatePerson);
             if (success) {
                 renderJson(Result.success("状态更新成功"));
             }
@@ -183,4 +183,3 @@ public class GbController extends Controller {
         }
     }
 }
-
