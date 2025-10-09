@@ -15,13 +15,15 @@ public class PlWorkOrderService {
                                             String status) {
         // 构建查询字段
         String select = "select p.*,bc.no as contractNo,bc.name as contractName," +
-                "bci.itemnum as contractAmount, bi.name as itemName," +
-                "bci.itemunit as itemUnit ";
+                "bci.itemnum as contractAmount, bi.name as itemName,bci.itemunit as itemUnit," +
+                "bci.noticeid,bci.noticedrawno,bci.noticeinstead,bci.noticename,bci.noticeauther,"+
+                "bci.noticebuilddate,bci.noticecomment,tz.tuzhiurl ";
 
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_work_order p ");
         from.append("left join pl_production_order po on po.ipoNo = p.ipoNo ");
         from.append("left join bascontractitem bci on po.poItemId = bci.id ");
+        from.append("left join bastuzhi tz on bci.noticetuzhiid = tz.id ");
         from.append("left join bascontract bc on bc.no = bci.no ");
         from.append("left join basitem bi on bci.itemid = bi.id ");
         from.append("where 1 = 1 "); // 基础条件，简化后续拼接
