@@ -129,5 +129,19 @@ public abstract class BaseBastuzhicailiao<M extends BaseBastuzhicailiao<M>> exte
 		return getStr("writer");
 	}
 	
+	/**
+	 * 物料的父亲物料
+	 */
+	public void setParentid(java.lang.Integer parentid) {
+		set("parentid", parentid);
+	}
+	
+	/**
+	 * 物料的父亲物料
+	 */
+	public java.lang.Integer getParentid() {
+		return getInt("parentid");
+	}
+	
 }
 

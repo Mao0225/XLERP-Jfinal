@@ -302,45 +302,45 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度1#
 	 */
-	public void setMechtensileStrength(java.math.BigDecimal mechtensileStrength) {
-		set("mechtensileStrength", mechtensileStrength);
+	public void setMechtensileStrength1(java.math.BigDecimal mechtensileStrength1) {
+		set("mechtensileStrength1", mechtensileStrength1);
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度1#
 	 */
-	public java.math.BigDecimal getMechtensileStrength() {
-		return get("mechtensileStrength");
+	public java.math.BigDecimal getMechtensileStrength1() {
+		return get("mechtensileStrength1");
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度1#
 	 */
-	public void setMechyieldStrength(java.math.BigDecimal mechyieldStrength) {
-		set("mechyieldStrength", mechyieldStrength);
+	public void setMechyieldStrength1(java.math.BigDecimal mechyieldStrength1) {
+		set("mechyieldStrength1", mechyieldStrength1);
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度1#
 	 */
-	public java.math.BigDecimal getMechyieldStrength() {
-		return get("mechyieldStrength");
+	public java.math.BigDecimal getMechyieldStrength1() {
+		return get("mechyieldStrength1");
 	}
 	
 	/**
-	 * 断后伸长率
+	 * 断后伸长率1#
 	 */
-	public void setMechelongation(java.math.BigDecimal mechelongation) {
-		set("mechelongation", mechelongation);
+	public void setMechelongation1(java.math.BigDecimal mechelongation1) {
+		set("mechelongation1", mechelongation1);
 	}
 	
 	/**
-	 * 断后伸长率
+	 * 断后伸长率1#
 	 */
-	public java.math.BigDecimal getMechelongation() {
-		return get("mechelongation");
+	public java.math.BigDecimal getMechelongation1() {
+		return get("mechelongation1");
 	}
 	
 	/**
@@ -747,6 +747,90 @@ public abstract class BaseClYg<M extends BaseClYg<M>> extends Model<M> implement
 	 */
 	public java.math.BigDecimal getMechelongationRequired() {
 		return get("mechelongationRequired");
+	}
+	
+	/**
+	 * 抗拉强度2#
+	 */
+	public void setMechtensileStrength2(java.math.BigDecimal mechtensileStrength2) {
+		set("mechtensileStrength2", mechtensileStrength2);
+	}
+	
+	/**
+	 * 抗拉强度2#
+	 */
+	public java.math.BigDecimal getMechtensileStrength2() {
+		return get("mechtensileStrength2");
+	}
+	
+	/**
+	 * 抗拉强度3#
+	 */
+	public void setMechtensileStrength3(java.math.BigDecimal mechtensileStrength3) {
+		set("mechtensileStrength3", mechtensileStrength3);
+	}
+	
+	/**
+	 * 抗拉强度3#
+	 */
+	public java.math.BigDecimal getMechtensileStrength3() {
+		return get("mechtensileStrength3");
+	}
+	
+	/**
+	 * 屈服强度2#
+	 */
+	public void setMechyieldStrength2(java.math.BigDecimal mechyieldStrength2) {
+		set("mechyieldStrength2", mechyieldStrength2);
+	}
+	
+	/**
+	 * 屈服强度2#
+	 */
+	public java.math.BigDecimal getMechyieldStrength2() {
+		return get("mechyieldStrength2");
+	}
+	
+	/**
+	 * 屈服强度3#
+	 */
+	public void setMechyieldStrength3(java.math.BigDecimal mechyieldStrength3) {
+		set("mechyieldStrength3", mechyieldStrength3);
+	}
+	
+	/**
+	 * 屈服强度3#
+	 */
+	public java.math.BigDecimal getMechyieldStrength3() {
+		return get("mechyieldStrength3");
+	}
+	
+	/**
+	 * 断后伸长率2#
+	 */
+	public void setMechelongation2(java.math.BigDecimal mechelongation2) {
+		set("mechelongation2", mechelongation2);
+	}
+	
+	/**
+	 * 断后伸长率2#
+	 */
+	public java.math.BigDecimal getMechelongation2() {
+		return get("mechelongation2");
+	}
+	
+	/**
+	 * 断后伸长率3#
+	 */
+	public void setMechelongation3(java.math.BigDecimal mechelongation3) {
+		set("mechelongation3", mechelongation3);
+	}
+	
+	/**
+	 * 断后伸长率3#
+	 */
+	public java.math.BigDecimal getMechelongation3() {
+		return get("mechelongation3");
 	}
 	
 }

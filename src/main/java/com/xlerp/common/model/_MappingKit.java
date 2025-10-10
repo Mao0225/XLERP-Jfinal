@@ -30,6 +30,7 @@ public class _MappingKit {
 		arp.addMapping("cl_bkx", "id", ClBkx.class);
 		arp.addMapping("cl_dxgjx", "id", ClDxgjx.class);
 		arp.addMapping("cl_gb", "id", ClGb.class);
+		arp.addMapping("cl_lb", "id", ClLb.class);
 		arp.addMapping("cl_ld", "id", ClLd.class);
 		arp.addMapping("cl_lhjx", "id", ClLhjx.class);
 		arp.addMapping("cl_production_data", "id", ClProductionData.class);

@@ -96,15 +96,15 @@ public abstract class BaseClDxgjx<M extends BaseClDxgjx<M>> extends Model<M> imp
 	/**
 	 * 原材料入厂检测日期
 	 */
-	public void setDetectionTime(java.lang.String detectionTime) {
+	public void setDetectionTime(java.util.Date detectionTime) {
 		set("detectionTime", detectionTime);
 	}
 	
 	/**
 	 * 原材料入厂检测日期
 	 */
-	public java.lang.String getDetectionTime() {
-		return getStr("detectionTime");
+	public java.util.Date getDetectionTime() {
+		return getDate("detectionTime");
 	}
 	
 	/**
@@ -553,6 +553,34 @@ public abstract class BaseClDxgjx<M extends BaseClDxgjx<M>> extends Model<M> imp
 	 */
 	public java.math.BigDecimal getBreakingForceC() {
 		return get("breakingForceC");
+	}
+	
+	/**
+	 * 材质
+	 */
+	public void setMaterial(java.lang.String material) {
+		set("material", material);
+	}
+	
+	/**
+	 * 材质
+	 */
+	public java.lang.String getMaterial() {
+		return getStr("material");
+	}
+	
+	/**
+	 * 炉批号
+	 */
+	public void setBatchNo(java.lang.String batchNo) {
+		set("batchNo", batchNo);
+	}
+	
+	/**
+	 * 炉批号
+	 */
+	public java.lang.String getBatchNo() {
+		return getStr("batchNo");
 	}
 	
 }

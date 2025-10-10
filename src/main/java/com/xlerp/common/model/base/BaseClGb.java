@@ -144,104 +144,6 @@ public abstract class BaseClGb<M extends BaseClGb<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 化学成分分析-Nb
-	 */
-	public void setChemNb(java.math.BigDecimal chemNb) {
-		set("chemNb", chemNb);
-	}
-	
-	/**
-	 * 化学成分分析-Nb
-	 */
-	public java.math.BigDecimal getChemNb() {
-		return get("chemNb");
-	}
-	
-	/**
-	 * 化学成分分析-V
-	 */
-	public void setChemV(java.math.BigDecimal chemV) {
-		set("chemV", chemV);
-	}
-	
-	/**
-	 * 化学成分分析-V
-	 */
-	public java.math.BigDecimal getChemV() {
-		return get("chemV");
-	}
-	
-	/**
-	 * 化学成分分析-Ti
-	 */
-	public void setChemTi(java.math.BigDecimal chemTi) {
-		set("chemTi", chemTi);
-	}
-	
-	/**
-	 * 化学成分分析-Ti
-	 */
-	public java.math.BigDecimal getChemTi() {
-		return get("chemTi");
-	}
-	
-	/**
-	 * 化学成分分析-Cu
-	 */
-	public void setChemCu(java.math.BigDecimal chemCu) {
-		set("chemCu", chemCu);
-	}
-	
-	/**
-	 * 化学成分分析-Cu
-	 */
-	public java.math.BigDecimal getChemCu() {
-		return get("chemCu");
-	}
-	
-	/**
-	 * 化学成分分析-Cr
-	 */
-	public void setChemCr(java.math.BigDecimal chemCr) {
-		set("chemCr", chemCr);
-	}
-	
-	/**
-	 * 化学成分分析-Cr
-	 */
-	public java.math.BigDecimal getChemCr() {
-		return get("chemCr");
-	}
-	
-	/**
-	 * 化学成分分析-Ni
-	 */
-	public void setChemNi(java.math.BigDecimal chemNi) {
-		set("chemNi", chemNi);
-	}
-	
-	/**
-	 * 化学成分分析-Ni
-	 */
-	public java.math.BigDecimal getChemNi() {
-		return get("chemNi");
-	}
-	
-	/**
-	 * 化学成分分析-Mo
-	 */
-	public void setChemMo(java.math.BigDecimal chemMo) {
-		set("chemMo", chemMo);
-	}
-	
-	/**
-	 * 化学成分分析-Mo
-	 */
-	public java.math.BigDecimal getChemMo() {
-		return get("chemMo");
-	}
-	
-	/**
 	 * 原材料出厂检测日期
 	 */
 	public void setLeavefactoryDate(java.util.Date leavefactoryDate) {
@@ -436,101 +338,59 @@ public abstract class BaseClGb<M extends BaseClGb<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度1#
 	 */
-	public void setMechtensileStrength(java.math.BigDecimal mechtensileStrength) {
-		set("mechtensileStrength", mechtensileStrength);
+	public void setMechtensileStrength1(java.math.BigDecimal mechtensileStrength1) {
+		set("mechtensileStrength1", mechtensileStrength1);
 	}
 	
 	/**
-	 * 抗拉强度
+	 * 抗拉强度1#
 	 */
-	public java.math.BigDecimal getMechtensileStrength() {
-		return get("mechtensileStrength");
+	public java.math.BigDecimal getMechtensileStrength1() {
+		return get("mechtensileStrength1");
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度1#
 	 */
-	public void setMechyieldStrength(java.math.BigDecimal mechyieldStrength) {
-		set("mechyieldStrength", mechyieldStrength);
+	public void setMechyieldStrength1(java.math.BigDecimal mechyieldStrength1) {
+		set("mechyieldStrength1", mechyieldStrength1);
 	}
 	
 	/**
-	 * 屈服强度
+	 * 屈服强度1#
 	 */
-	public java.math.BigDecimal getMechyieldStrength() {
-		return get("mechyieldStrength");
+	public java.math.BigDecimal getMechyieldStrength1() {
+		return get("mechyieldStrength1");
 	}
 	
 	/**
-	 * 断后伸长率
+	 * 延长率1#
 	 */
-	public void setMechelongation(java.math.BigDecimal mechelongation) {
-		set("mechelongation", mechelongation);
+	public void setMechelongation1(java.math.BigDecimal mechelongation1) {
+		set("mechelongation1", mechelongation1);
 	}
 	
 	/**
-	 * 断后伸长率
+	 * 延长率1#
 	 */
-	public java.math.BigDecimal getMechelongation() {
-		return get("mechelongation");
+	public java.math.BigDecimal getMechelongation1() {
+		return get("mechelongation1");
 	}
 	
 	/**
-	 * 弯曲性能
+	 * 冲击实验1#
 	 */
-	public void setBending(java.lang.String bending) {
-		set("bending", bending);
+	public void setImpactexp1(java.lang.String impactexp1) {
+		set("impactexp1", impactexp1);
 	}
 	
 	/**
-	 * 弯曲性能
+	 * 冲击实验1#
 	 */
-	public java.lang.String getBending() {
-		return getStr("bending");
-	}
-	
-	/**
-	 * 冲击实验
-	 */
-	public void setImpactexp(java.lang.String impactexp) {
-		set("impactexp", impactexp);
-	}
-	
-	/**
-	 * 冲击实验
-	 */
-	public java.lang.String getImpactexp() {
-		return getStr("impactexp");
-	}
-	
-	/**
-	 * 尺寸(厚宽长mm)
-	 */
-	public void setSize(java.lang.String size) {
-		set("size", size);
-	}
-	
-	/**
-	 * 尺寸(厚宽长mm)
-	 */
-	public java.lang.String getSize() {
-		return getStr("size");
-	}
-	
-	/**
-	 * 重量
-	 */
-	public void setWeight(java.lang.String weight) {
-		set("weight", weight);
-	}
-	
-	/**
-	 * 重量
-	 */
-	public java.lang.String getWeight() {
-		return getStr("weight");
+	public java.lang.String getImpactexp1() {
+		return getStr("impactexp1");
 	}
 	
 	/**
@@ -870,115 +730,129 @@ public abstract class BaseClGb<M extends BaseClGb<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 化学成分要求值-Nb
-	 */
-	public void setChemNbRequired(java.math.BigDecimal chemNbRequired) {
-		set("chemNbRequired", chemNbRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Nb
-	 */
-	public java.math.BigDecimal getChemNbRequired() {
-		return get("chemNbRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-V
-	 */
-	public void setChemVRequired(java.math.BigDecimal chemVRequired) {
-		set("chemVRequired", chemVRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-V
-	 */
-	public java.math.BigDecimal getChemVRequired() {
-		return get("chemVRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-Ti
-	 */
-	public void setChemTiRequired(java.math.BigDecimal chemTiRequired) {
-		set("chemTiRequired", chemTiRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Ti
-	 */
-	public java.math.BigDecimal getChemTiRequired() {
-		return get("chemTiRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-Cu
-	 */
-	public void setChemCuRequired(java.math.BigDecimal chemCuRequired) {
-		set("chemCuRequired", chemCuRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Cu
-	 */
-	public java.math.BigDecimal getChemCuRequired() {
-		return get("chemCuRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-Cr
-	 */
-	public void setChemCrRequired(java.math.BigDecimal chemCrRequired) {
-		set("chemCrRequired", chemCrRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Cr
-	 */
-	public java.math.BigDecimal getChemCrRequired() {
-		return get("chemCrRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-Ni
-	 */
-	public void setChemNiRequired(java.math.BigDecimal chemNiRequired) {
-		set("chemNiRequired", chemNiRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Ni
-	 */
-	public java.math.BigDecimal getChemNiRequired() {
-		return get("chemNiRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-Mo
-	 */
-	public void setChemMoRequired(java.math.BigDecimal chemMoRequired) {
-		set("chemMoRequired", chemMoRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-Mo
-	 */
-	public java.math.BigDecimal getChemMoRequired() {
-		return get("chemMoRequired");
-	}
-	
-	/**
-	 * 断后伸长率要求值
+	 * 延伸率要求值
 	 */
 	public void setMechelongationRequired(java.math.BigDecimal mechelongationRequired) {
 		set("mechelongationRequired", mechelongationRequired);
 	}
 	
 	/**
-	 * 断后伸长率要求值
+	 * 延伸率要求值
 	 */
 	public java.math.BigDecimal getMechelongationRequired() {
 		return get("mechelongationRequired");
+	}
+	
+	/**
+	 * 抗拉强度2#
+	 */
+	public void setMechtensileStrength2(java.math.BigDecimal mechtensileStrength2) {
+		set("mechtensileStrength2", mechtensileStrength2);
+	}
+	
+	/**
+	 * 抗拉强度2#
+	 */
+	public java.math.BigDecimal getMechtensileStrength2() {
+		return get("mechtensileStrength2");
+	}
+	
+	/**
+	 * 抗拉强度3#
+	 */
+	public void setMechtensileStrength3(java.math.BigDecimal mechtensileStrength3) {
+		set("mechtensileStrength3", mechtensileStrength3);
+	}
+	
+	/**
+	 * 抗拉强度3#
+	 */
+	public java.math.BigDecimal getMechtensileStrength3() {
+		return get("mechtensileStrength3");
+	}
+	
+	/**
+	 * 屈服强度2#
+	 */
+	public void setMechyieldStrength2(java.math.BigDecimal mechyieldStrength2) {
+		set("mechyieldStrength2", mechyieldStrength2);
+	}
+	
+	/**
+	 * 屈服强度2#
+	 */
+	public java.math.BigDecimal getMechyieldStrength2() {
+		return get("mechyieldStrength2");
+	}
+	
+	/**
+	 * 屈服强度3#
+	 */
+	public void setMechyieldStrength3(java.math.BigDecimal mechyieldStrength3) {
+		set("mechyieldStrength3", mechyieldStrength3);
+	}
+	
+	/**
+	 * 屈服强度3#
+	 */
+	public java.math.BigDecimal getMechyieldStrength3() {
+		return get("mechyieldStrength3");
+	}
+	
+	/**
+	 * 延长率2#
+	 */
+	public void setMechelongation2(java.math.BigDecimal mechelongation2) {
+		set("mechelongation2", mechelongation2);
+	}
+	
+	/**
+	 * 延长率2#
+	 */
+	public java.math.BigDecimal getMechelongation2() {
+		return get("mechelongation2");
+	}
+	
+	/**
+	 * 延长率3#
+	 */
+	public void setMechelongation3(java.math.BigDecimal mechelongation3) {
+		set("mechelongation3", mechelongation3);
+	}
+	
+	/**
+	 * 延长率3#
+	 */
+	public java.math.BigDecimal getMechelongation3() {
+		return get("mechelongation3");
+	}
+	
+	/**
+	 * 冲击实验2#
+	 */
+	public void setImpactexp2(java.lang.String impactexp2) {
+		set("impactexp2", impactexp2);
+	}
+	
+	/**
+	 * 冲击实验2#
+	 */
+	public java.lang.String getImpactexp2() {
+		return getStr("impactexp2");
+	}
+	
+	/**
+	 * 冲击实验3#
+	 */
+	public void setImpactexp3(java.lang.String impactexp3) {
+		set("impactexp3", impactexp3);
+	}
+	
+	/**
+	 * 冲击实验3#
+	 */
+	public java.lang.String getImpactexp3() {
+		return getStr("impactexp3");
 	}
 	
 }

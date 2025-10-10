@@ -262,14 +262,14 @@ public abstract class BasePlMatInoutItem<M extends BasePlMatInoutItem<M>> extend
 	}
 	
 	/**
-	 * 批次号（通用）
+	 * 炉批号（通用）
 	 */
 	public void setBatchNo(java.lang.String batchNo) {
 		set("batchNo", batchNo);
 	}
 	
 	/**
-	 * 批次号（通用）
+	 * 炉批号（通用）
 	 */
 	public java.lang.String getBatchNo() {
 		return getStr("batchNo");
@@ -329,6 +329,90 @@ public abstract class BasePlMatInoutItem<M extends BasePlMatInoutItem<M>> extend
 	 */
 	public java.math.BigDecimal getTotalWeight() {
 		return get("totalWeight");
+	}
+	
+	/**
+	 * 材质（通用）
+	 */
+	public void setMaterial(java.lang.String material) {
+		set("material", material);
+	}
+	
+	/**
+	 * 材质（通用）
+	 */
+	public java.lang.String getMaterial() {
+		return getStr("material");
+	}
+	
+	/**
+	 * 计划规格
+	 */
+	public void setPlanSpec(java.lang.String planSpec) {
+		set("planSpec", planSpec);
+	}
+	
+	/**
+	 * 计划规格
+	 */
+	public java.lang.String getPlanSpec() {
+		return getStr("planSpec");
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public void setSupplierName(java.lang.String supplierName) {
+		set("supplierName", supplierName);
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public java.lang.String getSupplierName() {
+		return getStr("supplierName");
+	}
+	
+	/**
+	 * 计划材质
+	 */
+	public void setPlanMaterial(java.lang.String planMaterial) {
+		set("planMaterial", planMaterial);
+	}
+	
+	/**
+	 * 计划材质
+	 */
+	public java.lang.String getPlanMaterial() {
+		return getStr("planMaterial");
+	}
+	
+	/**
+	 * 计划数量
+	 */
+	public void setPlanQuanlity(java.math.BigDecimal planQuanlity) {
+		set("planQuanlity", planQuanlity);
+	}
+	
+	/**
+	 * 计划数量
+	 */
+	public java.math.BigDecimal getPlanQuanlity() {
+		return get("planQuanlity");
+	}
+	
+	/**
+	 * 计划重量
+	 */
+	public void setPlanWeight(java.math.BigDecimal planWeight) {
+		set("planWeight", planWeight);
+	}
+	
+	/**
+	 * 计划重量
+	 */
+	public java.math.BigDecimal getPlanWeight() {
+		return get("planWeight");
 	}
 	
 }
