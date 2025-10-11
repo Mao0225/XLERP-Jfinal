@@ -390,15 +390,15 @@ public abstract class BasePlMatInoutItem<M extends BasePlMatInoutItem<M>> extend
 	/**
 	 * 计划数量
 	 */
-	public void setPlanQuanlity(java.math.BigDecimal planQuanlity) {
-		set("planQuanlity", planQuanlity);
+	public void setPlanQuantity(java.math.BigDecimal planQuantity) {
+		set("planQuantity", planQuantity);
 	}
 	
 	/**
 	 * 计划数量
 	 */
-	public java.math.BigDecimal getPlanQuanlity() {
-		return get("planQuanlity");
+	public java.math.BigDecimal getPlanQuantity() {
+		return get("planQuantity");
 	}
 	
 	/**
