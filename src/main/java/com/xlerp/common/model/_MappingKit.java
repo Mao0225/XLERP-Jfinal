@@ -29,6 +29,7 @@ public class _MappingKit {
 		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
 		arp.addMapping("bastuzhicailiao", "id", Bastuzhicailiao.class);
 		arp.addMapping("cl_bkx", "id", ClBkx.class);
+		arp.addMapping("cl_ct", "id", ClCt.class);
 		arp.addMapping("cl_dxgjx", "id", ClDxgjx.class);
 		arp.addMapping("cl_dxls", "id", ClDxls.class);
 		arp.addMapping("cl_gb", "id", ClGb.class);
@@ -46,6 +47,7 @@ public class _MappingKit {
 		arp.addMapping("pl_production_order", "id", PlProductionOrder.class);
 		arp.addMapping("pl_report_work_order", "id", PlReportWorkOrder.class);
 		arp.addMapping("pl_schedule_plan", "id", PlSchedulePlan.class);
+		arp.addMapping("pl_supply_order", "id", PlSupplyOrder.class);
 		arp.addMapping("pl_work_order", "id", PlWorkOrder.class);
 		arp.addMapping("plbeiliaojihua", "id", Plbeiliaojihua.class);
 		arp.addMapping("plchuchangchoujian", "id", Plchuchangchoujian.class);
