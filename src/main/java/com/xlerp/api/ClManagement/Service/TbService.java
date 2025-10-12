@@ -116,7 +116,6 @@ public class TbService {
                 record.set(fieTb, updatePerson);
             }
         }
-
         // 更新记录
         return Db.update("cl_Tb", record);
     }

@@ -642,15 +642,15 @@ public abstract class BaseClTb<M extends BaseClTb<M>> extends Model<M> implement
 	/**
 	 * 请检单审核人
 	 */
-	public void setRequestAuditor(byte[] requestAuditor) {
+	public void setRequestAuditor(java.lang.String requestAuditor) {
 		set("requestAuditor", requestAuditor);
 	}
 	
 	/**
 	 * 请检单审核人
 	 */
-	public byte[] getRequestAuditor() {
-		return get("requestAuditor");
+	public java.lang.String getRequestAuditor() {
+		return getStr("requestAuditor");
 	}
 	
 	/**

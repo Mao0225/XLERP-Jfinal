@@ -3,23 +3,23 @@ package com.xlerp.api.ClManagement.Service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.xlerp.common.model.ClLb;
+import com.xlerp.common.model.ClDxls;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-public class LbService {
-    // 数据库访问对象，对应cl_lb表
-    private static final ClLb dao = new ClLb();
+public class DxlsService {
+    // 数据库访问对象，对应cl_dxls表
+    private static final ClDxls dao = new ClDxls();
 
     /**
-     * 分页查询铝板数据
+     * 分页查询镀锌螺栓数据
      */
-    public Page<ClLb> paginate(int pageNumber, int pageSize, String mafactory, String matRecheckNo, String contractNo,
-                               String contractName, String material, String type, String status, String minStatus, String basNo) {  // 添加 basNo 参数
+    public Page<ClDxls> paginate(int pageNumber, int pageSize, String mafactory, String matRecheckNo, String contractNo,
+                               String contractName, String material, String type, String status) {
         String select = "select *";
-        StringBuilder from = new StringBuilder(" from cl_lb where 1 = 1");
+        StringBuilder from = new StringBuilder(" from cl_dxls where 1 = 1");
         List<Object> params = new java.util.ArrayList<>();
 
         // 添加搜索条件
@@ -47,20 +47,9 @@ public class LbService {
             from.append(" and type like ?");
             params.add("%" + type + "%");
         }
-        // 添加 basNo 查询条件
-        if (basNo != null && !basNo.trim().isEmpty()) {
-            from.append(" and basNo like ?");
-            params.add("%" + basNo + "%");
-        }
-        // 处理状态筛选：优先使用精确状态筛选
         if (status != null && !status.trim().isEmpty()) {
-            from.append(" and status = ?");
-            params.add(status);
-        }
-        // 处理最小状态筛选（状态范围筛选）
-        else if (minStatus != null && !minStatus.trim().isEmpty()) {
             from.append(" and status >= ?");
-            params.add(minStatus);
+            params.add(status);
         }
 
         from.append(" order by id desc");
@@ -69,35 +58,35 @@ public class LbService {
     }
 
     /**
-     * 根据ID查询铝板记录
+     * 根据ID查询镀锌螺栓记录
      */
-    public ClLb findById(int id) {
-        return dao.findFirst("select * from cl_lb where id = ? ", id);  // 表名改为cl_lb
+    public ClDxls findById(int id) {
+        return dao.findFirst("select * from cl_dxls where id = ? ", id);  // 表名改为cl_dxls
     }
 
     /**
-     * 保存铝板记录
+     * 保存镀锌螺栓记录
      */
-    public boolean save(ClLb lb) {
-        return lb.save();
+    public boolean save(ClDxls Dxls) {
+        return Dxls.save();
     }
 
     /**
-     * 更新铝板记录
+     * 更新镀锌螺栓记录
      */
-    public boolean update(ClLb lb) {
-        return lb.update();
+    public boolean update(ClDxls Dxls) {
+        return Dxls.update();
     }
 
     /**
-     * 根据ID删除铝板记录（修正方法名首字母小写）
+     * 根据ID删除镀锌螺栓记录（修正方法名首字母小写）
      */
     public boolean deleteById(int id) {
         return dao.deleteById(id);
     }
 
     /**
-     * 批量删除铝板记录
+     * 批量删除镀锌螺栓记录
      */
     public boolean batchDelete(List<Integer> ids) {
         return dao.deleteByIds(ids);
@@ -111,7 +100,7 @@ public class LbService {
         statusToField.put("50", "checkAuditor");
 
         // 获取记录
-        Record record = Db.findById("cl_lb", id);
+        Record record = Db.findById("cl_dxls", id);
         if (record == null) {
             return false;
         }
@@ -129,6 +118,6 @@ public class LbService {
         }
 
         // 更新记录
-        return Db.update("cl_lb", record);
+        return Db.update("cl_dxls", record);
     }
 }

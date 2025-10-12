@@ -2,27 +2,27 @@ package com.xlerp.api.ClManagement.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
-import com.xlerp.api.ClManagement.Service.LbService;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
+import com.xlerp.api.ClManagement.Service.DxlsService;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Page;
-import com.xlerp.common.model.ClLb;  // 铝板相关模型
+import com.xlerp.common.model.ClDxls;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Before(HttpMethodInterceptor.class)
-public class LbController extends Controller {
-    // 使用铝锭服务类
-    private final LbService lbService = new LbService();
+public class DxlsController extends Controller {
+    // 使用镀锌螺栓服务类
+    private final DxlsService DxlsService = new DxlsService();
 
     /**
-     * 分页查询铝锭数据
+     * 分页查询镀锌螺栓数据
      */
-    @ActionKey("/cl_lb/getpage")
+    @ActionKey("/cl_dxls/getpage")
     @HttpMethod("GET")
     public void getpage() {
         String pageNumber = getPara("pageNumber");
@@ -34,8 +34,6 @@ public class LbController extends Controller {
         String material = getPara("material");
         String type = getPara("type");
         String status = getPara("status");
-        String minStatus = getPara("minStatus");
-        String basNo = getPara("basNo");
 
 
 
@@ -48,97 +46,97 @@ public class LbController extends Controller {
                 return;
             }
 
-            // 查询铝锭数据分页
-            Page<ClLb> page = lbService.paginate(pageNum, pageSz, mafactory, matRecheckNo, contractNo, contractName, material, type, status, minStatus, basNo);
-            renderJson(Result.success("铝板数据查询成功").putData("page", page));
+            // 查询镀锌螺栓数据分页
+            Page<ClDxls> page = DxlsService.paginate(pageNum, pageSz, mafactory, matRecheckNo, contractNo, contractName, material, type, status);
+            renderJson(Result.success("镀锌螺栓数据查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
 
-    @ActionKey("/cl_lb/get")
+    @ActionKey("/cl_dxls/get")
     @HttpMethod("GET")
     public void get() {
         String id = getPara("id");
 
         if (id == null || id.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("铝板记录ID不能为空"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID不能为空"));
             return;
         }
 
         try {
-            ClLb lb = lbService.findById (Integer.parseInt (id));
-            if (lb != null ) {
-                renderJson (Result.success ("铝板记录查询成功").putData ("record", lb));
+            ClDxls Dxls = DxlsService.findById (Integer.parseInt (id));
+            if (Dxls != null ) {
+                renderJson (Result.success ("镀锌螺栓记录查询成功").putData ("record", Dxls));
             } else {
-                renderJson (Result.notFound ("铝板记录未找到或已被删除"));
+                renderJson (Result.notFound ("镀锌螺栓记录未找到或已被删除"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("铝板记录ID格式错误"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID格式错误"));
         }
     }
 
-    @ActionKey ("/cl_lb/save")
+    @ActionKey ("/cl_dxls/save")
     @HttpMethod ("POST")
-    public void save (ClLb lb) {
+    public void save (ClDxls Dxls) {
         try {
-            boolean success = lbService.save (lb);
+            boolean success = DxlsService.save (Dxls);
             if (success) {
-                renderJson (Result.success ("铝板记录保存成功").putData ("recordId", lb.getId ()));
+                renderJson (Result.success ("镀锌螺栓记录保存成功").putData ("recordId", Dxls.getId ()));
             } else {
-                renderJson (Result.serverError ("铝板记录保存失败"));
+                renderJson (Result.serverError ("镀锌螺栓记录保存失败"));
             }
         } catch (Exception e) {
-            renderJson (Result.serverError ("保存铝板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("保存镀锌螺栓记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey ("/cl_lb/update")
+    @ActionKey ("/cl_dxls/update")
     @HttpMethod ("PUT")
-    public void update (ClLb lb) {
+    public void update (ClDxls Dxls) {
         try {
-            boolean success = lbService.update (lb);
+            boolean success = DxlsService.update (Dxls);
             if (success) {
-                renderJson (Result.success ("铝板记录更新成功"));
+                renderJson (Result.success ("镀锌螺栓记录更新成功"));
             } else {
-                renderJson (Result.serverError ("铝板记录更新失败"));
+                renderJson (Result.serverError ("镀锌螺栓记录更新失败"));
             }
         } catch (Exception e) {
-            renderJson (Result.serverError ("更新铝板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("更新镀锌螺栓记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_lb/delete")
+    @ActionKey("/cl_dxls/delete")
     @HttpMethod("DELETE")
     public void delete() {
         String id = getPara("id");
 
         if (id == null || id.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("铝板记录ID不能为空"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID不能为空"));
             return;
         }
 
         try {
-            boolean success = lbService.deleteById (Integer.parseInt (id.trim ()));
+            boolean success = DxlsService.deleteById (Integer.parseInt (id.trim ()));
             if (success) {
-                renderJson (Result.success ("铝板记录删除成功"));
+                renderJson (Result.success ("镀锌螺栓记录删除成功"));
             } else {
-                renderJson (Result.notFound ("铝板记录不存在或删除失败"));
+                renderJson (Result.notFound ("镀锌螺栓记录不存在或删除失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("铝板记录ID格式错误"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID格式错误"));
         } catch (Exception e) {
-            renderJson (Result.serverError ("删除铝板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("删除镀锌螺栓记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_lb/batchdelete")
+    @ActionKey("/cl_dxls/batchdelete")
     @HttpMethod("DELETE")
     public void batchDelete() {
         String ids = getPara("ids");
 
         if (ids == null || ids.trim ().isEmpty ()) {
-            renderJson (Result.badRequest ("铝板记录ID列表不能为空"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID列表不能为空"));
             return;
         }
 
@@ -150,24 +148,24 @@ public class LbController extends Controller {
                     .collect(Collectors.toList());
 
             if (idList.isEmpty ()) {
-                renderJson (Result.badRequest ("铝板记录ID列表不能为空"));
+                renderJson (Result.badRequest ("镀锌螺栓记录ID列表不能为空"));
                 return;
             }
 
-            boolean success = lbService.batchDelete(idList);
+            boolean success = DxlsService.batchDelete(idList);
             if (success) {
-                renderJson (Result.success ("批量删除铝板记录成功"));
+                renderJson (Result.success ("批量删除镀锌螺栓记录成功"));
             } else {
-                renderJson (Result.serverError ("批量删除铝板记录失败"));
+                renderJson (Result.serverError ("批量删除镀锌螺栓记录失败"));
             }
         } catch (NumberFormatException e) {
-            renderJson (Result.badRequest ("铝板记录ID格式错误"));
+            renderJson (Result.badRequest ("镀锌螺栓记录ID格式错误"));
         } catch (Exception e) {
-            renderJson (Result.serverError ("批量删除铝板记录时发生错误:" + e.getMessage ()));
+            renderJson (Result.serverError ("批量删除镀锌螺栓记录时发生错误:" + e.getMessage ()));
         }
     }
 
-    @ActionKey("/cl_lb/updateStatus")
+    @ActionKey("/cl_dxls/updateStatus")
     @HttpMethod("GET")
     public void updateStatus() {
         String id = getPara("id");
@@ -177,7 +175,7 @@ public class LbController extends Controller {
             renderJson (Result.badRequest ("记录 ID 不能为空"));
         }
         try {
-            boolean success = lbService.updateStatus(id,status,updatePerson);
+            boolean success = DxlsService.updateStatus(id,status,updatePerson);
             if (success) {
                 renderJson(Result.success("状态更新成功"));
             }

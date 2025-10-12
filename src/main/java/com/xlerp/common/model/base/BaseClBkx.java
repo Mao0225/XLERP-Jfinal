@@ -116,34 +116,6 @@ public abstract class BaseClBkx<M extends BaseClBkx<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 化学成分分析-P
-	 */
-	public void setChemP(java.math.BigDecimal chemP) {
-		set("chemP", chemP);
-	}
-	
-	/**
-	 * 化学成分分析-P
-	 */
-	public java.math.BigDecimal getChemP() {
-		return get("chemP");
-	}
-	
-	/**
-	 * 化学成分分析-S
-	 */
-	public void setChemS(java.math.BigDecimal chemS) {
-		set("chemS", chemS);
-	}
-	
-	/**
-	 * 化学成分分析-S
-	 */
-	public java.math.BigDecimal getChemS() {
-		return get("chemS");
-	}
-	
-	/**
 	 * 化学成分分析-Ni
 	 */
 	public void setChemNi(java.math.BigDecimal chemNi) {
@@ -316,143 +288,45 @@ public abstract class BaseClBkx<M extends BaseClBkx<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 外观尺寸
+	 * 外观
 	 */
 	public void setAppearanceSize(java.lang.String appearanceSize) {
 		set("appearanceSize", appearanceSize);
 	}
 	
 	/**
-	 * 外观尺寸
+	 * 外观
 	 */
 	public java.lang.String getAppearanceSize() {
 		return getStr("appearanceSize");
 	}
 	
 	/**
-	 * 抗拉强度
-	 */
-	public void setMechtensileStrength(java.math.BigDecimal mechtensileStrength) {
-		set("mechtensileStrength", mechtensileStrength);
-	}
-	
-	/**
-	 * 抗拉强度
-	 */
-	public java.math.BigDecimal getMechtensileStrength() {
-		return get("mechtensileStrength");
-	}
-	
-	/**
-	 * 屈服强度
-	 */
-	public void setMechyieldStrength(java.math.BigDecimal mechyieldStrength) {
-		set("mechyieldStrength", mechyieldStrength);
-	}
-	
-	/**
-	 * 屈服强度
-	 */
-	public java.math.BigDecimal getMechyieldStrength() {
-		return get("mechyieldStrength");
-	}
-	
-	/**
-	 * 断后伸长率
-	 */
-	public void setMechelongation(java.math.BigDecimal mechelongation) {
-		set("mechelongation", mechelongation);
-	}
-	
-	/**
-	 * 断后伸长率
-	 */
-	public java.math.BigDecimal getMechelongation() {
-		return get("mechelongation");
-	}
-	
-	/**
-	 * 弯曲性能
-	 */
-	public void setBending(java.lang.String bending) {
-		set("bending", bending);
-	}
-	
-	/**
-	 * 弯曲性能
-	 */
-	public java.lang.String getBending() {
-		return getStr("bending");
-	}
-	
-	/**
-	 * 表面处理
-	 */
-	public void setSurfacequality(java.lang.String surfacequality) {
-		set("surfacequality", surfacequality);
-	}
-	
-	/**
-	 * 表面处理
-	 */
-	public java.lang.String getSurfacequality() {
-		return getStr("surfacequality");
-	}
-	
-	/**
-	 * 无损探伤
-	 */
-	public void setUltrasoundtest(java.lang.String ultrasoundtest) {
-		set("ultrasoundtest", ultrasoundtest);
-	}
-	
-	/**
-	 * 无损探伤
-	 */
-	public java.lang.String getUltrasoundtest() {
-		return getStr("ultrasoundtest");
-	}
-	
-	/**
-	 * 晶间腐蚀
-	 */
-	public void setCrystalcorrosion(java.lang.String crystalcorrosion) {
-		set("crystalcorrosion", crystalcorrosion);
-	}
-	
-	/**
-	 * 晶间腐蚀
-	 */
-	public java.lang.String getCrystalcorrosion() {
-		return getStr("crystalcorrosion");
-	}
-	
-	/**
-	 * 规格(mm)
+	 * 规格
 	 */
 	public void setSpecs(java.lang.String specs) {
 		set("specs", specs);
 	}
 	
 	/**
-	 * 规格(mm)
+	 * 规格
 	 */
 	public java.lang.String getSpecs() {
 		return getStr("specs");
 	}
 	
 	/**
-	 * 重量
+	 * 尺寸
 	 */
-	public void setWeight(java.lang.String weight) {
-		set("weight", weight);
+	public void setSize(java.lang.String size) {
+		set("size", size);
 	}
 	
 	/**
-	 * 重量
+	 * 尺寸
 	 */
-	public java.lang.String getWeight() {
-		return getStr("weight");
+	public java.lang.String getSize() {
+		return getStr("size");
 	}
 	
 	/**
@@ -568,20 +442,6 @@ public abstract class BaseClBkx<M extends BaseClBkx<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 力学性能检验抽检数量，默认为三件
-	 */
-	public void setMeInspQty(java.math.BigDecimal meInspQty) {
-		set("meInspQty", meInspQty);
-	}
-	
-	/**
-	 * 力学性能检验抽检数量，默认为三件
-	 */
-	public java.math.BigDecimal getMeInspQty() {
-		return get("meInspQty");
-	}
-	
-	/**
 	 * 批次号
 	 */
 	public void setBatchNum(java.lang.String batchNum) {
@@ -663,34 +523,6 @@ public abstract class BaseClBkx<M extends BaseClBkx<M>> extends Model<M> impleme
 	 */
 	public java.math.BigDecimal getChemMnRequired() {
 		return get("chemMnRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-P
-	 */
-	public void setChemPRequired(java.math.BigDecimal chemPRequired) {
-		set("chemPRequired", chemPRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-P
-	 */
-	public java.math.BigDecimal getChemPRequired() {
-		return get("chemPRequired");
-	}
-	
-	/**
-	 * 化学成分要求值-S
-	 */
-	public void setChemSRequired(java.math.BigDecimal chemSRequired) {
-		set("chemSRequired", chemSRequired);
-	}
-	
-	/**
-	 * 化学成分要求值-S
-	 */
-	public java.math.BigDecimal getChemSRequired() {
-		return get("chemSRequired");
 	}
 	
 	/**
@@ -792,45 +624,395 @@ public abstract class BaseClBkx<M extends BaseClBkx<M>> extends Model<M> impleme
 	}
 	
 	/**
-	 * 抗拉强度要求值
+	 * 尺寸s实测值1
 	 */
-	public void setMechtensileStrengthRequired(java.math.BigDecimal mechtensileStrengthRequired) {
-		set("mechtensileStrengthRequired", mechtensileStrengthRequired);
+	public void setSizeS1(java.math.BigDecimal sizeS1) {
+		set("sizeS1", sizeS1);
 	}
 	
 	/**
-	 * 抗拉强度要求值
+	 * 尺寸s实测值1
 	 */
-	public java.math.BigDecimal getMechtensileStrengthRequired() {
-		return get("mechtensileStrengthRequired");
+	public java.math.BigDecimal getSizeS1() {
+		return get("sizeS1");
 	}
 	
 	/**
-	 * 屈服强度要求值
+	 * 尺寸s实测值2
 	 */
-	public void setMechyieldStrengthRequired(java.math.BigDecimal mechyieldStrengthRequired) {
-		set("mechyieldStrengthRequired", mechyieldStrengthRequired);
+	public void setSizeS2(java.math.BigDecimal sizeS2) {
+		set("sizeS2", sizeS2);
 	}
 	
 	/**
-	 * 屈服强度要求值
+	 * 尺寸s实测值2
 	 */
-	public java.math.BigDecimal getMechyieldStrengthRequired() {
-		return get("mechyieldStrengthRequired");
+	public java.math.BigDecimal getSizeS2() {
+		return get("sizeS2");
 	}
 	
 	/**
-	 * 断后伸长率要求值
+	 * 尺寸s实测值3
 	 */
-	public void setMechelongationRequired(java.math.BigDecimal mechelongationRequired) {
-		set("mechelongationRequired", mechelongationRequired);
+	public void setSizeS3(java.math.BigDecimal sizeS3) {
+		set("sizeS3", sizeS3);
 	}
 	
 	/**
-	 * 断后伸长率要求值
+	 * 尺寸s实测值3
 	 */
-	public java.math.BigDecimal getMechelongationRequired() {
-		return get("mechelongationRequired");
+	public java.math.BigDecimal getSizeS3() {
+		return get("sizeS3");
+	}
+	
+	/**
+	 * 尺寸s实测值4
+	 */
+	public void setSizeS4(java.math.BigDecimal sizeS4) {
+		set("sizeS4", sizeS4);
+	}
+	
+	/**
+	 * 尺寸s实测值4
+	 */
+	public java.math.BigDecimal getSizeS4() {
+		return get("sizeS4");
+	}
+	
+	/**
+	 * 尺寸s实测值5
+	 */
+	public void setSizeS5(java.math.BigDecimal sizeS5) {
+		set("sizeS5", sizeS5);
+	}
+	
+	/**
+	 * 尺寸s实测值5
+	 */
+	public java.math.BigDecimal getSizeS5() {
+		return get("sizeS5");
+	}
+	
+	/**
+	 * 尺寸s实测值6
+	 */
+	public void setSizeS6(java.math.BigDecimal sizeS6) {
+		set("sizeS6", sizeS6);
+	}
+	
+	/**
+	 * 尺寸s实测值6
+	 */
+	public java.math.BigDecimal getSizeS6() {
+		return get("sizeS6");
+	}
+	
+	/**
+	 * 尺寸s要求值
+	 */
+	public void setSizeSRequired(java.math.BigDecimal sizeSRequired) {
+		set("sizeSRequired", sizeSRequired);
+	}
+	
+	/**
+	 * 尺寸s要求值
+	 */
+	public java.math.BigDecimal getSizeSRequired() {
+		return get("sizeSRequired");
+	}
+	
+	/**
+	 * 尺寸d实测值1
+	 */
+	public void setSizeD1(java.math.BigDecimal sizeD1) {
+		set("sizeD1", sizeD1);
+	}
+	
+	/**
+	 * 尺寸d实测值1
+	 */
+	public java.math.BigDecimal getSizeD1() {
+		return get("sizeD1");
+	}
+	
+	/**
+	 * 尺寸d实测值2
+	 */
+	public void setSizeD2(java.math.BigDecimal sizeD2) {
+		set("sizeD2", sizeD2);
+	}
+	
+	/**
+	 * 尺寸d实测值2
+	 */
+	public java.math.BigDecimal getSizeD2() {
+		return get("sizeD2");
+	}
+	
+	/**
+	 * 尺寸d实测值3
+	 */
+	public void setSizeD3(java.math.BigDecimal sizeD3) {
+		set("sizeD3", sizeD3);
+	}
+	
+	/**
+	 * 尺寸d实测值3
+	 */
+	public java.math.BigDecimal getSizeD3() {
+		return get("sizeD3");
+	}
+	
+	/**
+	 * 尺寸d实测值4
+	 */
+	public void setSizeD4(java.math.BigDecimal sizeD4) {
+		set("sizeD4", sizeD4);
+	}
+	
+	/**
+	 * 尺寸d实测值4
+	 */
+	public java.math.BigDecimal getSizeD4() {
+		return get("sizeD4");
+	}
+	
+	/**
+	 * 尺寸d实测值5
+	 */
+	public void setSizeD5(java.math.BigDecimal sizeD5) {
+		set("sizeD5", sizeD5);
+	}
+	
+	/**
+	 * 尺寸d实测值5
+	 */
+	public java.math.BigDecimal getSizeD5() {
+		return get("sizeD5");
+	}
+	
+	/**
+	 * 尺寸d实测值6
+	 */
+	public void setSizeD6(java.math.BigDecimal sizeD6) {
+		set("sizeD6", sizeD6);
+	}
+	
+	/**
+	 * 尺寸d实测值6
+	 */
+	public java.math.BigDecimal getSizeD6() {
+		return get("sizeD6");
+	}
+	
+	/**
+	 * 尺寸d要求值
+	 */
+	public void setSizeDRequired(java.math.BigDecimal sizeDRequired) {
+		set("sizeDRequired", sizeDRequired);
+	}
+	
+	/**
+	 * 尺寸d要求值
+	 */
+	public java.math.BigDecimal getSizeDRequired() {
+		return get("sizeDRequired");
+	}
+	
+	/**
+	 * 尺寸D实测值1
+	 */
+	public void setSizeBigD1(java.math.BigDecimal sizeBigD1) {
+		set("sizeBigD1", sizeBigD1);
+	}
+	
+	/**
+	 * 尺寸D实测值1
+	 */
+	public java.math.BigDecimal getSizeBigD1() {
+		return get("sizeBigD1");
+	}
+	
+	/**
+	 * 尺寸D实测值2
+	 */
+	public void setSizeBigD2(java.math.BigDecimal sizeBigD2) {
+		set("sizeBigD2", sizeBigD2);
+	}
+	
+	/**
+	 * 尺寸D实测值2
+	 */
+	public java.math.BigDecimal getSizeBigD2() {
+		return get("sizeBigD2");
+	}
+	
+	/**
+	 * 尺寸D实测值3
+	 */
+	public void setSizeBigD3(java.math.BigDecimal sizeBigD3) {
+		set("sizeBigD3", sizeBigD3);
+	}
+	
+	/**
+	 * 尺寸D实测值3
+	 */
+	public java.math.BigDecimal getSizeBigD3() {
+		return get("sizeBigD3");
+	}
+	
+	/**
+	 * 尺寸D实测值4
+	 */
+	public void setSizeBigD4(java.math.BigDecimal sizeBigD4) {
+		set("sizeBigD4", sizeBigD4);
+	}
+	
+	/**
+	 * 尺寸D实测值4
+	 */
+	public java.math.BigDecimal getSizeBigD4() {
+		return get("sizeBigD4");
+	}
+	
+	/**
+	 * 尺寸D实测值5
+	 */
+	public void setSizeBigD5(java.math.BigDecimal sizeBigD5) {
+		set("sizeBigD5", sizeBigD5);
+	}
+	
+	/**
+	 * 尺寸D实测值5
+	 */
+	public java.math.BigDecimal getSizeBigD5() {
+		return get("sizeBigD5");
+	}
+	
+	/**
+	 * 尺寸D实测值6
+	 */
+	public void setSizeBigD6(java.math.BigDecimal sizeBigD6) {
+		set("sizeBigD6", sizeBigD6);
+	}
+	
+	/**
+	 * 尺寸D实测值6
+	 */
+	public java.math.BigDecimal getSizeBigD6() {
+		return get("sizeBigD6");
+	}
+	
+	/**
+	 * 尺寸D要求值
+	 */
+	public void setSizeBigDRequired(java.math.BigDecimal sizeBigDRequired) {
+		set("sizeBigDRequired", sizeBigDRequired);
+	}
+	
+	/**
+	 * 尺寸D要求值
+	 */
+	public java.math.BigDecimal getSizeBigDRequired() {
+		return get("sizeBigDRequired");
+	}
+	
+	/**
+	 * 尺寸L2实测值1
+	 */
+	public void setSizeL21(java.math.BigDecimal sizeL21) {
+		set("sizeL21", sizeL21);
+	}
+	
+	/**
+	 * 尺寸L2实测值1
+	 */
+	public java.math.BigDecimal getSizeL21() {
+		return get("sizeL21");
+	}
+	
+	/**
+	 * 尺寸L2实测值2
+	 */
+	public void setSizeL22(java.math.BigDecimal sizeL22) {
+		set("sizeL22", sizeL22);
+	}
+	
+	/**
+	 * 尺寸L2实测值2
+	 */
+	public java.math.BigDecimal getSizeL22() {
+		return get("sizeL22");
+	}
+	
+	/**
+	 * 尺寸L2实测值3
+	 */
+	public void setSizeL23(java.math.BigDecimal sizeL23) {
+		set("sizeL23", sizeL23);
+	}
+	
+	/**
+	 * 尺寸L2实测值3
+	 */
+	public java.math.BigDecimal getSizeL23() {
+		return get("sizeL23");
+	}
+	
+	/**
+	 * 尺寸L2实测值4
+	 */
+	public void setSizeL24(java.math.BigDecimal sizeL24) {
+		set("sizeL24", sizeL24);
+	}
+	
+	/**
+	 * 尺寸L2实测值4
+	 */
+	public java.math.BigDecimal getSizeL24() {
+		return get("sizeL24");
+	}
+	
+	/**
+	 * 尺寸L2实测值5
+	 */
+	public void setSizeL25(java.math.BigDecimal sizeL25) {
+		set("sizeL25", sizeL25);
+	}
+	
+	/**
+	 * 尺寸L2实测值5
+	 */
+	public java.math.BigDecimal getSizeL25() {
+		return get("sizeL25");
+	}
+	
+	/**
+	 * 尺寸L2实测值6
+	 */
+	public void setSizeL26(java.math.BigDecimal sizeL26) {
+		set("sizeL26", sizeL26);
+	}
+	
+	/**
+	 * 尺寸L2实测值6
+	 */
+	public java.math.BigDecimal getSizeL26() {
+		return get("sizeL26");
+	}
+	
+	/**
+	 * 尺寸L2要求值
+	 */
+	public void setSizeL2Required(java.math.BigDecimal sizeL2Required) {
+		set("sizeL2Required", sizeL2Required);
+	}
+	
+	/**
+	 * 尺寸L2要求值
+	 */
+	public java.math.BigDecimal getSizeL2Required() {
+		return get("sizeL2Required");
 	}
 	
 }

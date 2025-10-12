@@ -137,6 +137,8 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_tb", TbController.class);//张凌佳 --铜板
 		me.add("/cl_dxgjx", DxgjxController.class);//镀锌钢绞线--那怀月
 		me.add("/cl_lb", LbController.class);//铝板--孙元芯
+		me.add("/cl_dxls", DxlsController.class);//镀锌螺栓--蒙千惠
+
 
 
 
