@@ -3,23 +3,23 @@ package com.xlerp.api.ClManagement.Service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.xlerp.common.model.ClDxgjx;
+import com.xlerp.common.model.ClLg;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DxgjxService {
-    // 数据库访问对象，对应cl_dxgjx表
-    private static final ClDxgjx dao = new ClDxgjx();
+public class LgService {
+    // 数据库访问对象，对应cl_lg表
+    private static final ClLg dao = new ClLg();
 
     /**
-     * 分页查询镀锌钢绞线数据
+     * 分页查询铝管数据
      */
-    public Page<ClDxgjx> paginate(int pageNumber, int pageSize, String mafactory, String matRecheckNo, String contractNo,
-                                  String contractName, String material, String type, String status,String basNo) {
+    public Page<ClLg> paginate(int pageNumber, int pageSize, String mafactory, String matRecheckNo, String contractNo,
+                               String contractName, String material, String type, String status,String basNo) {
         String select = "select *";
-        StringBuilder from = new StringBuilder(" from cl_dxgjx where 1 = 1");
+        StringBuilder from = new StringBuilder(" from cl_lg where 1 = 1");
         List<Object> params = new java.util.ArrayList<>();
 
         // 添加搜索条件
@@ -55,47 +55,43 @@ public class DxgjxService {
             from.append(" and basNo like ?");
             params.add("%" + basNo + "%");
         }
-
         from.append(" order by id desc");
 
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 
     /**
-     * 根据ID查询镀锌钢绞线记录
-     * @param id
+     * 根据ID查询铝管记录
      */
-    public ClDxgjx findById(long id) {
-        return dao.findFirst("select * from cl_dxgjx where id = ? ", id);  // 表名改为cl_dxgjx
+    public ClLg findById(int id) {
+        return dao.findFirst("select * from cl_lg where id = ? ", id);  // 表名改为cl_lg
     }
 
     /**
-     * 保存镀锌钢绞线记录
+     * 保存铝管记录
      */
-    public boolean save(ClDxgjx dxgjx) {
-        return dxgjx.save();
+    public boolean save(ClLg lg) {
+        return lg.save();
     }
 
     /**
-     * 更新镀锌钢绞线记录
+     * 更新铝管记录
      */
-    public boolean update(ClDxgjx dxgjx) {
-        return dxgjx.update();
+    public boolean update(ClLg lg) {
+        return lg.update();
     }
 
     /**
-     * 根据ID删除镀锌钢绞线记录（修正方法名首字母小写）
-     * @param id
+     * 根据ID删除铝管记录（修正方法名首字母小写）
      */
-    public boolean deleteById(long id) {
+    public boolean deleteById(int id) {
         return dao.deleteById(id);
     }
 
     /**
-     * 批量删除镀锌钢绞线记录
-     * @param ids
+     * 批量删除铝管记录
      */
-    public boolean batchDelete(List<Long> ids) {
+    public boolean batchDelete(List<Integer> ids) {
         return dao.deleteByIds(ids);
     }
 
@@ -107,7 +103,7 @@ public class DxgjxService {
         statusToField.put("50", "checkAuditor");
 
         // 获取记录
-        Record record = Db.findById("cl_dxgjx", id);
+        Record record = Db.findById("cl_lg", id);
         if (record == null) {
             return false;
         }
@@ -125,6 +121,6 @@ public class DxgjxService {
         }
 
         // 更新记录
-        return Db.update("cl_dxgjx", record);
+        return Db.update("cl_lg", record);
     }
 }
