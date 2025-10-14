@@ -24,20 +24,6 @@ public abstract class BaseClCt<M extends BaseClCt<M>> extends Model<M> implement
 	}
 	
 	/**
-	 * 复检单号
-	 */
-	public void setMatRecheckNO(java.lang.String matRecheckNO) {
-		set("matRecheckNO", matRecheckNO);
-	}
-	
-	/**
-	 * 复检单号
-	 */
-	public java.lang.String getMatRecheckNO() {
-		return getStr("matRecheckNO");
-	}
-	
-	/**
 	 * 原材料制造商
 	 */
 	public void setMafactory(java.lang.String mafactory) {
@@ -189,20 +175,6 @@ public abstract class BaseClCt<M extends BaseClCt<M>> extends Model<M> implement
 	 */
 	public java.util.Date getLeaveFactoryDate() {
 		return getDate("leaveFactoryDate");
-	}
-	
-	/**
-	 * 原材料入场检测日期
-	 */
-	public void setDeterctionTime(java.util.Date deterctionTime) {
-		set("deterctionTime", deterctionTime);
-	}
-	
-	/**
-	 * 原材料入场检测日期
-	 */
-	public java.util.Date getDeterctionTime() {
-		return getDate("deterctionTime");
 	}
 	
 	/**
@@ -1127,6 +1099,48 @@ public abstract class BaseClCt<M extends BaseClCt<M>> extends Model<M> implement
 	 */
 	public java.lang.String getTouKuanJudgmentResult() {
 		return getStr("touKuanJudgmentResult");
+	}
+	
+	/**
+	 * 复检单号
+	 */
+	public void setMatRecheckNo(java.lang.String matRecheckNo) {
+		set("matRecheckNo", matRecheckNo);
+	}
+	
+	/**
+	 * 复检单号
+	 */
+	public java.lang.String getMatRecheckNo() {
+		return getStr("matRecheckNo");
+	}
+	
+	/**
+	 * 原材料入厂检测日期
+	 */
+	public void setDetectionTime(java.util.Date detectionTime) {
+		set("detectionTime", detectionTime);
+	}
+	
+	/**
+	 * 原材料入厂检测日期
+	 */
+	public java.util.Date getDetectionTime() {
+		return getDate("detectionTime");
+	}
+	
+	/**
+	 * 外形标准
+	 */
+	public void setAppearanceRequired(java.lang.String appearanceRequired) {
+		set("appearanceRequired", appearanceRequired);
+	}
+	
+	/**
+	 * 外形标准
+	 */
+	public java.lang.String getAppearanceRequired() {
+		return getStr("appearanceRequired");
 	}
 	
 }

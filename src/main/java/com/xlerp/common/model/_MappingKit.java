@@ -29,6 +29,7 @@ public class _MappingKit {
 		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
 		arp.addMapping("bastuzhicailiao", "id", Bastuzhicailiao.class);
 		arp.addMapping("cl_bkx", "id", ClBkx.class);
+		arp.addMapping("cl_bxgls", "id", ClBxgls.class);
 		arp.addMapping("cl_ct", "id", ClCt.class);
 		arp.addMapping("cl_dxgjx", "id", ClDxgjx.class);
 		arp.addMapping("cl_dxls", "id", ClDxls.class);
