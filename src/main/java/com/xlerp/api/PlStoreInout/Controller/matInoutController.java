@@ -21,7 +21,7 @@ public class matInoutController extends Controller {
         // 获取分页参数
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
-
+        String inOutType = getPara("inOutType");
         // 获取查询条件参数
         String status = getPara("status");
 
@@ -35,7 +35,7 @@ public class matInoutController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件
-            Page page = matService.paginate(pageNum, pageSz,status);
+            Page page = matService.paginate(pageNum, pageSz,status,inOutType);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

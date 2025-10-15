@@ -13,13 +13,14 @@ public class matInoutService {
     private static final PlMatInoutItem itemDao = new PlMatInoutItem();
 
     public Page<PlMatInoutDoc> paginate(int pageNumber, int pageSize,
-                                         String status) {
+                                         String status, String inOutType) {
         // 构建查询字段
         String select = "select m.*";
 
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_mat_inout_doc m ");
         from.append("where isDeleted = 0 "); // 基础条件，简化后续拼接
+        from.append("and m.inOutType = ? ");
 
         // 构建查询参数
         List<Object> params = new ArrayList<>();
@@ -28,6 +29,11 @@ public class matInoutService {
         if (status != null && !status.isEmpty()) {
             from.append("and m.status >= ? ");
             params.add(status);
+        }
+
+        if (inOutType != null && !inOutType.isEmpty()) {
+            from.append("and m.inOutType = ? ");
+            params.add(inOutType);
         }
         // 添加排序
         from.append("order by m.id desc");
