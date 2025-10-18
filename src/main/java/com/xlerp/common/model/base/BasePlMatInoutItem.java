@@ -346,70 +346,70 @@ public abstract class BasePlMatInoutItem<M extends BasePlMatInoutItem<M>> extend
 	}
 	
 	/**
-	 * 计划规格
+	 * 计划规格（入库用）
 	 */
 	public void setPlanSpec(java.lang.String planSpec) {
 		set("planSpec", planSpec);
 	}
 	
 	/**
-	 * 计划规格
+	 * 计划规格（入库用）
 	 */
 	public java.lang.String getPlanSpec() {
 		return getStr("planSpec");
 	}
 	
 	/**
-	 * 供应商名称
+	 * 供应商名称 （入库用）
 	 */
 	public void setSupplierName(java.lang.String supplierName) {
 		set("supplierName", supplierName);
 	}
 	
 	/**
-	 * 供应商名称
+	 * 供应商名称 （入库用）
 	 */
 	public java.lang.String getSupplierName() {
 		return getStr("supplierName");
 	}
 	
 	/**
-	 * 计划材质
+	 * 计划材质（入库用）
 	 */
 	public void setPlanMaterial(java.lang.String planMaterial) {
 		set("planMaterial", planMaterial);
 	}
 	
 	/**
-	 * 计划材质
+	 * 计划材质（入库用）
 	 */
 	public java.lang.String getPlanMaterial() {
 		return getStr("planMaterial");
 	}
 	
 	/**
-	 * 计划数量
+	 * 计划数量（入库用）
 	 */
 	public void setPlanQuantity(java.math.BigDecimal planQuantity) {
 		set("planQuantity", planQuantity);
 	}
 	
 	/**
-	 * 计划数量
+	 * 计划数量（入库用）
 	 */
 	public java.math.BigDecimal getPlanQuantity() {
 		return get("planQuantity");
 	}
 	
 	/**
-	 * 计划重量
+	 * 计划重量（入库用）
 	 */
 	public void setPlanWeight(java.math.BigDecimal planWeight) {
 		set("planWeight", planWeight);
 	}
 	
 	/**
-	 * 计划重量
+	 * 计划重量（入库用）
 	 */
 	public java.math.BigDecimal getPlanWeight() {
 		return get("planWeight");

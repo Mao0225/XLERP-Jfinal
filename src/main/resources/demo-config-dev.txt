@@ -1,5 +1,5 @@
 # 达梦数据库配置
-jdbcUrl = jdbc:dm://114.115.156.201:5236/XLQCERP
+jdbcUrl = jdbc:dm://127.0.0.1:5236/XLQCERP
 user = SYSDBA
-password = Liuguoqi123
+password = Mao0225.
 devMode = true

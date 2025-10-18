@@ -55,6 +55,7 @@ public class _MappingKit {
 		arp.addMapping("plchuchangchoujian", "id", Plchuchangchoujian.class);
 		arp.addMapping("plchuchangshiyanshuju", "id", Plchuchangshiyanshuju.class);
 		arp.addMapping("plentityid", "id", Plentityid.class);
+		arp.addMapping("sys_upload_log", "id", SysUploadLog.class);
 		arp.addMapping("sysmenu", "id", Sysmenu.class);
 		arp.addMapping("systerm", "id", Systerm.class);
 		arp.addMapping("sysuser", "id", Sysuser.class);

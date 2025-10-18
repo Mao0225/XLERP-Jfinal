@@ -141,6 +141,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_ct", CtController.class);//锤头--张凌佳
 		me.add("/cl_lg", LgController.class);//铝管--那怀月
 		me.add("/cl_bxgls", BxglsController.class);//不锈钢螺栓--蒙千惠
+		me.add("/uploadLog", UploadLogController.class);//上传日志--毛文斌
 
 
 
