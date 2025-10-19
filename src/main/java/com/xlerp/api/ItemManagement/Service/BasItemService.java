@@ -1,7 +1,9 @@
 package com.xlerp.api.ItemManagement.Service;
 
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.Basitem;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -248,6 +250,137 @@ public class BasItemService {
         return result;
     }
 
+
+
+    /**
+     * 获取物料的完整子物料树形结构
+     * @param itemId 物料ID
+     * @return 树形结构的物料列表
+     */
+    public List<Map<String, Object>> getItemMaterialTree(int itemId) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        // 查询当前物料信息
+        Basitem currentItem = findById(itemId);
+        if (currentItem == null) {
+            return result;
+        }
+
+        // 构建根节点
+        Map<String, Object> rootNode = new HashMap<>();
+        rootNode.put("id", currentItem.getId());
+        rootNode.put("no", currentItem.getStr("no"));
+        rootNode.put("name", currentItem.getStr("name"));
+        rootNode.put("unit", currentItem.getStr("unit"));
+        rootNode.put("spec", currentItem.getStr("spec"));
+        rootNode.put("type", currentItem.getInt("type"));
+        rootNode.put("inclass", currentItem.getStr("inclass"));
+        rootNode.put("weight", currentItem.getBigDecimal("weight"));
+        rootNode.put("plannedPrice", currentItem.getBigDecimal("planned_price"));
+        rootNode.put("avgPrice", currentItem.getBigDecimal("avg_price"));
+        rootNode.put("level", 0);
+        rootNode.put("isRoot", true);
+        rootNode.put("children", new ArrayList<Map<String, Object>>());
+
+        // 递归获取子物料
+        buildMaterialTree(rootNode, 1);
+
+        result.add(rootNode);
+        return result;
+    }
+
+    /**
+     * 递归构建物料树
+     * @param parentNode 父节点
+     * @param level 当前层级
+     */
+    private void buildMaterialTree(Map<String, Object> parentNode, int level) {
+        int parentItemId = (int) parentNode.get("id");
+
+        // 查询直接子物料
+        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity " +
+                "FROM bas_item_relation r " +
+                "LEFT JOIN basitem i ON r.childItemId = i.id " +
+                "WHERE r.parentItemId = ? AND i.isdelete = 0 " +
+                "ORDER BY i.no";
+
+        List<Basitem> childItems = dao.find(sql, parentItemId);
+
+        List<Map<String, Object>> children = new ArrayList<>();
+
+        for (Basitem childItem : childItems) {
+            Map<String, Object> childNode = new HashMap<>();
+            childNode.put("id", childItem.getId());
+            childNode.put("no", childItem.getStr("no"));
+            childNode.put("name", childItem.getStr("name"));
+            childNode.put("unit", childItem.getStr("unit"));
+            childNode.put("spec", childItem.getStr("spec"));
+            childNode.put("type", childItem.getInt("type"));
+            childNode.put("inclass", childItem.getStr("inclass"));
+            childNode.put("weight", childItem.getBigDecimal("weight"));
+            childNode.put("plannedPrice", childItem.getBigDecimal("planned_price"));
+            childNode.put("avgPrice", childItem.getBigDecimal("avg_price"));
+            childNode.put("quantity", childItem.getBigDecimal("relation_quantity"));
+            childNode.put("level", level);
+            childNode.put("isRoot", false);
+            childNode.put("children", new ArrayList<Map<String, Object>>());
+
+            // 递归获取子节点的子物料
+            buildMaterialTree(childNode, level + 1);
+
+            children.add(childNode);
+        }
+
+        parentNode.put("children", children);
+    }
+
+    /**
+     * 获取物料的所有层级子物料（平铺列表）
+     * @param itemId 物料ID
+     * @return 平铺的子物料列表
+     */
+    public List<Map<String, Object>> getItemAllMaterials(int itemId) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        getFlatMaterialList(itemId, result, 0);
+        return result;
+    }
+
+    /**
+     * 递归获取平铺的物料列表
+     */
+    private void getFlatMaterialList(int parentItemId, List<Map<String, Object>> result, int level) {
+        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity " +
+                "FROM bas_item_relation r " +
+                "LEFT JOIN basitem i ON r.childItemId = i.id " +
+                "WHERE r.parentItemId = ? AND i.isdelete = 0 " +
+                "ORDER BY i.no";
+
+        List<Basitem> childItems = dao.find(sql, parentItemId);
+
+        for (Basitem childItem : childItems) {
+            Map<String, Object> material = new HashMap<>();
+            material.put("id", childItem.getId());
+            material.put("no", childItem.getStr("no"));
+            material.put("name", childItem.getStr("name"));
+            material.put("unit", childItem.getStr("unit"));
+            material.put("spec", childItem.getStr("spec"));
+            material.put("type", childItem.getInt("type"));
+            material.put("inclass", childItem.getStr("inclass"));
+            material.put("weight", childItem.getBigDecimal("weight"));
+            material.put("plannedPrice", childItem.getBigDecimal("planned_price"));
+            material.put("avgPrice", childItem.getBigDecimal("avg_price"));
+            material.put("quantity", childItem.getBigDecimal("relation_quantity"));
+            material.put("level", level);
+            material.put("materialAttribute", childItem.getStr("material_attribute"));
+            material.put("drawingStandardNo", childItem.getStr("drawing_standard_no"));
+
+            result.add(material);
+
+            // 递归获取子节点的子物料
+            getFlatMaterialList(childItem.getId(), result, level + 1);
+        }
+    }
+
     /**
      * 获取单元格值的辅助方法
      * @param cell 单元格对象
@@ -272,5 +405,94 @@ public class BasItemService {
                 return "";
         }
     }
+
+
+
+    /**
+     * 添加物料关系
+     */
+    public boolean addMaterialRelation(int parentItemId, int childItemId, BigDecimal quantity, String memo) {
+        try {
+            // 检查关系是否已存在
+            Record existingRelation = Db.findFirst(
+                    "SELECT * FROM bas_item_relation WHERE parentItemId = ? AND childItemId = ?",
+                    parentItemId, childItemId
+            );
+
+            if (existingRelation != null) {
+                System.out.println("关系已存在，父物料ID：" + parentItemId + "，子物料ID：" + childItemId);
+                return false; // 关系已存在
+            }
+
+            // 获取物料信息
+            Basitem parentItem = findById(parentItemId);
+            Basitem childItem = findById(childItemId);
+
+            if (parentItem == null) {
+                System.out.println("父物料不存在，ID：" + parentItemId);
+                return false;
+            }
+            if (childItem == null) {
+                System.out.println("子物料不存在，ID：" + childItemId);
+                return false;
+            }
+
+            System.out.println("父物料信息: " + parentItem.getStr("no") + " - " + parentItem.getStr("name"));
+            System.out.println("子物料信息: " + childItem.getStr("no") + " - " + childItem.getStr("name"));
+
+            // 插入新关系
+            Record relation = new Record();
+            relation.set("parentItemId", parentItemId);
+            relation.set("childItemId", childItemId);
+            relation.set("parentItemType", parentItem.getInt("type"));
+            relation.set("childItemType", childItem.getInt("type"));
+            relation.set("quantity", quantity != null ? quantity : BigDecimal.ONE);
+            relation.set("memo", memo != null ? memo : "");
+
+            boolean saveResult = Db.save("bas_item_relation", relation);
+            if (saveResult) {
+                System.out.println("成功添加物料关系，父物料ID：" + parentItemId + "，子物料ID：" + childItemId);
+                // 打印插入的记录ID
+                Record newRelation = Db.findFirst("SELECT * FROM bas_item_relation WHERE parentItemId = ? AND childItemId = ?",
+                        parentItemId, childItemId);
+                if (newRelation != null) {
+                    System.out.println("新关系记录ID: " + newRelation.getInt("id"));
+                }
+            } else {
+                System.out.println("插入数据库失败，父物料ID：" + parentItemId + "，子物料ID：" + childItemId);
+            }
+            return saveResult;
+        } catch (Exception e) {
+            System.out.println("添加物料关系时发生异常，父物料ID：" + parentItemId + "，子物料ID：" + childItemId);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 移除物料关系
+     */
+    public boolean removeMaterialRelation(int relationId) {
+        try {
+            return Db.deleteById("bas_item_relation", relationId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 获取物料的子物料列表
+     */
+    public List<Record> getChildMaterials(int itemId) {
+        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity, r.id as relation_id " +
+                "FROM bas_item_relation r " +
+                "LEFT JOIN basitem i ON r.childItemId = i.id " +
+                "WHERE r.parentItemId = ? AND i.isdelete = 0 " +
+                "ORDER BY i.no";
+
+        return Db.find(sql, itemId);
+    }
+
 
 }

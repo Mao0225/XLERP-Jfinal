@@ -153,5 +153,75 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 等级
+	 */
+	public void setGrade(java.lang.String grade) {
+		set("grade", grade);
+	}
+	
+	/**
+	 * 等级
+	 */
+	public java.lang.String getGrade() {
+		return getStr("grade");
+	}
+	
+	/**
+	 * 物料版本
+	 */
+	public void setMaterialVersion(java.lang.String materialVersion) {
+		set("material_version", materialVersion);
+	}
+	
+	/**
+	 * 物料版本
+	 */
+	public java.lang.String getMaterialVersion() {
+		return getStr("material_version");
+	}
+	
+	/**
+	 * 辅助属性
+	 */
+	public void setAuxiliaryAttribute(java.lang.String auxiliaryAttribute) {
+		set("auxiliary_attribute", auxiliaryAttribute);
+	}
+	
+	/**
+	 * 辅助属性
+	 */
+	public java.lang.String getAuxiliaryAttribute() {
+		return getStr("auxiliary_attribute");
+	}
+	
+	/**
+	 * 物料属性
+	 */
+	public void setMaterialAttribute(java.lang.String materialAttribute) {
+		set("material_attribute", materialAttribute);
+	}
+	
+	/**
+	 * 物料属性
+	 */
+	public java.lang.String getMaterialAttribute() {
+		return getStr("material_attribute");
+	}
+	
+	/**
+	 * 图号/标准号
+	 */
+	public void setDrawingStandardNo(java.lang.String drawingStandardNo) {
+		set("drawing_standard_no", drawingStandardNo);
+	}
+	
+	/**
+	 * 图号/标准号
+	 */
+	public java.lang.String getDrawingStandardNo() {
+		return getStr("drawing_standard_no");
+	}
+	
 }
 
