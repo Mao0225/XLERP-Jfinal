@@ -20,7 +20,6 @@ public class matInoutService {
         // 构建FROM子句和基础WHERE条件
         StringBuilder from = new StringBuilder("from pl_mat_inout_doc m ");
         from.append("where isDeleted = 0 "); // 基础条件，简化后续拼接
-        from.append("and m.inOutType = ? ");
 
         // 构建查询参数
         List<Object> params = new ArrayList<>();
