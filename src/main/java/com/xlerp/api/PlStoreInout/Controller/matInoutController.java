@@ -157,6 +157,7 @@ public class matInoutController extends Controller {
         String materialName = getPara("materialName");
         String materialSpec = getPara("materialSpec");
         String inOutType = getPara("inOutType");
+        String status = getPara("status");
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
@@ -167,7 +168,7 @@ public class matInoutController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件
-            Page page = matService.itemPaginate(pageNum, pageSz, docNo, materialCode, materialName, materialSpec,inOutType);
+            Page page = matService.itemPaginate(pageNum, pageSz, docNo, materialCode, materialName, materialSpec,inOutType,status);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

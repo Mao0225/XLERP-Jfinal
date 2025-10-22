@@ -85,7 +85,7 @@ public class matInoutService {
         return itemDao.find("select * from pl_mat_inout_item where docNo=?", docNo);
     }
 
-    public Page<PlMatInoutItem> itemPaginate(int pageNumber, int pageSize, String docNo,String materialCode,String materialName,String materialSpec,String inOutType) {
+    public Page<PlMatInoutItem> itemPaginate(int pageNumber, int pageSize, String docNo,String materialCode,String materialName,String materialSpec,String inOutType,String status) {
         // 选择需要的字段（避免使用*）
         String select = "select m.*, d.inOutType, d.deliveryOrg, d.term, d.handler,d.status as docStatus";
 
@@ -116,6 +116,10 @@ public class matInoutService {
         if (inOutType != null && !inOutType.trim().isEmpty()) {
             from.append("and d.inOutType = ? ");
             params.add(inOutType);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            from.append("and d.status = ? ");
+            params.add(status);
         }
 
         // 关键改进：先按docNo排序（相同的放一起），再按id排序
