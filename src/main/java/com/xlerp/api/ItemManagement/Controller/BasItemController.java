@@ -383,4 +383,46 @@ public class BasItemController extends Controller {
             renderJson(Result.serverError("获取子物料列表失败: " + e.getMessage()));
         }
     }
+
+    @ActionKey("/basitem/material/updateRelation")
+    @HttpMethod("PUT")
+    public void updateMaterialRelation() {
+        try {
+            // 1. 获取请求体JSON
+            String json = getRawData();
+            if (StrKit.isBlank(json)) {
+                renderJson(Result.badRequest("请求体不能为空"));
+                return;
+            }
+
+            // 2. 解析参数
+            Map<String, Object> params = com.alibaba.fastjson.JSON.parseObject(json, Map.class);
+            String relationIdStr = params.get("relationId") != null ? params.get("relationId").toString() : null;
+            String quantityStr = params.get("quantity") != null ? params.get("quantity").toString() : null;
+            String memo = params.get("memo") != null ? params.get("memo").toString() : null;
+
+            // 3. 校验必填参数（关系ID）
+            if (StrKit.isBlank(relationIdStr)) {
+                renderJson(Result.badRequest("关系ID不能为空"));
+                return;
+            }
+
+            // 4. 转换参数类型
+            int relationId = Integer.parseInt(relationIdStr.trim());
+            BigDecimal quantity = (StrKit.notBlank(quantityStr)) ? new BigDecimal(quantityStr.trim()) : null;
+
+            // 5. 调用服务层更新
+            boolean success = basItemService.updateMaterialRelation(relationId, quantity, memo);
+            if (success) {
+                renderJson(Result.success("更新物料关系成功"));
+            } else {
+                renderJson(Result.notFound("关系不存在或更新失败"));
+            }
+
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("关系ID或数量格式错误"));
+        } catch (Exception e) {
+            renderJson(Result.serverError("更新物料关系时发生错误: " + e.getMessage()));
+        }
+    }
 }

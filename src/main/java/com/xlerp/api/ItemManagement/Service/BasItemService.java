@@ -254,8 +254,6 @@ public class BasItemService {
 
     /**
      * 获取物料的完整子物料树形结构
-     * @param itemId 物料ID
-     * @return 树形结构的物料列表
      */
     public List<Map<String, Object>> getItemMaterialTree(int itemId) {
         List<Map<String, Object>> result = new ArrayList<>();
@@ -276,10 +274,11 @@ public class BasItemService {
         rootNode.put("type", currentItem.getInt("type"));
         rootNode.put("inclass", currentItem.getStr("inclass"));
         rootNode.put("weight", currentItem.getBigDecimal("weight"));
-        rootNode.put("plannedPrice", currentItem.getBigDecimal("planned_price"));
-        rootNode.put("avgPrice", currentItem.getBigDecimal("avg_price"));
+        rootNode.put("planned_price", currentItem.getBigDecimal("planned_price"));
+        rootNode.put("avg_price", currentItem.getBigDecimal("avg_price"));
         rootNode.put("level", 0);
         rootNode.put("isRoot", true);
+        rootNode.put("quantity", BigDecimal.ONE); // 根节点数量为1
         rootNode.put("children", new ArrayList<Map<String, Object>>());
 
         // 递归获取子物料
@@ -291,39 +290,47 @@ public class BasItemService {
 
     /**
      * 递归构建物料树
-     * @param parentNode 父节点
-     * @param level 当前层级
      */
     private void buildMaterialTree(Map<String, Object> parentNode, int level) {
         int parentItemId = (int) parentNode.get("id");
+        BigDecimal parentQuantity = (BigDecimal) parentNode.get("quantity");
 
         // 查询直接子物料
-        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity " +
+        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity, r.id as relation_id " +
                 "FROM bas_item_relation r " +
                 "LEFT JOIN basitem i ON r.childItemId = i.id " +
                 "WHERE r.parentItemId = ? AND i.isdelete = 0 " +
                 "ORDER BY i.no";
 
-        List<Basitem> childItems = dao.find(sql, parentItemId);
+        List<Record> childRecords = Db.find(sql, parentItemId);
 
         List<Map<String, Object>> children = new ArrayList<>();
 
-        for (Basitem childItem : childItems) {
+        for (Record childRecord : childRecords) {
             Map<String, Object> childNode = new HashMap<>();
-            childNode.put("id", childItem.getId());
-            childNode.put("no", childItem.getStr("no"));
-            childNode.put("name", childItem.getStr("name"));
-            childNode.put("unit", childItem.getStr("unit"));
-            childNode.put("spec", childItem.getStr("spec"));
-            childNode.put("type", childItem.getInt("type"));
-            childNode.put("inclass", childItem.getStr("inclass"));
-            childNode.put("weight", childItem.getBigDecimal("weight"));
-            childNode.put("plannedPrice", childItem.getBigDecimal("planned_price"));
-            childNode.put("avgPrice", childItem.getBigDecimal("avg_price"));
-            childNode.put("quantity", childItem.getBigDecimal("relation_quantity"));
+            childNode.put("id", childRecord.getInt("id"));
+            childNode.put("no", childRecord.getStr("no"));
+            childNode.put("name", childRecord.getStr("name"));
+            childNode.put("unit", childRecord.getStr("unit"));
+            childNode.put("spec", childRecord.getStr("spec"));
+            childNode.put("type", childRecord.getInt("type"));
+            childNode.put("inclass", childRecord.getStr("inclass"));
+            childNode.put("weight", childRecord.getBigDecimal("weight"));
+            childNode.put("planned_price", childRecord.getBigDecimal("planned_price"));
+            childNode.put("avg_price", childRecord.getBigDecimal("avg_price"));
+            childNode.put("relation_quantity", childRecord.getBigDecimal("relation_quantity"));
+            childNode.put("relation_id", childRecord.getInt("relation_id"));
             childNode.put("level", level);
             childNode.put("isRoot", false);
             childNode.put("children", new ArrayList<Map<String, Object>>());
+
+            // 计算实际数量 = 父节点数量 × 子节点基础数量
+            BigDecimal baseQuantity = childRecord.getBigDecimal("relation_quantity");
+            if (baseQuantity == null) {
+                baseQuantity = BigDecimal.ONE;
+            }
+            BigDecimal calculatedQuantity = parentQuantity.multiply(baseQuantity);
+            childNode.put("quantity", calculatedQuantity); // 使用统一的quantity字段
 
             // 递归获取子节点的子物料
             buildMaterialTree(childNode, level + 1);
@@ -485,13 +492,188 @@ public class BasItemService {
      * 获取物料的子物料列表
      */
     public List<Record> getChildMaterials(int itemId) {
-        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity, r.id as relation_id " +
+        String sql = "SELECT r.*, i.*, r.quantity as relation_quantity, r.id as relation_id ,r.memo as memo "  +
                 "FROM bas_item_relation r " +
                 "LEFT JOIN basitem i ON r.childItemId = i.id " +
                 "WHERE r.parentItemId = ? AND i.isdelete = 0 " +
                 "ORDER BY i.no";
 
         return Db.find(sql, itemId);
+    }
+
+    /**
+     * 更新物料关系并重新计算父物料数量
+     */
+    public boolean updateMaterialRelation(int relationId, BigDecimal quantity, String memo) {
+        try {
+            // 1. 检查关系是否存在
+            Record relation = Db.findById("bas_item_relation", relationId);
+            if (relation == null) {
+                System.out.println("物料关系不存在，ID：" + relationId);
+                return false;
+            }
+
+            // 2. 获取父物料ID和子物料ID
+            int parentItemId = relation.getInt("parentItemId");
+            int childItemId = relation.getInt("childItemId");
+
+            System.out.println("更新关系 - 父物料ID: " + parentItemId + ", 子物料ID: " + childItemId + ", 新数量: " + quantity);
+
+            // 3. 仅更新不为null的字段
+            if (quantity != null) {
+                relation.set("quantity", quantity);
+            }
+            if (memo != null) {
+                relation.set("memo", memo);
+            }
+
+            // 4. 执行更新
+            boolean updateResult = Db.update("bas_item_relation", relation);
+
+            if (updateResult && quantity != null) {
+                // 5. 重新计算父物料的总数量
+                recalculateParentItemQuantities(parentItemId);
+            }
+
+            return updateResult;
+        } catch (Exception e) {
+            System.out.println("更新物料关系时发生异常，关系ID：" + relationId);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 递归重新计算父物料的数量（从当前物料开始向上计算）
+     */
+    private void recalculateParentItemQuantities(int itemId) {
+        try {
+            System.out.println("开始重新计算物料ID: " + itemId + " 的相关数量");
+
+            // 查找所有包含此物料作为子物料的父物料
+            String sql = "SELECT DISTINCT parentItemId FROM bas_item_relation WHERE childItemId = ?";
+            List<Record> parentRelations = Db.find(sql, itemId);
+
+            for (Record parentRelation : parentRelations) {
+                int parentItemId = parentRelation.getInt("parentItemId");
+                System.out.println("处理父物料ID: " + parentItemId);
+
+                // 重新计算该父物料的总数量
+                recalculateItemTotalQuantity(parentItemId);
+
+                // 递归向上计算
+                recalculateParentItemQuantities(parentItemId);
+            }
+        } catch (Exception e) {
+            System.out.println("重新计算父物料数量时发生异常，物料ID：" + itemId);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 计算物料的完整BOM总数量
+     */
+    private void recalculateItemTotalQuantity(int itemId) {
+        try {
+            System.out.println("计算物料ID: " + itemId + " 的BOM总数量");
+
+            // 获取所有子物料关系
+            List<Record> childRelations = Db.find(
+                    "SELECT r.*, i.type as item_type FROM bas_item_relation r " +
+                            "LEFT JOIN basitem i ON r.childItemId = i.id " +
+                            "WHERE r.parentItemId = ? AND i.isdelete = 0", itemId);
+
+            // 这里可以添加逻辑来计算总成本、总重量等
+            // 目前主要关注数量的传递关系
+
+            System.out.println("物料ID: " + itemId + " 有 " + childRelations.size() + " 个子物料");
+
+            for (Record relation : childRelations) {
+                int childItemId = relation.getInt("childItemId");
+                BigDecimal quantity = relation.getBigDecimal("quantity");
+                int childType = relation.getInt("item_type");
+
+                System.out.println("子物料ID: " + childItemId + ", 数量: " + quantity + ", 类型: " + childType);
+
+                // 如果是半成品或成品，需要进一步计算其子物料
+                if (childType == 20 || childType == 30) { // 成品或半成品
+                    calculateChildMaterialQuantities(childItemId, quantity);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("计算物料总数量时发生异常，物料ID：" + itemId);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 计算子物料在父物料中的实际数量
+     */
+    private void calculateChildMaterialQuantities(int itemId, BigDecimal parentQuantity) {
+        try {
+            System.out.println("计算子物料ID: " + itemId + " 在父物料中的实际数量，父物料数量: " + parentQuantity);
+
+            // 获取该物料的所有子物料
+            List<Record> childRelations = Db.find(
+                    "SELECT r.*, i.type as item_type FROM bas_item_relation r " +
+                            "LEFT JOIN basitem i ON r.childItemId = i.id " +
+                            "WHERE r.parentItemId = ? AND i.isdelete = 0", itemId);
+
+            for (Record relation : childRelations) {
+                int childItemId = relation.getInt("childItemId");
+                BigDecimal childBaseQuantity = relation.getBigDecimal("quantity");
+                int childType = relation.getInt("item_type");
+
+                // 计算实际数量 = 父物料数量 × 子物料基础数量
+                BigDecimal actualQuantity = parentQuantity.multiply(childBaseQuantity);
+
+                System.out.println("子物料ID: " + childItemId +
+                        ", 基础数量: " + childBaseQuantity +
+                        ", 实际数量: " + actualQuantity +
+                        ", 类型: " + childType);
+
+                // 如果是原材料，这里可以更新库存需求或其他计算
+                if (childType == 10) { // 原材料
+                    updateRawMaterialRequirement(childItemId, actualQuantity);
+                }
+
+                // 递归计算下一级
+                if (childType == 20 || childType == 30) {
+                    calculateChildMaterialQuantities(childItemId, actualQuantity);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("计算子物料数量时发生异常，物料ID：" + itemId);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 更新原材料需求（示例方法）
+     */
+    private void updateRawMaterialRequirement(int rawMaterialId, BigDecimal requiredQuantity) {
+        try {
+            System.out.println("更新原材料ID: " + rawMaterialId + " 的需求数量: " + requiredQuantity);
+
+            // 这里可以实现更新原材料需求表的逻辑
+            // 例如：更新库存需求、采购计划等
+            // Record requirement = Db.findFirst("SELECT * FROM material_requirements WHERE item_id = ?", rawMaterialId);
+            // if (requirement != null) {
+            //     requirement.set("required_quantity", requiredQuantity);
+            //     Db.update("material_requirements", requirement);
+            // } else {
+            //     Record newRequirement = new Record();
+            //     newRequirement.set("item_id", rawMaterialId);
+            //     newRequirement.set("required_quantity", requiredQuantity);
+            //     Db.save("material_requirements", newRequirement);
+            // }
+
+        } catch (Exception e) {
+            System.out.println("更新原材料需求时发生异常，原材料ID：" + rawMaterialId);
+            e.printStackTrace();
+        }
     }
 
 
