@@ -2,6 +2,7 @@ package com.xlerp.api.PlProductionOrder.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
@@ -42,7 +43,7 @@ public class PlProductionOrderController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
-            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,status);
+            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode,status);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -72,7 +73,7 @@ public class PlProductionOrderController extends Controller {
             }
 
             // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
-            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode, ipoNo,"30");
+            Page page = proOrderService.paginate(pageNum, pageSz, contractNo, contractName, scheduleCode,"30");
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -235,6 +236,51 @@ public class PlProductionOrderController extends Controller {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("确认排产计划时发生错误:" + e.getMessage ()));
+        }
+    }
+
+    //查询所有的添加批次就是合并所有ipoBatchNo相同的做成一条记录
+    @ActionKey("/pl_production_order/getBatchNoList")
+    @HttpMethod("GET")
+    public void getBatchNoList() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        // 获取查询条件参数
+        String contractNo = getPara("contractNo");
+        String contractName = getPara("contractName");
+        String scheduleCode = getPara("scheduleCode");
+        String status = getPara("status");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
+            Page<Record> page = proOrderService.paginateBatchSummary(pageNum, pageSz, contractNo, contractName, scheduleCode,status);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    @ActionKey("/pl_production_order/getListAll")
+    @HttpMethod("GET")
+    public void getListAll() {
+        // 获取查询条件参数
+        String contractNo = getPara("contractNo");
+        String scheduleCode = getPara("scheduleCode");
+        String ipoBatchNo = getPara("ipoBatchNo");
+
+        try {
+            List<Record> page = proOrderService.getAllList(contractNo, scheduleCode, ipoBatchNo);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
 }

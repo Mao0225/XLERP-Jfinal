@@ -102,7 +102,8 @@ public class PlSchedulePlanService {
                         "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, " +
                         "psp.scheduleCode, psp.planPeriod, psp.planStartDate, psp.planFinishDate, " +
                         "psp.actualStartDate, psp.actualFinishDate, psp.dueDate, psp.remark, " +
-                        "psp.actualPeriod, psp.status "
+                        "psp.actualPeriod, psp.status," +
+                        "(select COALESCE(sum(po.amount), 0) from pl_production_order po where po.scheduleCode = psp.scheduleCode) as allocatedAmount "
         );
 
         StringBuilder fromSql = new StringBuilder(
