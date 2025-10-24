@@ -4,6 +4,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
@@ -48,38 +49,6 @@ public class PlSchedulePlanController extends Controller {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
-
-    //获取确认后的排产计划列表
-    @ActionKey("/pl_schedule_plan/getConfirmedList")
-    @HttpMethod("GET")
-    public void getConfirmedList() {
-        // 获取分页参数
-        String pageNumber = getPara("pageNumber");
-        String pageSize = getPara("pageSize");
-
-        // 获取查询条件参数
-        String contractNo = getPara("contractNo");
-        String contractName = getPara("contractName");
-        String purchaserHqCode = getPara("purchaserHqCode");
-        String scheduleCode = getPara("scheduleCode");
-        try {
-            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
-            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
-
-            if (pageNum < 1 || pageSz < 1) {
-                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
-                return;
-            }
-
-            // 调用修改后的分页查询方法，传入所有查询条件,查询status为20的就是确认状态的
-            Page page = planService.paginate(pageNum, pageSz, contractNo, contractName, purchaserHqCode, scheduleCode,"30");
-            renderJson(Result.success("查询成功").putData("page", page));
-        } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("页码或每页大小格式错误"));
-        }
-    }
-
-
 
 
     @ActionKey("/pl_schedule_plan/get")
@@ -213,6 +182,23 @@ public class PlSchedulePlanController extends Controller {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("批量删除记录时发生错误:" + e.getMessage ()));
+        }
+    }
+
+
+    @ActionKey("/pl_schedule_plan/getContractItemList")
+    @HttpMethod("GET")
+
+    public void getContractItemList() {
+        String contractNo = getPara("contractNo");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        try {
+            List<Record> itemList = planService.getContractItemList(contractNo);
+            renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
 }

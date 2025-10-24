@@ -347,4 +347,23 @@ public class BasContractService {
         return Db.findFirst(sql.toString(), params.toArray());
     }
 
+    public List<Record> getContractItemList(String contractNo) {
+        // 构建SQL语句和参数列表
+        StringBuilder selectSql = new StringBuilder("SELECT c.id,c.itemnum,c.itemunit," +
+                "c.itemRealPrice,c.itemRealSum,c.itemweight,c.itemgrossweight,c.poItemCode,c.poItemId,c.poItemNo,c.itemmemo, " +
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,psp.scheduleCode ");
+
+        StringBuilder fromSql = new StringBuilder("FROM bascontractitem c " +
+                "LEFT JOIN basitem i ON c.itemid = i.id " +
+                "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId "+
+                "WHERE c.no = ? AND c.isdelete = 0 ");
+
+        List<Object> params = new ArrayList<>();
+        params.add(contractNo);
+        // 添加排序条件
+        fromSql.append("ORDER BY c.id");
+
+        // 执行分页查询
+        return Db.find(selectSql.toString(),fromSql.toString(),params.toArray());
+    }
 }

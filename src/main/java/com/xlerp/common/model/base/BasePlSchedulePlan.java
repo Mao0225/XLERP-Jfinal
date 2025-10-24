@@ -354,14 +354,14 @@ public abstract class BasePlSchedulePlan<M extends BasePlSchedulePlan<M>> extend
 	}
 	
 	/**
-	 * 状态：10录入，20确认
+	 * 状态：10录入，20确认,30已完成
 	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态：10录入，20确认
+	 * 状态：10录入，20确认,30已完成
 	 */
 	public java.lang.String getStatus() {
 		return getStr("status");

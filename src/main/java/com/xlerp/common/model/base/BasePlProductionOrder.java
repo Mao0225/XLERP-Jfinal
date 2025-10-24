@@ -521,5 +521,19 @@ public abstract class BasePlProductionOrder<M extends BasePlProductionOrder<M>> 
 		return getStr("writer");
 	}
 	
+	/**
+	 * 生产订单批次号，一个批次有多个生产订单
+	 */
+	public void setIpoBatchNo(java.lang.String ipoBatchNo) {
+		set("ipoBatchNo", ipoBatchNo);
+	}
+	
+	/**
+	 * 生产订单批次号，一个批次有多个生产订单
+	 */
+	public java.lang.String getIpoBatchNo() {
+		return getStr("ipoBatchNo");
+	}
+	
 }
 
