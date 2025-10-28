@@ -91,7 +91,7 @@ public class matInoutService {
 
         // 构建 FROM 和 WHERE 子句
         StringBuilder from = new StringBuilder("from pl_mat_inout_item m ");
-        from.append("left join pl_mat_inout_doc d on d.docNo = m.docNo ");
+        from.append("right join pl_mat_inout_doc d on d.docNo = m.docNo ");
         from.append("where 1 = 1 ");
 
         // 构建参数列表
