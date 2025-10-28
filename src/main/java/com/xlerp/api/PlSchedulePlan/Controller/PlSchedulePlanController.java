@@ -188,7 +188,6 @@ public class PlSchedulePlanController extends Controller {
 
     @ActionKey("/pl_schedule_plan/getContractItemList")
     @HttpMethod("GET")
-
     public void getContractItemList() {
         String contractNo = getPara("contractNo");
         if (contractNo == null || contractNo.trim().isEmpty()) {
@@ -201,4 +200,23 @@ public class PlSchedulePlanController extends Controller {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
+
+
+    @ActionKey("/pl_schedule_plan/getSinglePlanInfo")
+    @HttpMethod("GET")
+    public void getSinglePlanInfo() {
+        String scheduleCode = getPara("scheduleCode");
+        if (scheduleCode == null || scheduleCode.trim().isEmpty()) {
+            renderJson(Result.badRequest("排产计划号不能为空"));
+        }
+        try {
+            Record record = planService.getSinglePlanInfo(scheduleCode);
+            renderJson(Result.success("查询合同物料列表成功").putData("record", record));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+
+
 }

@@ -93,6 +93,8 @@ public class PlSchedulePlanService {
         return Db.update("update pl_schedule_plan set status = ? where id = ? ", status, id) > 0;
     }
 
+
+    //获取合同物料详情，加上了连接排产计划的日期状态
     public List<Record> getContractItemList(String contractNo) {
         StringBuilder selectSql = new StringBuilder(
                 "SELECT psp.id," +
@@ -121,6 +123,38 @@ public class PlSchedulePlanService {
         String sql = selectSql.append(fromSql).toString();
 
         return Db.find(sql, params.toArray());
+    }
+
+
+    //获取单个物料详情，也就是获取单个排产计划详情
+    public Record getSinglePlanInfo(String scheduleCode) {
+        StringBuilder selectSql = new StringBuilder(
+                "SELECT psp.id," +
+                        "c.id AS contractItemId," +
+                        "c.itemnum, c.itemunit, c.itemRealPrice, c.itemRealSum, c.itemweight, c.itemgrossweight, " +
+                        "c.poItemCode, c.poItemId, c.poItemNo, c.itemmemo, " +
+                        "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, " +
+                        "psp.scheduleCode, psp.planPeriod, psp.planStartDate, psp.planFinishDate, " +
+                        "psp.actualStartDate, psp.actualFinishDate, psp.dueDate, psp.remark, " +
+                        "psp.actualPeriod, psp.status," +
+                        "(select COALESCE(sum(po.amount), 0) from pl_production_order po where po.scheduleCode = psp.scheduleCode) as allocatedAmount "
+        );
+
+        StringBuilder fromSql = new StringBuilder(
+                "FROM bascontractitem c " +
+                        "LEFT JOIN pl_schedule_plan psp ON psp.poItemId = c.id " + // ✅ 注意JOIN方向反转
+                        "LEFT JOIN basitem i ON c.itemid = i.id " +
+                        "WHERE psp.scheduleCode = ? AND c.isdelete = 0 " +
+                        "ORDER BY psp.status"
+        );
+
+        List<Object> params = new ArrayList<>();
+        params.add(scheduleCode);
+
+        // ✅ 拼接完整 SQL
+        String sql = selectSql.append(fromSql).toString();
+
+        return Db.findFirst(sql, params.toArray());
     }
 
 

@@ -163,13 +163,13 @@ public class PlProductionOrderService {
     public List<Record> getAllList(String contractNo, String scheduleCode, String ipoBatchNo) {
         String sql = "select p.*, bc.no as contractNo, bc.name as contractName, " +
                 "bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec, bci.itemunit as itemUnit, " +
-                "(select COALESCE(sum(pwo.amount), 0) from pl_work_order pwo where pwo.ipoNo = p.ipoNo) as allocatedAmount " +
+                "(select COALESCE(sum(pwo.amount), 0) from pl_work_order pwo where pwo.ipoNo = p.ipoNo) as workOrderallocatedAmount " +
                 "from pl_production_order p " +
                 "left join bascontractitem bci on p.poItemId = bci.id " +
                 "left join bascontract bc on bc.no = bci.no " +
                 "left join basitem bi on bci.itemid = bi.id " +
                 "where 1=1 ";
-
+        //workOrderallocatedAmount该订单已分配的工单数量
         List<Object> params = new ArrayList<>();
 
         if (contractNo != null && !contractNo.trim().isEmpty()) {
@@ -189,6 +189,30 @@ public class PlProductionOrderService {
 
         return params.isEmpty() ? Db.find(sql) : Db.find(sql, params.toArray());
     }
+
+
+    //根据ipoNo查找唯一记录订单
+    public Record getByipoNo(String ipoNo) {
+        String sql = "select p.*, bc.no as contractNo, bc.name as contractName, " +
+                "bci.itemnum as contractAmount, bi.name as itemName, bi.spec as itemSpec, bci.itemunit as itemUnit, " +
+                "(select COALESCE(sum(pwo.amount), 0) from pl_work_order pwo where pwo.ipoNo = p.ipoNo) as workOrderallocatedAmount " +
+                "from pl_production_order p " +
+                "left join bascontractitem bci on p.poItemId = bci.id " +
+                "left join bascontract bc on bc.no = bci.no " +
+                "left join basitem bi on bci.itemid = bi.id " +
+                "where 1=1 ";
+        //workOrderallocatedAmount该订单已分配的工单数量
+        List<Object> params = new ArrayList<>();
+
+        if (ipoNo != null && !ipoNo.trim().isEmpty()) {
+            sql += "and p.ipoNo like ? ";
+            params.add("%" + ipoNo.trim() + "%");
+        }
+        sql += "order by p.id desc";
+
+        return Db.findFirst(sql, params.toArray());
+    }
+
 
 
 }
