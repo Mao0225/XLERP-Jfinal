@@ -16,12 +16,12 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
+		arp.addMapping("bas_item_class", "id", BasItemClass.class);
 		arp.addMapping("bas_item_relation", "id", BasItemRelation.class);
 		arp.addMapping("bascontract", "id", Bascontract.class);
 		arp.addMapping("bascontractitem", "id", Bascontractitem.class);
 		arp.addMapping("basdepartment", "id", Basdepartment.class);
 		arp.addMapping("basitem", "id", Basitem.class);
-		arp.addMapping("basitemclass", "id", Basitemclass.class);
 		arp.addMapping("basmaterial", "id", Basmaterial.class);
 		arp.addMapping("basno", "id", Basno.class);
 		arp.addMapping("basorg", "id", Basorg.class);
@@ -44,6 +44,11 @@ public class _MappingKit {
 		arp.addMapping("cl_xj", "id", ClXj.class);
 		arp.addMapping("cl_yg", "id", ClYg.class);
 		arp.addMapping("hruser", "id", Hruser.class);
+		arp.addMapping("pl_insp_item", "id", PlInspItem.class);
+		arp.addMapping("pl_insp_order", "id", PlInspOrder.class);
+		arp.addMapping("pl_insp_result", "id", PlInspResult.class);
+		arp.addMapping("pl_insp_std", "id", PlInspStd.class);
+		arp.addMapping("pl_insp_std_item", "id", PlInspStdItem.class);
 		arp.addMapping("pl_mat_inout_doc", "id", PlMatInoutDoc.class);
 		arp.addMapping("pl_mat_inout_item", "id", PlMatInoutItem.class);
 		arp.addMapping("pl_production_order", "id", PlProductionOrder.class);

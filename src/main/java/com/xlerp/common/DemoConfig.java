@@ -17,9 +17,12 @@ import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
+import com.xlerp.api.ItemManagement.Controller.BasItemClassController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
-import com.xlerp.api.PlManagement.Controller.*;
+import com.xlerp.api.PlInspectionController.Controller.InspItemController;
+import com.xlerp.api.PlInspectionController.Controller.InspStandardController;
+import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
 import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
 import com.xlerp.api.PlSchedulePlan.Controller.PlSchedulePlanController;
@@ -142,6 +145,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_lg", LgController.class);//铝管--那怀月
 		me.add("/cl_bxgls", BxglsController.class);//不锈钢螺栓--蒙千惠
 		me.add("/uploadLog", UploadLogController.class);//上传日志--毛文斌
+		me.add("/basitemclass", BasItemClassController.class); //物料分类管理
+		me.add("/insp_item", InspItemController.class);
+		me.add("/insp_std", InspStandardController.class);
 
 
 
