@@ -10,6 +10,8 @@ import com.xlerp.api.Common.Result;
 import com.xlerp.api.PlInspectionController.Service.InspItemService;
 import com.xlerp.common.model.PlInspItem;
 
+import java.util.List;
+
 @Before(HttpMethodInterceptor.class)
 public class InspItemController extends Controller {
     private final InspItemService service = new InspItemService();
@@ -31,6 +33,19 @@ public class InspItemController extends Controller {
 
             Page page = service.paginate(pageNum, pageSz,param);
             renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码、每页大小或poItemId格式错误"));
+        }
+    }
+
+    @ActionKey("/insp_item/getList")
+    @HttpMethod("GET")
+    public void getList() {
+
+        String param = getPara("param");
+        try {
+            List<PlInspItem> list = service.getList(param);
+            renderJson(Result.success("查询成功").putData("list", list));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码、每页大小或poItemId格式错误"));
         }

@@ -22,6 +22,7 @@ import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
 import com.xlerp.api.PlInspectionController.Controller.InspItemController;
 import com.xlerp.api.PlInspectionController.Controller.InspStandardController;
+import com.xlerp.api.PlInspectionController.Controller.InspStdItemController;
 import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
 import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
@@ -146,8 +147,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/cl_bxgls", BxglsController.class);//不锈钢螺栓--蒙千惠
 		me.add("/uploadLog", UploadLogController.class);//上传日志--毛文斌
 		me.add("/basitemclass", BasItemClassController.class); //物料分类管理
-		me.add("/insp_item", InspItemController.class);
-		me.add("/insp_std", InspStandardController.class);
+		me.add("/insp_item", InspItemController.class);//检验项目管理--毛文斌
+		me.add("/insp_std", InspStandardController.class);//检验标准管理--毛文斌
+		me.add("/insp_std_item", InspStdItemController.class);//检验标准明细管理--毛文斌
 
 
 
