@@ -38,14 +38,14 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	}
 	
 	/**
-	 * 检验原材料ID--应该是从采购订
+	 * 检验原材料ID--应该是从采购订单带过来，但也可以单独选择
 	 */
 	public void setItemId(java.lang.Long itemId) {
 		set("itemId", itemId);
 	}
 	
 	/**
-	 * 检验原材料ID--应该是从采购订
+	 * 检验原材料ID--应该是从采购订单带过来，但也可以单独选择
 	 */
 	public java.lang.Long getItemId() {
 		return getLong("itemId");
@@ -110,15 +110,15 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	/**
 	 * 检验数量
 	 */
-	public void setQuantity(java.math.BigDecimal quantity) {
-		set("quantity", quantity);
+	public void setInspQuantity(java.math.BigDecimal inspQuantity) {
+		set("inspQuantity", inspQuantity);
 	}
 	
 	/**
 	 * 检验数量
 	 */
-	public java.math.BigDecimal getQuantity() {
-		return get("quantity");
+	public java.math.BigDecimal getInspQuantity() {
+		return get("inspQuantity");
 	}
 	
 	/**
@@ -178,17 +178,17 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	}
 	
 	/**
-	 * 实际检验日期
+	 * 检验时间前端输入
 	 */
-	public void setInspectDate(java.util.Date inspectDate) {
-		set("inspectDate", inspectDate);
+	public void setInspectTime(java.util.Date inspectTime) {
+		set("inspectTime", inspectTime);
 	}
 	
 	/**
-	 * 实际检验日期
+	 * 检验时间前端输入
 	 */
-	public java.util.Date getInspectDate() {
-		return getDate("inspectDate");
+	public java.util.Date getInspectTime() {
+		return getDate("inspectTime");
 	}
 	
 	/**
@@ -248,14 +248,20 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	}
 	
 	/**
-	 * 状态（如：报检中、检验中、已入库等）
+	 * // 主检验单状态流转（status）
+//0 报检单草稿->10 报检待审核 → 11 通过 → 20 检验中 → 21 检验完成 → 22 检验合格 → 30 入库中 → 31 已入库
+// 拒绝：12 报检拒绝 | 23 检验不合格 | 32 入库拒绝（均可重提）
+// 99 已作废
 	 */
 	public void setStatus(java.lang.String status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态（如：报检中、检验中、已入库等）
+	 * // 主检验单状态流转（status）
+//0 报检单草稿->10 报检待审核 → 11 通过 → 20 检验中 → 21 检验完成 → 22 检验合格 → 30 入库中 → 31 已入库
+// 拒绝：12 报检拒绝 | 23 检验不合格 | 32 入库拒绝（均可重提）
+// 99 已作废
 	 */
 	public java.lang.String getStatus() {
 		return getStr("status");
@@ -343,6 +349,62 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	 */
 	public java.util.Date getUpdateTime() {
 		return getDate("updateTime");
+	}
+	
+	/**
+	 * 入库时间，后端插入时生成
+	 */
+	public void setInStockTime(java.util.Date inStockTime) {
+		set("inStockTime", inStockTime);
+	}
+	
+	/**
+	 * 入库时间，后端插入时生成
+	 */
+	public java.util.Date getInStockTime() {
+		return getDate("inStockTime");
+	}
+	
+	/**
+	 * 检验审核完成时间
+	 */
+	public void setInspectFinishTime(java.util.Date inspectFinishTime) {
+		set("inspectFinishTime", inspectFinishTime);
+	}
+	
+	/**
+	 * 检验审核完成时间
+	 */
+	public java.util.Date getInspectFinishTime() {
+		return getDate("inspectFinishTime");
+	}
+	
+	/**
+	 * 入库审核人
+	 */
+	public void setStorageReviewer(java.lang.String storageReviewer) {
+		set("storageReviewer", storageReviewer);
+	}
+	
+	/**
+	 * 入库审核人
+	 */
+	public java.lang.String getStorageReviewer() {
+		return getStr("storageReviewer");
+	}
+	
+	/**
+	 * 到货时间
+	 */
+	public void setDeliveryTime(java.util.Date deliveryTime) {
+		set("deliveryTime", deliveryTime);
+	}
+	
+	/**
+	 * 到货时间
+	 */
+	public java.util.Date getDeliveryTime() {
+		return getDate("deliveryTime");
 	}
 	
 }

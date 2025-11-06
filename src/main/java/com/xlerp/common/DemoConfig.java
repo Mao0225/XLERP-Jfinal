@@ -20,9 +20,7 @@ import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemClassController;
 import com.xlerp.api.ItemManagement.Controller.BasItemController;
 import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
-import com.xlerp.api.PlInspectionController.Controller.InspItemController;
-import com.xlerp.api.PlInspectionController.Controller.InspStandardController;
-import com.xlerp.api.PlInspectionController.Controller.InspStdItemController;
+import com.xlerp.api.PlInspectionController.Controller.*;
 import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
 import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
@@ -150,6 +148,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/insp_item", InspItemController.class);//检验项目管理--毛文斌
 		me.add("/insp_std", InspStandardController.class);//检验标准管理--毛文斌
 		me.add("/insp_std_item", InspStdItemController.class);//检验标准明细管理--毛文斌
+		me.add("/insp_order", InspOrderController.class);//检验标准明细管理--毛文斌
+		me.add("/insp_result", InspResultController.class);//检验结果管理--毛文斌
+
 
 
 

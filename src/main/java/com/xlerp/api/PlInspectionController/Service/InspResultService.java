@@ -5,7 +5,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.PlInspResult;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,5 +71,23 @@ public class InspResultService {
 
     private boolean isNumeric(String str) {
         try { new BigDecimal(str); return true; } catch (Exception e) { return false; }
+    }
+
+    public List<Record> getListByOrderId(long id) {
+
+
+        String sql = """
+            SELECT r.id, r.inspItemId, r.actualValue, r.testIndex,i.unit,i.category,i.inspItemName, i.inspItemCode,si.standardValue
+            FROM pl_insp_result r
+            LEFT JOIN pl_insp_order io ON io.id = r.inspOrderId
+            LEFT JOIN pl_insp_std_item si ON r.inspStdItemId = si.id
+            LEFT JOIN pl_insp_item i ON r.inspItemId = i.id
+            WHERE r.inspOrderId = ?
+            """;
+        return Db.find(sql, id);
+    }
+
+    public boolean deleteById(long id) {
+        return new PlInspResult().deleteById(id);
     }
 }

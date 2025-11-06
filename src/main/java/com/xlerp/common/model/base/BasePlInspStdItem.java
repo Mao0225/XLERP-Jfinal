@@ -124,15 +124,15 @@ public abstract class BasePlInspStdItem<M extends BasePlInspStdItem<M>> extends 
 	/**
 	 * 状态
 	 */
-	public void setStatus(java.lang.String status) {
+	public void setStatus(java.lang.Short status) {
 		set("status", status);
 	}
 	
 	/**
 	 * 状态
 	 */
-	public java.lang.String getStatus() {
-		return getStr("status");
+	public java.lang.Short getStatus() {
+		return getShort("status");
 	}
 	
 	/**

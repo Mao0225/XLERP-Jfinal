@@ -96,15 +96,15 @@ public abstract class BasePlInspStd<M extends BasePlInspStd<M>> extends Model<M>
 	/**
 	 * 状态
 	 */
-	public void setStatus(java.lang.String status) {
+	public void setStatus(java.lang.Short status) {
 		set("status", status);
 	}
 	
 	/**
 	 * 状态
 	 */
-	public java.lang.String getStatus() {
-		return getStr("status");
+	public java.lang.Short getStatus() {
+		return getShort("status");
 	}
 	
 	/**

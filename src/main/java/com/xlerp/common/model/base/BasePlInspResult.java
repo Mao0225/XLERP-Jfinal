@@ -135,5 +135,19 @@ public abstract class BasePlInspResult<M extends BasePlInspResult<M>> extends Mo
 		return getDate("updateTime");
 	}
 	
+	/**
+	 * 检验标准项目id，用于关联显示标准值
+	 */
+	public void setInspStdItemId(java.lang.Long inspStdItemId) {
+		set("inspStdItemId", inspStdItemId);
+	}
+	
+	/**
+	 * 检验标准项目id，用于关联显示标准值
+	 */
+	public java.lang.Long getInspStdItemId() {
+		return getLong("inspStdItemId");
+	}
+	
 }
 

@@ -3,10 +3,14 @@ package com.xlerp.api.PlInspectionController.Controller;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.PlInspectionController.Service.InspResultService;
+import com.xlerp.common.model.PlInspResult;
+
+import java.util.List;
 
 @Before(HttpMethodInterceptor.class)
 public class InspResultController extends Controller {
@@ -30,31 +34,55 @@ public class InspResultController extends Controller {
     }
 
     /**
-     * 自动判定检验结果合格性
-     * 根据标准值对比 realValue
+     * 保存检验结果单条
      */
-    @ActionKey("/insp_result/auto_judge")
+    @ActionKey("/insp_result/save")
     @HttpMethod("POST")
-    public void autoJudge() {
-        String orderId = getPara("orderId");
-        if (isBlank(orderId)) {
-            renderJson(Result.badRequest("orderId 不能为空"));
-            return;
-        }
-        boolean success = service.autoJudge(parseLong(orderId));
-        renderJson(success ? Result.success("判定完成") : Result.serverError("判定失败"));
+    public void save(PlInspResult result) {
+        boolean success = result.save();
+        renderJson(success ? Result.success("保存成功") : Result.serverError("保存失败"));
     }
 
     /**
-     * 获取平行试验平均值
+     * 更新检验结果单条
      */
-    @ActionKey("/insp_result/avg")
-    @HttpMethod("GET")
-    public void getAvg() {
-        String orderId = getPara("orderId");
-        String itemId = getPara("itemId");
-        // 返回平均值
+    @ActionKey("/insp_result/update")
+    @HttpMethod("PUT")
+    public void update(PlInspResult result) {
+        boolean success = result.update();
+        renderJson(success ? Result.success("更新成功") : Result.serverError("更新失败"));
     }
+
+    /**
+     * 删除检验结果单条
+     */
+    @ActionKey("/insp_result/delete")
+    @HttpMethod("DELETE")
+    public void delete() {
+        String id = getPara("id");
+        boolean success = service.deleteById(parseLong(id));
+        renderJson(success ? Result.success("删除成功") : Result.serverError("删除失败"));
+    }
+
+    /**
+     * 获取检验值列表根据订单id
+     */
+    @ActionKey("/insp_result/getResultByOrderId")
+    @HttpMethod("GET")
+    public void getResultByOrderId() {
+        String orderId = getPara("orderId");
+        if (isBlank(orderId)) {
+            renderJson(Result.badRequest("参数错误"));
+            return;
+        }
+        try {
+            List<Record> list = service.getListByOrderId(parseLong(orderId));
+            renderJson(Result.success("查询成功").putData("list", list));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码、每页大小或Id格式错误"));
+        }
+    }
+
 
     private long parseLong(String s) {
         return Long.parseLong(s.trim());
