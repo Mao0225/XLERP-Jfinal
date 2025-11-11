@@ -20,40 +20,48 @@ import java.util.Map;
 public class BasItemService {
     private static final Basitem dao = new Basitem();
 
-    public Page<Basitem> paginate(int pageNumber, int pageSize, String itemNo, String itemName, String inclass,  String type) {
-        String select = "select *";
-        StringBuilder from = new StringBuilder("from basitem where isdelete = 0");
+    public Page<Basitem> paginate(int pageNumber, int pageSize, String itemNo, String itemName, String firstClassId, String secondClassId) {
+        // 核心：关联basitem和bas_item_class（物料的classId对应三级分类ID）
+        // 思路：通过三级分类找二级分类，再通过二级分类找一级分类
+        String select = "select b.*"; // 只查询物料表字段
+        StringBuilder from = new StringBuilder(
+                "from basitem b " +
+                        "left join bas_item_class c3 on b.classId = c3.id " + // 物料-三级分类
+                        "left join bas_item_class c2 on c3.parentId = c2.id " + // 三级-二级分类
+                        "left join bas_item_class c1 on c2.parentId = c1.id " + // 二级-一级分类
+                        "where b.isdelete = 0 "
+        );
 
-        // 动态构建查询条件
-        if (StrKit.notBlank(itemNo)) {
-            from.append(" and no like ?");
-        }
-        if (StrKit.notBlank(itemName)) {
-            from.append(" and name like ?");
-        }
-        if (StrKit.notBlank(inclass)) {
-            from.append(" and inclass like ?");
-        }
-        if (StrKit.notBlank(type)) {
-            from.append(" and type like ?");
-        }
-        from.append(" order by id desc");
+        List<Object> params = new ArrayList<>();
 
-        // 准备参数
-        List<Object> params = new java.util.ArrayList<>();
+        // 物料编号筛选
         if (StrKit.notBlank(itemNo)) {
+            from.append("and b.no like ? ");
             params.add("%" + itemNo + "%");
         }
+
+        // 物料名称筛选
         if (StrKit.notBlank(itemName)) {
+            from.append("and b.name like ? ");
             params.add("%" + itemName + "%");
         }
-        if (StrKit.notBlank(inclass)) {
-            params.add("%" + inclass + "%");
-        }
-        if (StrKit.notBlank(type)) {
-            params.add("%" + type + "%");
+
+        // 一级分类筛选（匹配一级分类ID）
+        if (StrKit.notBlank(firstClassId)) {
+            from.append("and c1.id = ? "); // c1是一级分类表别名
+            params.add(firstClassId);
         }
 
+        // 二级分类筛选（匹配二级分类ID）
+        if (StrKit.notBlank(secondClassId)) {
+            from.append("and c2.id = ? "); // c2是二级分类表别名
+            params.add(secondClassId);
+        }
+
+        // 排序
+        from.append("order by b.id desc");
+
+        // 执行分页查询（注意：select和from要分开传，dao.paginate会自动处理count）
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 

@@ -30,8 +30,8 @@ public class BasItemController extends Controller {
         String pageSize = getPara("pageSize");
         String itemNo = getPara("itemNo");
         String itemName = getPara("itemName");
-        String inclass = getPara("inclass");
-        String type = getPara("type");
+        String firstClassId = getPara("firstClassId");
+        String secondClassId = getPara("secondClassId");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -42,7 +42,7 @@ public class BasItemController extends Controller {
                 return;
             }
 
-            Page page = basItemService.paginate(pageNum, pageSz,  itemNo, itemName, inclass, type);
+            Page page = basItemService.paginate(pageNum, pageSz,  itemNo, itemName, firstClassId, secondClassId);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -212,7 +212,7 @@ public class BasItemController extends Controller {
 
         try {
             List<Map<String, Object>> materialTree = basItemService.getItemMaterialTree(Integer.parseInt(id));
-            renderJson(Result.success("获取物料材料树成功").putData("materialTree", materialTree));
+            renderJson(Result.success("获取物料材料树成功").putData("materialTreeDTO", materialTree));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("物料ID格式错误"));
         } catch (Exception e) {

@@ -223,5 +223,19 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return getStr("drawing_standard_no");
 	}
 	
+	/**
+	 * 关联basItemClass表的id，存的是第三级分类
+	 */
+	public void setClassId(java.lang.Integer classId) {
+		set("classId", classId);
+	}
+	
+	/**
+	 * 关联basItemClass表的id，存的是第三级分类
+	 */
+	public java.lang.Integer getClassId() {
+		return getInt("classId");
+	}
+	
 }
 
