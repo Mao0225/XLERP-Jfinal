@@ -4,7 +4,7 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.xlerp.api.PlInspectionController.dto.CreateStdDTO;
+import com.xlerp.api.PlInspectionController.Dto.CreateStdDTO;
 import com.xlerp.common.model.PlInspStd;
 import com.xlerp.common.model.PlInspStdItem;
 

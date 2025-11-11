@@ -8,7 +8,7 @@ import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.PlInspectionController.Service.InspStandardService;
-import com.xlerp.api.PlInspectionController.dto.CreateStdDTO;
+import com.xlerp.api.PlInspectionController.Dto.CreateStdDTO;
 import com.xlerp.common.model.PlInspStd;
 
 @Before(HttpMethodInterceptor.class)

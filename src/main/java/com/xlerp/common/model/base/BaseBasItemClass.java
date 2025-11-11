@@ -19,7 +19,7 @@ public abstract class BaseBasItemClass<M extends BaseBasItemClass<M>> extends Mo
 	/**
 	 * 主键ID
 	 */
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return getInt("id");
 	}
 	

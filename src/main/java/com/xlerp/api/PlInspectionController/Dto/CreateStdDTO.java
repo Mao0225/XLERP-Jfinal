@@ -1,5 +1,5 @@
-// src/com/xlerp/api/PlInspectionController/dto/CreateStdDTO.java
-package com.xlerp.api.PlInspectionController.dto;
+// src/com/xlerp/api/PlInspectionController/Dto/CreateStdDTO.java
+package com.xlerp.api.PlInspectionController.Dto;
 
 import com.xlerp.common.model.PlInspStd;
 import com.xlerp.common.model.PlInspStdItem;
