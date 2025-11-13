@@ -15,6 +15,7 @@ import com.xlerp.api.ClManagement.Controller.*;
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
+import com.xlerp.api.Contract.Controller.BasContractMaterialController;
 import com.xlerp.api.Contract.Controller.BasPurchaseOrderController;
 import com.xlerp.api.HrManagement.Controller.HruserController;
 import com.xlerp.api.ItemManagement.Controller.BasItemClassController;
@@ -152,6 +153,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/insp_std_item", InspStdItemController.class);//检验标准明细管理--毛文斌
 		me.add("/insp_order", InspOrderController.class);//检验标准明细管理--毛文斌
 		me.add("/insp_result", InspResultController.class);//检验结果管理--毛文斌
+		me.add("/bas_contract_material", BasContractMaterialController.class);
 
 
 

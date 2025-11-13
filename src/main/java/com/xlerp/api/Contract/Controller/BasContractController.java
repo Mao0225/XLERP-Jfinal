@@ -50,7 +50,7 @@ public class BasContractController extends Controller {
         }
     }
 
-
+    //获取合同信息和合同产品信息
     @ActionKey("/bascontract/getContractInfoByNo")
     @HttpMethod("GET")
     public void getContractInfoByNo() {
@@ -67,6 +67,8 @@ public class BasContractController extends Controller {
         }
     }
 
+
+    //仅仅获取合同信息
     @ActionKey("/bascontract/getContractByNo")
     @HttpMethod("GET")
     public void getContractByNo() {
@@ -334,7 +336,6 @@ public class BasContractController extends Controller {
     //获取合同物料分页列表
     @ActionKey("/bascontract/getContractItemPage")
     @HttpMethod("GET")
-
     public void getContractItemPage() {
         String contractNo = getPara("contractNo");
         String pageNumber = getPara("pageNumber");
@@ -354,6 +355,40 @@ public class BasContractController extends Controller {
     }
 
 
+
+    //获取合同物料列表全部列表不分页
+    @ActionKey("/bascontract/getContractItemList")
+    @HttpMethod("GET")
+    public void getContractItemList() {
+        String contractNo = getPara("contractNo");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        try {
+            List<Record> itemList = bascontractService.getContractItemByNo(contractNo);
+            renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    //获取合同产品分解列表
+    @ActionKey("/bascontract/getContractMaterialList")
+    @HttpMethod("GET")
+    public void getContractItemChildList() {
+        String contractNo = getPara("contractNo");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        try {
+            List<Map<String, Object>> itemList = bascontractService.getContractMaterialLeafListWithMerge(contractNo);
+            renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
+        }catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+    //获取合同总金额和总重
     @ActionKey("/bascontract/getContractItemSummary")
     @HttpMethod("GET")
     public void getContractItemSummary() {
