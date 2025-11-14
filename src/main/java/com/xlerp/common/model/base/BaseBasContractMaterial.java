@@ -146,15 +146,15 @@ public abstract class BaseBasContractMaterial<M extends BaseBasContractMaterial<
 	/**
 	 * 关联采购单号--采购人制定采购单后选择了就关联上
 	 */
-	public void setPuchaseOrderNo(java.lang.String puchaseOrderNo) {
-		set("puchaseOrderNo", puchaseOrderNo);
+	public void setPurchaseOrderNo(java.lang.String purchaseOrderNo) {
+		set("purchaseOrderNo", purchaseOrderNo);
 	}
 	
 	/**
 	 * 关联采购单号--采购人制定采购单后选择了就关联上
 	 */
-	public java.lang.String getPuchaseOrderNo() {
-		return getStr("puchaseOrderNo");
+	public java.lang.String getPurchaseOrderNo() {
+		return getStr("purchaseOrderNo");
 	}
 	
 	/**

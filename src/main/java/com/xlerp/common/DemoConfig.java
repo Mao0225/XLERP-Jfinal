@@ -25,6 +25,7 @@ import com.xlerp.api.PLchuchangchoujian.Controller.PlchuchangchoujianController;
 import com.xlerp.api.PlInspectionController.Controller.*;
 import com.xlerp.api.PlManagement.Controller.PlentityIdController;
 import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
+import com.xlerp.api.PlPurchaseOrder.Controller.PurchaseOrderController;
 import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
 import com.xlerp.api.PlSchedulePlan.Controller.PlSchedulePlanController;
 import com.xlerp.api.PlStoreInout.Controller.matInoutController;
@@ -154,6 +155,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/insp_order", InspOrderController.class);//检验标准明细管理--毛文斌
 		me.add("/insp_result", InspResultController.class);//检验结果管理--毛文斌
 		me.add("/bas_contract_material", BasContractMaterialController.class);
+				me.add("/pl_purchase_order", PurchaseOrderController.class);
 
 
 

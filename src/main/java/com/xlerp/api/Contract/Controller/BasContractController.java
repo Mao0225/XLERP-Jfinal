@@ -372,21 +372,6 @@ public class BasContractController extends Controller {
         }
     }
 
-    //获取合同产品分解列表
-    @ActionKey("/bascontract/getContractMaterialList")
-    @HttpMethod("GET")
-    public void getContractItemChildList() {
-        String contractNo = getPara("contractNo");
-        if (contractNo == null || contractNo.trim().isEmpty()) {
-            renderJson(Result.badRequest("合同号不能为空"));
-        }
-        try {
-            List<Map<String, Object>> itemList = bascontractService.getContractMaterialLeafListWithMerge(contractNo);
-            renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
-        }catch (NumberFormatException e) {
-            renderJson(Result.badRequest("页码或每页大小格式错误"));
-        }
-    }
 
     //获取合同总金额和总重
     @ActionKey("/bascontract/getContractItemSummary")
