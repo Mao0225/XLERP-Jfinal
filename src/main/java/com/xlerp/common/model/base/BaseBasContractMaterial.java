@@ -213,5 +213,19 @@ public abstract class BaseBasContractMaterial<M extends BaseBasContractMaterial<
 		return getStr("contractItemIds");
 	}
 	
+	/**
+	 * 采购订单备注
+	 */
+	public void setOrderMemo(java.lang.String orderMemo) {
+		set("orderMemo", orderMemo);
+	}
+	
+	/**
+	 * 采购订单备注
+	 */
+	public java.lang.String getOrderMemo() {
+		return getStr("orderMemo");
+	}
+	
 }
 

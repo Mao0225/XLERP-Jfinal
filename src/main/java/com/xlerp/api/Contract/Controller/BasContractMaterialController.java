@@ -34,9 +34,36 @@ public class BasContractMaterialController extends Controller {
         }
     }
 
+
+    //分页查询--用于采购计划关联备料单列表时候
     @ActionKey("/bas_contract_material/getpage")
     @HttpMethod("GET")
     public void getPage() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String contractNo = getPara("contractNo");
+        Integer relationStatus = getParaToInt("relationStatus") == null ? 0 : getParaToInt("relationStatus");//关联状态0是不筛选，1是筛选出未关联的
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Record> page = service.paginate(pageNum, pageSz, contractNo,relationStatus);
+            renderJson(Result.success("查询备料列表成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+
+    //分页查询--用于检验单选择的时候应该是返回已经关联过采购计划的，也就是purchaseOrderNo不为空的
+    @ActionKey("/bas_contract_material/getpageForInsp")
+    @HttpMethod("GET")
+    public void getpageForInsp() {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String contractNo = getPara("contractNo");
@@ -49,7 +76,7 @@ public class BasContractMaterialController extends Controller {
                 return;
             }
 
-            Page<Record> page = service.paginate(pageNum, pageSz, contractNo);
+            Page<Record> page = service.paginateForInsp(pageNum, pageSz, contractNo);
             renderJson(Result.success("查询备料列表成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
@@ -116,6 +143,23 @@ public class BasContractMaterialController extends Controller {
         try {
             List<Map<String, Object>> itemList = service.getContractMaterialLeafListWithMerge(contractNo);
             renderJson(Result.success("查询合同物料列表成功").putData("record", itemList));
+        }catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+
+    //获取单个信息
+    @ActionKey("/bas_contract_material/getById")
+    @HttpMethod("GET")
+    public void getById() {
+        String id = getPara("id");
+        if (id == null || id.trim().isEmpty()) {
+            renderJson(Result.badRequest("id不能为空"));
+        }
+        try {
+            Record record = service.getById(id);
+            renderJson(Result.success("查询合同物料列表成功").putData("record", record));
         }catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }

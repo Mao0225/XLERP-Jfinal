@@ -66,17 +66,17 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	}
 	
 	/**
-	 * 使用的标准ID（逻辑外键，可空）
+	 * 检验标准号
 	 */
-	public void setStandardId(java.lang.Long standardId) {
-		set("standardId", standardId);
+	public void setInspStandard(java.lang.String inspStandard) {
+		set("inspStandard", inspStandard);
 	}
 	
 	/**
-	 * 使用的标准ID（逻辑外键，可空）
+	 * 检验标准号
 	 */
-	public java.lang.Long getStandardId() {
-		return getLong("standardId");
+	public java.lang.String getInspStandard() {
+		return getStr("inspStandard");
 	}
 	
 	/**
@@ -405,6 +405,76 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 	 */
 	public java.util.Date getDeliveryTime() {
 		return getDate("deliveryTime");
+	}
+	
+	/**
+	 * 单位
+	 */
+	public void setUnit(java.lang.String unit) {
+		set("unit", unit);
+	}
+	
+	/**
+	 * 单位
+	 */
+	public java.lang.String getUnit() {
+		return getStr("unit");
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public void setSupplierName(java.lang.String supplierName) {
+		set("supplierName", supplierName);
+	}
+	
+	/**
+	 * 供应商名称
+	 */
+	public java.lang.String getSupplierName() {
+		return getStr("supplierName");
+	}
+	
+	/**
+	 * 报检申请审核时间
+	 */
+	public void setReportReviewStartTime(java.util.Date reportReviewStartTime) {
+		set("reportReviewStartTime", reportReviewStartTime);
+	}
+	
+	/**
+	 * 报检申请审核时间
+	 */
+	public java.util.Date getReportReviewStartTime() {
+		return getDate("reportReviewStartTime");
+	}
+	
+	/**
+	 * 报检审核完成时间
+	 */
+	public void setReportReviewFinishTime(java.util.Date reportReviewFinishTime) {
+		set("reportReviewFinishTime", reportReviewFinishTime);
+	}
+	
+	/**
+	 * 报检审核完成时间
+	 */
+	public java.util.Date getReportReviewFinishTime() {
+		return getDate("reportReviewFinishTime");
+	}
+	
+	/**
+	 * 牌号
+	 */
+	public void setMatNo(java.lang.String matNo) {
+		set("matNo", matNo);
+	}
+	
+	/**
+	 * 牌号
+	 */
+	public java.lang.String getMatNo() {
+		return getStr("matNo");
 	}
 	
 }

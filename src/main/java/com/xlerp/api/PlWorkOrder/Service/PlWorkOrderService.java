@@ -11,27 +11,33 @@ public class PlWorkOrderService {
     private static final PlWorkOrder dao = new PlWorkOrder();
 
     public Page<PlWorkOrder> paginate(int pageNumber, int pageSize,
-                                            String contractNo, String contractName, String woNo,
-                                            String status) {
-        // 构建查询字段
-        String select = "select p.*,bc.no as contractNo,bc.name as contractName," +
-                "bci.itemnum as contractAmount, bi.name as itemName,bci.itemunit as itemUnit," +
-                "bci.noticeid,bci.noticedrawno,bci.noticeinstead,bci.noticename,bci.noticeauther,"+
-                "bci.noticebuilddate,bci.noticecomment,tz.tuzhiurl ";
+                                      String contractNo, String contractName, String woNo,
+                                      String status) {
 
-        // 构建FROM子句和基础WHERE条件
+        // 达梦数据库用 LISTAGG 来拼接报工流程
+        String reportAgg =
+                "(select LISTAGG(r.processName || '|' || r.workshopName || '|' || r.status || '|' || r.writer, ';') " +
+                        "within group(order by r.id) " +
+                        "from pl_report_work_order r where r.woNo = p.woNo) as processes";
+
+        // 查询字段
+        String select = "select p.*, " + reportAgg + ", " +
+                "bc.no as contractNo, bc.name as contractName," +
+                "bci.itemnum as contractAmount, bi.name as itemName, bci.itemunit as itemUnit," +
+                "bci.noticeid, bci.noticedrawno, bci.noticeinstead, bci.noticename, bci.noticeauther," +
+                "bci.noticebuilddate, bci.noticecomment, tz.tuzhiurl ";
+
+        // 构建 FROM
         StringBuilder from = new StringBuilder("from pl_work_order p ");
         from.append("left join pl_production_order po on po.ipoNo = p.ipoNo ");
         from.append("left join bascontractitem bci on po.poItemId = bci.id ");
         from.append("left join bastuzhi tz on bci.noticetuzhiid = tz.id ");
         from.append("left join bascontract bc on bc.no = bci.no ");
         from.append("left join basitem bi on bci.itemid = bi.id ");
-        from.append("where 1 = 1 "); // 基础条件，简化后续拼接
+        from.append("where 1 = 1 ");
 
-        // 构建查询参数
         List<Object> params = new ArrayList<>();
 
-        // 动态添加查询条件
         if (contractNo != null && !contractNo.isEmpty()) {
             from.append("and bci.no like ? ");
             params.add("%" + contractNo + "%");
@@ -51,12 +57,13 @@ public class PlWorkOrderService {
             from.append("and p.status = ? ");
             params.add(status);
         }
-        // 添加排序
+
         from.append("order by p.id desc");
 
-        // 执行分页查询
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
+
+
 
     public PlWorkOrder findById(int id) {
         return dao.findFirst("select * from pl_work_order where id = ? ", id);

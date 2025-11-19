@@ -193,7 +193,7 @@ public class BasContractMaterialService {
         return Db.delete("delete from bas_contract_material where contractNo = ?", contractNo) > 0;
     }
 
-    public Page<Record> paginate(int pageNum, int pageSz, String contractNo) {
+    public Page<Record> paginate(int pageNum, int pageSz, String contractNo,int relationStatus) {
         String select = "SELECT cm.*, i.no as itemNo, i.name as itemName, " +
                 "i.spec as itemSpec, i.inclass, i.unit ";
         StringBuilder from = new StringBuilder("FROM bas_contract_material cm " +
@@ -204,15 +204,69 @@ public class BasContractMaterialService {
 
         // 动态拼接条件：只有参数不为空时才添加
         if (StrKit.notBlank(contractNo)) {
-            from.append("AND cm.contractNo = ? ");
+            //模糊查询
+            from.append(" AND cm.contractNo LIKE CONCAT('%', ?, '%') ");
             paramList.add(contractNo);
+
         }
-        from.append("ORDER BY cm.id");
+
+        if (relationStatus == 1) {
+            // 添加参数
+            from.append(" AND cm.purchaseOrderNo IS NULL ");
+        }
+        from.append("ORDER BY cm.id DESC");
 
         // 转换为数组（JFinal 需传入 Object[]）
         Object[] params = paramList.toArray(new Object[0]);
 
         // 分页查询（注意：select 和 from 分开传更规范，JFinal 推荐写法）
         return Db.paginate(pageNum, pageSz, select, from.toString(), params);
+    }
+
+    public Page<Record> paginateForInsp(int pageNum, int pageSz, String contractNo) {
+        String select = "SELECT cm.*, i.no as itemNo, i.name as itemName," +
+                "i.spec as itemSpec, i.inclass, i.unit," +
+                "po.status as orderStatus,po.memo as orderFormMemo,po.writer as orderWriter,po.orderName ";//采购计划主表信息连在后面，名称状态备注
+        StringBuilder from = new StringBuilder("FROM bas_contract_material cm " +
+                "LEFT JOIN basitem i ON cm.itemId = i.id " +
+                "LEFT JOIN pl_purchase_order po ON cm.purchaseOrderNo = po.purchaseOrderNo " +
+                "WHERE 1=1 AND cm.purchaseOrderNo IS NOT NULL AND po.status = 30");
+        List<Object> paramList = new ArrayList<>();
+
+        // 动态拼接条件：只有参数不为空时才添加
+        if (StrKit.notBlank(contractNo)) {
+            //模糊查询
+            from.append(" AND cm.contractNo LIKE CONCAT('%', ?, '%') ");
+            paramList.add(contractNo);
+
+        }
+        from.append("ORDER BY cm.id DESC");
+
+        // 转换为数组（JFinal 需传入 Object[]）
+        Object[] params = paramList.toArray(new Object[0]);
+
+        // 分页查询（注意：select 和 from 分开传更规范，JFinal 推荐写法）
+        return Db.paginate(pageNum, pageSz, select, from.toString(), params);
+    }
+
+    public Record getById(String id) {
+        String sql = """
+        SELECT 
+            cm.*,
+            i.no AS itemNo,
+            i.name AS itemName,
+            i.spec AS itemSpec,
+            i.inclass,
+            i.unit,
+            po.status AS orderStatus,
+            po.memo AS orderFormMemo,
+            po.writer AS orderWriter,
+            po.orderName
+        FROM bas_contract_material cm
+        LEFT JOIN basitem i ON cm.itemId = i.id
+        LEFT JOIN pl_purchase_order po ON cm.purchaseOrderNo = po.purchaseOrderNo
+        WHERE cm.id = ?
+        """;
+        return Db.findFirst(sql, id);
     }
 }

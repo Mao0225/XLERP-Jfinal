@@ -607,5 +607,19 @@ public abstract class BaseBascontract<M extends BaseBascontract<M>> extends Mode
 		return getStr("memo");
 	}
 	
+	/**
+	 * 交货时间
+	 */
+	public void setDeliverTime(java.util.Date deliverTime) {
+		set("deliverTime", deliverTime);
+	}
+	
+	/**
+	 * 交货时间
+	 */
+	public java.util.Date getDeliverTime() {
+		return getDate("deliverTime");
+	}
+	
 }
 

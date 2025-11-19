@@ -54,14 +54,14 @@ public abstract class BasePlPurchaseOrder<M extends BasePlPurchaseOrder<M>> exte
 	}
 	
 	/**
-	 * 采购单状态，暂时不用
+	 * 采购单状态，10是录入草稿状态，20是确认，30是确认完成不可修改
 	 */
 	public void setStatus(java.lang.Byte status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 采购单状态，暂时不用
+	 * 采购单状态，10是录入草稿状态，20是确认，30是确认完成不可修改
 	 */
 	public java.lang.Byte getStatus() {
 		return getByte("status");

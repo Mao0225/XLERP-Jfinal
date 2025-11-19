@@ -67,11 +67,46 @@ public class PurchaseOrderController extends Controller {
         }
     }
 
+    @ActionKey("/pl_purchase_order/deleteByOrderNo")
+    @HttpMethod("DELETE")
+    public void deleteByOrderNo() {
+        String purchaseOrderNo = getPara("purchaseOrderNo");
+        try {
+            if (purchaseOrderNo == null || purchaseOrderNo.trim().isEmpty()) {
+                renderJson(Result.badRequest("记录 ID 不能为空"));
+                return;
+            }
+            boolean success = service.deleteByOrderNo(purchaseOrderNo);
+            renderJson(success ? Result.success("删除成功") : Result.badRequest("删除失败"));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("记录 ID 格式错误"));
+        }
+    }
+
     @ActionKey("/pl_purchase_order/update")
     @HttpMethod("PUT")
     public void update(PlPurchaseOrder order) {
         boolean success = order.update();
         renderJson(success ? Result.success("更新成功") : Result.badRequest("更新失败"));
+    }
+
+
+    //更新状态
+    @ActionKey("/pl_purchase_order/updateStatus")
+    @HttpMethod("GET")
+    public void updateStatus() {
+        String id = getPara("id");
+        String status = getPara("status");
+        try {
+            if (id == null || id.trim().isEmpty()) {
+                renderJson(Result.badRequest("记录 ID 不能为空"));
+                return;
+            }
+            boolean success = service.updateStatus(id,status);
+            renderJson(success ? Result.success("更新成功") : Result.badRequest("更新失败"));
+        }catch (NumberFormatException e){
+            renderJson(Result.badRequest("记录 ID 格式错误"));
+        }
     }
 
     //根据采购订单号获取采购订单的物料列表
@@ -82,6 +117,7 @@ public class PurchaseOrderController extends Controller {
         try {
             if (purchaseOrderNo == null || purchaseOrderNo.trim().isEmpty()){
                 renderJson(Result.badRequest("合同编号不能为空"));
+                return;
             }
             List record = service.getMaterialList(purchaseOrderNo);
             renderJson(Result.success("查询备料列表成功").putData("record", record));

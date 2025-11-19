@@ -71,14 +71,15 @@ public class InspOrderService {
         switch (newStatus) {
             // === 报检审核 ===
             case "10"://提交报检
-                update.set("reportReviewer", operator);
-                update.set("reportReviewTime", Timestamp.valueOf(LocalDateTime.now()));
+                update.set("reportReviewStartTime", Timestamp.valueOf(LocalDateTime.now()));
                 break;
             case "11": // 报检通过
                 update.set("reportReviewer", operator);
+                update.set("reportReviewFinishTime", Timestamp.valueOf(LocalDateTime.now()));
                 break;
             case "12": // 报检拒绝
                 update.set("reportReviewer", operator);
+                update.set("reportReviewFinishTime", Timestamp.valueOf(LocalDateTime.now()));
                 update.set("remark", remark); // 拒绝原因放整单备注
                 break;
 

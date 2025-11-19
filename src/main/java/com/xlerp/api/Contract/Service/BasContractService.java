@@ -25,7 +25,7 @@ public class BasContractService {
     public Page<Record> getContractList(int pageNumber, int pageSize, String term, String contractNo,
                                         String projectName, String salesmanNo, String status) {
         // SELECT部分
-        String select = "SELECT c.id,c.no,c.gridno, c.ecpno,c.equipno," +
+        String select = "SELECT c.id,c.no,c.gridno, c.ecpno,c.equipno,c.deliverTime," +
                 "c.name, " +
                 "o.descr AS customerName, " +
                 "u.name AS salesmanName, " +
@@ -117,7 +117,7 @@ public class BasContractService {
 
     //获取合同所有产品列表
     public List<Record> getContractItemByNo(String contractNo) {
-        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.drawing_standard_no AS tuzhiNo,psp.scheduleCode "+
+        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.drawing_standard_no AS tuzhiNo,psp.scheduleCode " +
                 "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId " +

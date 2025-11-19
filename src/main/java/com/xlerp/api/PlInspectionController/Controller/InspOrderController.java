@@ -26,7 +26,6 @@ public class InspOrderController extends Controller {
                 : Result.serverError("创建失败"));
     }
 
-
     /**
      * 更新检验单
      */

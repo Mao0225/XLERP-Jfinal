@@ -135,6 +135,7 @@ public class PlProductionOrderService {
             bc.no as contractNo,
             bc.name as contractName,
             p.writer,
+            p.ipoType,
             max(p.createdTime) as createdTime,
             sum(case when p.status = '10' then 1 else 0 end) as status10Count,
             sum(case when p.status = '20' then 1 else 0 end) as status20Count,
