@@ -165,5 +165,33 @@ public abstract class BaseBastuzhi<M extends BaseBastuzhi<M>> extends Model<M> i
 		return getInt("isdelete");
 	}
 	
+	/**
+	 * 图纸作用的物料列表
+	 */
+	public void setItemName(java.lang.String itemName) {
+		set("itemName", itemName);
+	}
+	
+	/**
+	 * 图纸作用的物料列表
+	 */
+	public java.lang.String getItemName() {
+		return getStr("itemName");
+	}
+	
+	/**
+	 * 图纸作用的物料型号
+	 */
+	public void setItemSpec(java.lang.String itemSpec) {
+		set("itemSpec", itemSpec);
+	}
+	
+	/**
+	 * 图纸作用的物料型号
+	 */
+	public java.lang.String getItemSpec() {
+		return getStr("itemSpec");
+	}
+	
 }
 

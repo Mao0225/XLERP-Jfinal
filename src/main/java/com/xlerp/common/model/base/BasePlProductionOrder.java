@@ -32,17 +32,17 @@ public abstract class BasePlProductionOrder<M extends BasePlProductionOrder<M>> 
 	}
 	
 	/**
-	 * 订单类型
+	 * 订单类型1正常，2库存
 	 */
-	public void setIpoType(java.lang.String ipoType) {
+	public void setIpoType(java.lang.Byte ipoType) {
 		set("ipoType", ipoType);
 	}
 	
 	/**
-	 * 订单类型
+	 * 订单类型1正常，2库存
 	 */
-	public java.lang.String getIpoType() {
-		return getStr("ipoType");
+	public java.lang.Byte getIpoType() {
+		return getByte("ipoType");
 	}
 	
 	/**

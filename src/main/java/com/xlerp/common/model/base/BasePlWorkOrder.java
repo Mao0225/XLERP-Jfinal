@@ -451,5 +451,19 @@ public abstract class BasePlWorkOrder<M extends BasePlWorkOrder<M>> extends Mode
 		return getStr("materialsUnit");
 	}
 	
+	/**
+	 * 工单批次号
+	 */
+	public void setWoBatchNo(java.lang.String woBatchNo) {
+		set("woBatchNo", woBatchNo);
+	}
+	
+	/**
+	 * 工单批次号
+	 */
+	public java.lang.String getWoBatchNo() {
+		return getStr("woBatchNo");
+	}
+	
 }
 

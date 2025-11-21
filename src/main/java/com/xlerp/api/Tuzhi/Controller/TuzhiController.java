@@ -2,22 +2,20 @@ package com.xlerp.api.Tuzhi.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.Tuzhi.Service.TuzhiService;
 import com.xlerp.common.model.Bastuzhi;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Page;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Before(HttpMethodInterceptor.class)
@@ -30,6 +28,8 @@ public class TuzhiController extends Controller {
         String pageNumber = getPara("pageNumber");
         String pageSize = getPara("pageSize");
         String tuzhimingcheng = getPara("tuzhimingcheng");
+        String itemName = getPara("itemName");
+        String itemSpec = getPara("itemSpec");
 
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
@@ -40,7 +40,7 @@ public class TuzhiController extends Controller {
                 return;
             }
 
-            Page<Bastuzhi> page = tuzhiService.paginate(pageNum, pageSz, tuzhimingcheng);
+            Page<Bastuzhi> page = tuzhiService.paginate(pageNum, pageSz, tuzhimingcheng, itemName, itemSpec);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

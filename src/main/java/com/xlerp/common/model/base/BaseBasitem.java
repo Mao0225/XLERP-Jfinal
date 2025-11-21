@@ -237,5 +237,33 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return getInt("classId");
 	}
 	
+	/**
+	 * 材质
+	 */
+	public void setMaterial(java.lang.String material) {
+		set("material", material);
+	}
+	
+	/**
+	 * 材质
+	 */
+	public java.lang.String getMaterial() {
+		return getStr("material");
+	}
+	
+	/**
+	 * 执行标准
+	 */
+	public void setStandard(java.lang.String standard) {
+		set("standard", standard);
+	}
+	
+	/**
+	 * 执行标准
+	 */
+	public java.lang.String getStandard() {
+		return getStr("standard");
+	}
+	
 }
 

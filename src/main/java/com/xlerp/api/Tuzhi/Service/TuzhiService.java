@@ -1,75 +1,103 @@
 package com.xlerp.api.Tuzhi.Service;
 
-import com.xlerp.common.model.Bastuzhi;
 import com.jfinal.plugin.activerecord.Page;
+import com.xlerp.common.model.Bastuzhi;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import java.util.Arrays; // 新增：用于必要表头列表
+import java.util.*;
 
 public class TuzhiService {
     private static final Bastuzhi dao = new Bastuzhi().dao();
 
-    public Page<Bastuzhi> paginate(int pageNumber, int pageSize, String tuzhimingcheng) {
-        // 1. 构建SELECT子句句：列出bastuzhi所有字段 + 统计数量字段
-        String select = "select " +
-                "bastuzhi.id, " +
-                "bastuzhi.tuzhibianhao, " +
-                "bastuzhi.tuzhimingcheng, " +
-                "bastuzhi.tuzhizuozhe, " +
-                "bastuzhi.chuangzuoriqi, " +
-                "bastuzhi.tuzhimiaoshu, " +
-                "bastuzhi.memo, " +
-                "bastuzhi.flag, " +
-                "bastuzhi.type, " +
-                "bastuzhi.writer, " +
-                "bastuzhi.tuzhiurl, " +
-                "bastuzhi.isdelete, " +
-                "count(bastuzhicailiao.id) as zicailiaoshuliang";
+//    public Page<Bastuzhi> paginate(int pageNumber, int pageSize, String tuzhimingcheng) {
+//        // 1. 构建SELECT子句句：列出bastuzhi所有字段 + 统计数量字段
+//        String select = "select " +
+//                "bastuzhi.id, " +
+//                "bastuzhi.tuzhibianhao, " +
+//                "bastuzhi.tuzhimingcheng, " +
+//                "bastuzhi.tuzhizuozhe, " +
+//                "bastuzhi.chuangzuoriqi, " +
+//                "bastuzhi.tuzhimiaoshu, " +
+//                "bastuzhi.memo, " +
+//                "bastuzhi.flag, " +
+//                "bastuzhi.type, " +
+//                "bastuzhi.writer, " +
+//                "bastuzhi.tuzhiurl, " +
+//                "bastuzhi.isdelete, " +
+//                "count(bastuzhicailiao.id) as zicailiaoshuliang";
+//
+//        // 2. 构建FROM子句：左连接bastuzhicailiao表 + 条件 + GROUP BY + ORDER BY
+//        StringBuilder from = new StringBuilder();
+//        from.append("from XLQCerp.bastuzhi ");  // 关联schema
+//        from.append("left join xlqcerp.bastuzhicailiao on bastuzhi.id = bastuzhicailiao.tuzhiid ");  // 左连接关联
+//
+//        // 3. 处理查询条件（tuzhimingcheng模糊匹配）
+//        if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
+//            from.append("where bastuzhi.tuzhimingcheng like ? ");  // 注意空格分隔
+//        }
+//
+//        // 4. 必须包含GROUP BY（达梦要求所有非聚合字段都在GROUP BY中）
+//        from.append("group by " +
+//                "bastuzhi.id, " +
+//                "bastuzhi.tuzhibianhao, " +
+//                "bastuzhi.tuzhimingcheng, " +
+//                "bastuzhi.tuzhizuozhe, " +
+//                "bastuzhi.chuangzuoriqi, " +
+//                "bastuzhi.tuzhimiaoshu, " +
+//                "bastuzhi.memo, " +
+//                "bastuzhi.flag, " +
+//                "bastuzhi.type, " +
+//                "bastuzhi.writer, " +
+//                "bastuzhi.tuzhiurl, " +
+//                "bastuzhi.isdelete ");
+//
+//        // 5. 保持原排序逻辑（按id降序）
+//        from.append("order by bastuzhi.id desc");
+//
+//        // 6. 分页查询（带条件或不带条件）
+//        if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
+//            return dao.paginate(pageNumber, pageSize, select, from.toString(), "%" + tuzhimingcheng + "%");
+//        } else {
+//            return dao.paginate(pageNumber, pageSize, select, from.toString());
+//        }
+//    }
 
-        // 2. 构建FROM子句：左连接bastuzhicailiao表 + 条件 + GROUP BY + ORDER BY
+
+    //简化后的分页函数不用关联了
+    public Page<Bastuzhi> paginate(int pageNumber, int pageSize, String tuzhimingcheng,String itemName,String itemSpec) {
+        // 1. 构建SELECT子句：仅查询bastuzhi表所有字段
+        String select = "select *";
+
+        // 2. 构建FROM子句：仅查询bastuzhi表，无需连接
         StringBuilder from = new StringBuilder();
         from.append("from XLQCerp.bastuzhi ");  // 关联schema
-        from.append("left join xlqcerp.bastuzhicailiao on bastuzhi.id = bastuzhicailiao.tuzhiid ");  // 左连接关联
+        List<Object> params = new ArrayList<>();
+
 
         // 3. 处理查询条件（tuzhimingcheng模糊匹配）
         if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
             from.append("where bastuzhi.tuzhimingcheng like ? ");  // 注意空格分隔
+            params.add("%" + tuzhimingcheng + "%");
+
+        }
+        if (itemName != null && !itemName.trim().isEmpty()) {
+            from.append("where bastuzhi.itemName like ? ");  // 注意空格分隔
+            params.add("%" + itemName + "%");
+        }
+        if (itemSpec != null && !itemSpec.trim().isEmpty()) {
+            from.append("where bastuzhi.itemSpec like ? ");  // 注意空格分隔
+            params.add("%" + itemSpec + "%");
         }
 
-        // 4. 必须包含GROUP BY（达梦要求所有非聚合字段都在GROUP BY中）
-        from.append("group by " +
-                "bastuzhi.id, " +
-                "bastuzhi.tuzhibianhao, " +
-                "bastuzhi.tuzhimingcheng, " +
-                "bastuzhi.tuzhizuozhe, " +
-                "bastuzhi.chuangzuoriqi, " +
-                "bastuzhi.tuzhimiaoshu, " +
-                "bastuzhi.memo, " +
-                "bastuzhi.flag, " +
-                "bastuzhi.type, " +
-                "bastuzhi.writer, " +
-                "bastuzhi.tuzhiurl, " +
-                "bastuzhi.isdelete ");
+        // 4. 排序逻辑（保持按id降序）
+        from.append("order by id desc");
+        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
 
-        // 5. 保持原排序逻辑（按id降序）
-        from.append("order by bastuzhi.id desc");
 
-        // 6. 分页查询（带条件或不带条件）
-        if (tuzhimingcheng != null && !tuzhimingcheng.trim().isEmpty()) {
-            return dao.paginate(pageNumber, pageSize, select, from.toString(), "%" + tuzhimingcheng + "%");
-        } else {
-            return dao.paginate(pageNumber, pageSize, select, from.toString());
-        }
     }
 
     public Bastuzhi findById(int id) {
