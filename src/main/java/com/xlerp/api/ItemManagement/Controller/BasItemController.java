@@ -72,19 +72,21 @@ public class BasItemController extends Controller {
     @ActionKey("/basitem/save")
     @HttpMethod("POST")
     public void save(Basitem basItem) {
-        // 校验必填字段
-
         try {
             boolean success = basItemService.save(basItem);
             if (success) {
-                renderJson(Result.success("物料保存成功").putData("itemId", basItem.getId()));
+                // 成功：返回物料ID，方便前端后续操作（如刷新、编辑）
+                renderJson(Result.success("物料保存成功")
+                        .putData("itemId", basItem.getId()));
             } else {
-                renderJson(Result.serverError("保存物料失败"));
+                // 失败：明确提示是编号重复（核心失败原因）
+                renderJson(Result.badRequest("物料编号已存在，请更换编号后重试"));
             }
         } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("数值格式错误（如重量或价格）"));
+            // 兼容前端可能的数值格式遗漏（如重量、价格未校验）
+            renderJson(Result.badRequest("数值格式错误（重量/价格需为有效数字）"));
         } catch (Exception e) {
-            renderJson(Result.serverError("保存物料时发生错误: " + e.getMessage()));
+            renderJson(Result.serverError("物料保存失败，请联系管理员"));
         }
     }
     @ActionKey("/basitem/update")

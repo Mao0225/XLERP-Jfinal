@@ -265,5 +265,33 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return getStr("standard");
 	}
 	
+	/**
+	 * 录入人
+	 */
+	public void setWriter(java.lang.String writer) {
+		set("writer", writer);
+	}
+	
+	/**
+	 * 录入人
+	 */
+	public java.lang.String getWriter() {
+		return getStr("writer");
+	}
+	
+	/**
+	 * 录入时间
+	 */
+	public void setCreateTime(java.util.Date createTime) {
+		set("createTime", createTime);
+	}
+	
+	/**
+	 * 录入时间
+	 */
+	public java.util.Date getCreateTime() {
+		return getDate("createTime");
+	}
+	
 }
 

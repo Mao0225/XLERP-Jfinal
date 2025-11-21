@@ -493,5 +493,19 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 		return getStr("poItemId");
 	}
 	
+	/**
+	 * 产品预期交货时间
+	 */
+	public void setItemDeliverTime(java.lang.String itemDeliverTime) {
+		set("itemDeliverTime", itemDeliverTime);
+	}
+	
+	/**
+	 * 产品预期交货时间
+	 */
+	public java.lang.String getItemDeliverTime() {
+		return getStr("itemDeliverTime");
+	}
+	
 }
 

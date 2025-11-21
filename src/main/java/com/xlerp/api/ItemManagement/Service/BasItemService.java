@@ -12,10 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BasItemService {
     private static final Basitem dao = new Basitem();
@@ -106,8 +103,20 @@ public class BasItemService {
         return dao.findById(id);
     }
 
+    /**
+     * 保存物料（仅做：编号唯一性校验 + 保存执行）
+     * 注：必填字段、格式校验已由前端完成，后端不重复校验
+     */
     public boolean save(Basitem basItem) {
-        return basItem.save();
+
+        // 2. 高效校验编号唯一性：用 count 替代 findFirst（仅查数量，不查整行数据，性能更优）
+        Long duplicateCount = Db.queryLong("select count(*) from basitem where no = ?", basItem.getNo().trim());        if (duplicateCount > 0) {
+            return false; // 编号重复，返回失败
+        }
+
+        // 3. 执行保存（前端已校验必填项，此处直接保存）
+        basItem.save();
+        return true;
     }
 
     public boolean update(Basitem basItem) {
