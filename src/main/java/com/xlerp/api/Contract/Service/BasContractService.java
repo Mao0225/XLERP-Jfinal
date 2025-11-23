@@ -117,10 +117,12 @@ public class BasContractService {
 
     //获取合同所有产品列表
     public List<Record> getContractItemByNo(String contractNo) {
-        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.drawing_standard_no AS tuzhiNo,psp.scheduleCode " +
+        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo," +
+                "psp.scheduleCode,bt.tuzhimingcheng as tuzhiName,bt.tuzhizuozhe,bt.tuzhiurl,bt.itemName as tuzhiItemName, bt.itemSpec as tuzhiItemSpec  " +
                 "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId " +
+                "LEFT JOIN bastuzhi bt ON i.tuzhiNo = bt.tuzhibianhao " +
                 "WHERE c.no = ? AND c.isdelete = 0 " +
                 "ORDER BY c.id";
 
@@ -147,9 +149,11 @@ public class BasContractService {
     //获取单个合同产品信息
     public Record finditemById(int id) {
         String select = "SELECT c.*," +
-                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,i.drawing_standard_no AS tuzhiNo";
+                "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,i.tuzhiNo," +
+                "bt.tuzhimingcheng as tuzhiName,bt.tuzhizuozhe,bt.tuzhiurl,bt.itemName as tuzhiItemName, bt.itemSpec as tuzhiItemSpec ";
         String from = "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
+                "LEFT JOIN bastuzhi bt ON i.tuzhiNo = bt.tuzhibianhao " +
                 "WHERE c.id = ? " +
                 "ORDER BY c.id";
 
@@ -307,7 +311,7 @@ public class BasContractService {
     public Page<Record> getContractItemPage(String contractNo, String itemName, int pageNumber, int pageSize) {
         // 构建SQL语句和参数列表
         StringBuilder selectSql = new StringBuilder("SELECT c.id,c.itemnum,c.itemunit," +
-                "c.itemRealPrice,c.itemRealSum,c.itemweight,c.itemgrossweight,c.poItemCode,c.poItemId,c.poItemNo,c.itemmemo, " +
+                "c.itemRealPrice,c.itemRealSum,c.itemweight,c.itemgrossweight,c.poItemCode,c.poItemId,c.poItemNo,c.itemmemo,c.itemDeliverTime," +
                 "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,psp.scheduleCode ");
 
         StringBuilder fromSql = new StringBuilder("FROM bascontractitem c " +

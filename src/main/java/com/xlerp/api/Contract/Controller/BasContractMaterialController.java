@@ -19,6 +19,8 @@ import java.util.Map;
 public class BasContractMaterialController extends Controller {
 
     private BasContractMaterialService service = new BasContractMaterialService();
+
+    //获取备料单列表根据合同号，这个是已经合并过的
     @ActionKey("/bas_contract_material/getMaterialList")
     @HttpMethod("GET")
     public void getMaterialList() {
@@ -83,7 +85,7 @@ public class BasContractMaterialController extends Controller {
         }
     }
 
-    //更新备料单
+    //更新备料单--用于采购订单加信息的时候-还有制定备料单的时候加备注用
     @ActionKey("/bas_contract_material/update")
     @HttpMethod("PUT")
     public void update(BasContractMaterial basContractMaterial) {
@@ -132,7 +134,7 @@ public class BasContractMaterialController extends Controller {
     }
 
 
-    //获取备料单列表-通过物料关系查询的，没有存
+    //生成备料单列表-通过物料关系查询的，没有存，是先查出来看，前端点击保存后才会保存，根据一个合同号生成
     @ActionKey("/bas_contract_material/generateMaterialList")
     @HttpMethod("GET")
     public void generateMaterialList() {
@@ -144,6 +146,23 @@ public class BasContractMaterialController extends Controller {
             List<Map<String, Object>> itemList = service.getContractMaterialLeafListWithMerge(contractNo);
             renderJson(Result.success("查询合同物料列表成功").putData("record", itemList));
         }catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        }
+    }
+
+
+    //生成备料计划，每个产品独立的原材料列表
+    @ActionKey("/bas_contract_material/generateMaterialPlan")
+    @HttpMethod("GET")
+    public void generateMaterialPlan() {
+        String contractNo = getPara("contractNo");
+        if (contractNo == null || contractNo.trim().isEmpty()) {
+            renderJson(Result.badRequest("合同号不能为空"));
+        }
+        try {
+            List<Map<String, Object>> itemList = service.getContractMaterialPlan(contractNo);
+            renderJson(Result.success("查询合同物料列表成功").putData("record", itemList));
+        }catch (NumberFormatException e){
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }

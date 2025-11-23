@@ -36,7 +36,7 @@ public class BasContractMaterialService {
 
     //获取合同所有产品列表
     public List<Record> getContractItemByNo(String contractNo) {
-        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.drawing_standard_no AS tuzhiNo,psp.scheduleCode "+
+        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo,psp.scheduleCode "+
                 "FROM bascontractitem c " +
                 "LEFT JOIN basitem i ON c.itemid = i.id " +
                 "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId " +
@@ -137,7 +137,6 @@ public class BasContractMaterialService {
                 }
             }
         }
-
         return new ArrayList<>(leafNodeMap.values());
     }
 
@@ -183,6 +182,94 @@ public class BasContractMaterialService {
         }
 
         return leafNodes;
+    }
+
+
+
+
+
+    /**
+     * 核心方法：通过合同编号查询所有产品的物料清单（按主产品分组，同一主产品下相同物料no合并数量）
+     * 结构：每个主产品包含自身核心信息 + 该产品下合并后的原材料集合（相同no的原材料数量累加）
+     */
+    public List<Map<String, Object>> getContractMaterialPlan(String contractNo) {
+        // 1. 查询合同下的所有主产品（合同明细）
+        List<Record> contractItems = getContractItemByNo(contractNo);
+        if (contractItems.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        // 2. 遍历每个主产品，单独处理其BOM（展开+内部合并）
+        for (Record contractItem : contractItems) {
+            // 2.1 提取主产品核心信息（按实际表字段调整）
+            Integer mainItemId = contractItem.getInt("itemid"); // 主产品ID
+            String itemNo = contractItem.getStr("itemNo"); // 主产品编号
+            String itemName = contractItem.getStr("itemName"); // 主产品名称
+            String itemSpec = contractItem.getStr("itemSpec"); // 主产品规格
+            String tuzhiNo = contractItem.getStr("tuzhiNo"); // 图纸号
+            BigDecimal itemNum = contractItem.getBigDecimal("itemnum"); // 主产品合同数量
+            String itemMemo = contractItem.getStr("itemmemo"); // 备注
+
+            // 2.2 字段null校验
+            itemNo = itemNo == null ? "" : itemNo;
+            itemName = itemName == null ? "未知产品" : itemName;
+            itemSpec = itemSpec == null ? "" : itemSpec;
+            tuzhiNo = tuzhiNo == null ? "" : tuzhiNo;
+            itemNum = itemNum == null ? BigDecimal.ZERO : itemNum;
+            itemMemo = itemMemo == null ? "" : itemMemo;
+
+            // 2.3 展开当前主产品的BOM，获取所有叶子节点（原材料）
+            List<Map<String, Object>> materialLeafNodes = collectMaterialLeafNodes(mainItemId, itemNum);
+
+            // 2.4 同一主产品下，按物料no合并原材料（核心：相同no累加数量）
+            Map<String, Map<String, Object>> mergedMaterialMap = new HashMap<>();
+            for (Map<String, Object> leafNode : materialLeafNodes) {
+                // 合并key：优先用物料no，no为空则用物料id（避免null键）
+                String materialNo = (String) leafNode.get("no");
+                Integer materialId = (Integer) leafNode.get("id");
+                String mergeKey = (materialNo != null && !materialNo.trim().isEmpty())
+                        ? materialNo.trim()
+                        : (materialId != null ? materialId.toString() : "unknown");
+
+                if (mergedMaterialMap.containsKey(mergeKey)) {
+                    // 已存在：累加实际用量
+                    Map<String, Object> existingMat = mergedMaterialMap.get(mergeKey);
+                    BigDecimal existingQty = (BigDecimal) existingMat.get("actualQuantity");
+                    BigDecimal currentQty = (BigDecimal) leafNode.get("actualQuantity");
+                    // 数量累加（容错：防止null）
+                    BigDecimal newQty = (existingQty == null ? BigDecimal.ZERO : existingQty)
+                            .add(currentQty == null ? BigDecimal.ZERO : currentQty);
+                    existingMat.put("actualQuantity", newQty);
+                } else {
+                    // 不存在：直接存入，深拷贝避免原数据污染（可选，根据leafNode来源决定）
+                    Map<String, Object> newMat = new HashMap<>(leafNode);
+                    // 确保数量字段不为null
+                    if (newMat.get("actualQuantity") == null) {
+                        newMat.put("actualQuantity", BigDecimal.ZERO);
+                    }
+                    mergedMaterialMap.put(mergeKey, newMat);
+                }
+            }
+
+            // 2.5 封装主产品结构（自身信息 + 合并后的原材料集合）
+            Map<String, Object> mainProductMap = new HashMap<>();
+            mainProductMap.put("itemId", mainItemId); // 主产品ID
+            mainProductMap.put("itemNo", itemNo); // 主产品编号
+            mainProductMap.put("itemName", itemName); // 主产品名称
+            mainProductMap.put("itemSpec", itemSpec); // 主产品规格
+            mainProductMap.put("tuzhiNo", tuzhiNo); // 图纸号
+            mainProductMap.put("itemNum", itemNum); // 主产品合同数量
+            mainProductMap.put("itemMemo", itemMemo); // 备注
+            // 合并后的原材料集合（转成List）
+            mainProductMap.put("child", new ArrayList<>(mergedMaterialMap.values()));
+
+            // 2.6 加入结果集
+            resultList.add(mainProductMap);
+        }
+
+        return resultList;
     }
 
     public boolean deleteById(String id) {

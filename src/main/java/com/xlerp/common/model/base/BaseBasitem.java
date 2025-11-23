@@ -210,17 +210,17 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 	}
 	
 	/**
-	 * 图号/标准号
+	 * 图号
 	 */
-	public void setDrawingStandardNo(java.lang.String drawingStandardNo) {
-		set("drawing_standard_no", drawingStandardNo);
+	public void setTuzhiNo(java.lang.String tuzhiNo) {
+		set("tuzhiNo", tuzhiNo);
 	}
 	
 	/**
-	 * 图号/标准号
+	 * 图号
 	 */
-	public java.lang.String getDrawingStandardNo() {
-		return getStr("drawing_standard_no");
+	public java.lang.String getTuzhiNo() {
+		return getStr("tuzhiNo");
 	}
 	
 	/**

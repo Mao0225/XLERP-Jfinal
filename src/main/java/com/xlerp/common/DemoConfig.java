@@ -11,7 +11,6 @@ import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
-import com.xlerp.api.ClManagement.Controller.*;
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
@@ -118,34 +117,11 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/pl_report_work_order", PlReportWorkOrderController.class);//毛文斌，报工单管理
 		me.add("/pl_mat_inout", matInoutController.class);
 
-
-
-
-
-		me.add("/clproductiondata", ClProductionDataController.class);
-
 		me.add("/basno", BasNoController.class);//编号管理
 
 
 		me.add("/plchuchangjianyan", PlchuchangchoujianController.class);
 
- 		me.add("/cl_ld", LdController.class);//铝锭材料检验
-
-
-		me.add("/cl_wfg", WfgController.class);//无缝钢板--倪佳琪
-		me.add("/cl_gb", GbController.class);//钢板材料检验--谭请赢
-		me.add("/cl_yg", YgController.class);//圆钢--谭请赢
-		me.add("/cl_xj", XjController.class);//刘国奇，增加，橡胶检测功能
-		me.add("/cl_bkx", BkxController.class);//闭口销--谭请赢
-
-		me.add("/cl_lhjx", LhjxController.class);//铝合金线--蒙千惠
-		me.add("/cl_tb", TbController.class);//张凌佳 --铜板
-		me.add("/cl_dxgjx", DxgjxController.class);//镀锌钢绞线--那怀月
-		me.add("/cl_lb", LbController.class);//铝板--孙元芯
-		me.add("/cl_dxls", DxlsController.class);//镀锌螺栓--蒙千惠
-		me.add("/cl_ct", CtController.class);//锤头--张凌佳
-		me.add("/cl_lg", LgController.class);//铝管--那怀月
-		me.add("/cl_bxgls", BxglsController.class);//不锈钢螺栓--蒙千惠
 		me.add("/uploadLog", UploadLogController.class);//上传日志--毛文斌
 		me.add("/bas_item_class", BasItemClassController.class); //物料分类管理
 		me.add("/bas_item_relation", BasItemRelationController.class);//物料关系管理

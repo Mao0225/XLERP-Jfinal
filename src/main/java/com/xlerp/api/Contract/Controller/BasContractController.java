@@ -60,8 +60,7 @@ public class BasContractController extends Controller {
         }
         try {
             Record contractInfo = bascontractService.getContractInfoByNo(contractNo);
-            List<Record> itemList = bascontractService.getContractItemByNo(contractNo);
-            renderJson(Result.success("查询合同列表成功").putData("contractInfo", contractInfo).putData("itemList", itemList));
+            renderJson(Result.success("查询合同列表成功").putData("contractInfo", contractInfo));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
