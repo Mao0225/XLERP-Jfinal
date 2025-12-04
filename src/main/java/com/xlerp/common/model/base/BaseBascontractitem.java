@@ -220,14 +220,14 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 	}
 	
 	/**
-	 * 通知状态，10录入-20确认-30审核
+	 * 通知状态，10录入-20确认-31审核通过-40已提料-32审核不通过
 	 */
 	public void setNoticestatus(java.lang.Integer noticestatus) {
 		set("noticestatus", noticestatus);
 	}
 	
 	/**
-	 * 通知状态，10录入-20确认-30审核
+	 * 通知状态，10录入-20确认-31审核通过-40已提料-32审核不通过
 	 */
 	public java.lang.Integer getNoticestatus() {
 		return getInt("noticestatus");

@@ -12,6 +12,7 @@ import com.xlerp.common.model.PlWorkOrder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Before(HttpMethodInterceptor.class)
@@ -230,6 +231,37 @@ public class PlWorkOrderController extends Controller {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         } catch (Exception e) {
             renderJson (Result.serverError ("确认排产计划时发生错误:" + e.getMessage ()));
+        }
+    }
+
+
+    //传入物料id和生产订单号，生成所有需要生产的工单就是包括半成品，成品
+    @ActionKey("/pl_work_order/generateWorkOrder")
+    @HttpMethod("GET")
+    public void generateWorkOrder() {
+        Integer itemId = getParaToInt("basItemId");
+//        String ipoNo = getPara("ipoNo");
+        Integer amount = getParaToInt("amount");
+        if (itemId == null || itemId <= 0) {
+            renderJson (Result.badRequest ("物料ID不能为空"));
+        }
+//        if (ipoNo == null || ipoNo.trim ().isEmpty ()) {
+//            renderJson (Result.badRequest ("生产订单号不能为空"));
+//        }
+        if (amount == null || amount <= 0) {
+            renderJson (Result.badRequest ("数量不能小于0"));
+        }
+        try {
+            List<Map<String, Object>> list = workOrderService.getMaterialFlatList(itemId, amount);
+            if ( list != null) {
+                renderJson(Result.success("工单生成成功").putData("list", list));
+            } else {
+                renderJson(Result.serverError("工单生成失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        } catch (Exception e) {
+            renderJson (Result.serverError ("工单生成时发生错误:" + e.getMessage ()));
         }
     }
 }

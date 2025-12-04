@@ -360,11 +360,12 @@ public class BasContractController extends Controller {
     @HttpMethod("GET")
     public void getContractItemList() {
         String contractNo = getPara("contractNo");
+        String noticeid = getPara("noticeid");
         if (contractNo == null || contractNo.trim().isEmpty()) {
             renderJson(Result.badRequest("合同号不能为空"));
         }
         try {
-            List<Record> itemList = bascontractService.getContractItemByNo(contractNo);
+            List<Record> itemList = bascontractService.getContractItemByNo(contractNo,noticeid);
             renderJson(Result.success("查询合同物料列表成功").putData("itemList", itemList));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

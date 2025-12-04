@@ -101,7 +101,7 @@ public class PlSchedulePlanService {
                         "c.id AS contractItemId," +
                         "c.itemnum, c.itemunit, c.itemRealPrice, c.itemRealSum, c.itemweight, c.itemgrossweight, " +
                         "c.poItemCode, c.poItemId, c.poItemNo, c.itemmemo,c.noticecomment, c.noticeauther,c.noticeinstead,c.noticeid,c.noticename," +
-                        "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,i.drawing_standard_no as tuzhiNo, " +
+                        "i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec,i.tuzhiNo, " +
                         "psp.scheduleCode, psp.planPeriod, psp.planStartDate, psp.planFinishDate, " +
                         "psp.actualStartDate, psp.actualFinishDate, psp.dueDate, psp.remark, " +
                         "psp.actualPeriod, psp.status," +

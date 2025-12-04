@@ -130,14 +130,14 @@ public abstract class BasePlProductionOrder<M extends BasePlProductionOrder<M>> 
 	}
 	
 	/**
-	 * 采购订单行项目ID（供货单行项目ID）或销售订单号
+	 * 物料id，目前是存储的contractItemId合同表的产品id
 	 */
 	public void setPoItemId(java.lang.Long poItemId) {
 		set("poItemId", poItemId);
 	}
 	
 	/**
-	 * 采购订单行项目ID（供货单行项目ID）或销售订单号
+	 * 物料id，目前是存储的contractItemId合同表的产品id
 	 */
 	public java.lang.Long getPoItemId() {
 		return getLong("poItemId");
@@ -522,14 +522,14 @@ public abstract class BasePlProductionOrder<M extends BasePlProductionOrder<M>> 
 	}
 	
 	/**
-	 * 生产订单批次号，一个批次有多个生产订单
+	 * 生产订单批次号，一个批次有多个生产订单，表示同一批制定的
 	 */
 	public void setIpoBatchNo(java.lang.String ipoBatchNo) {
 		set("ipoBatchNo", ipoBatchNo);
 	}
 	
 	/**
-	 * 生产订单批次号，一个批次有多个生产订单
+	 * 生产订单批次号，一个批次有多个生产订单，表示同一批制定的
 	 */
 	public java.lang.String getIpoBatchNo() {
 		return getStr("ipoBatchNo");

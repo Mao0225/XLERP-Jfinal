@@ -116,22 +116,34 @@ public class BasContractService {
     }
 
     //获取合同所有产品列表
-    public List<Record> getContractItemByNo(String contractNo) {
-        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo," +
-                "psp.scheduleCode,bt.tuzhimingcheng as tuzhiName,bt.tuzhizuozhe,bt.tuzhiurl,bt.itemName as tuzhiItemName, bt.itemSpec as tuzhiItemSpec  " +
-                "FROM bascontractitem c " +
-                "LEFT JOIN basitem i ON c.itemid = i.id " +
-                "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId " +
-                "LEFT JOIN bastuzhi bt ON i.tuzhiNo = bt.tuzhibianhao " +
-                "WHERE c.no = ? AND c.isdelete = 0 " +
-                "ORDER BY c.id";
 
+    public List<Record> getContractItemByNo(String contractNo, String noticeid) {
+        // 构建基础SQL语句
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo,")
+                .append("psp.scheduleCode,bt.tuzhimingcheng as tuzhiName,bt.tuzhizuozhe,bt.tuzhiurl,bt.itemName as tuzhiItemName, bt.itemSpec as tuzhiItemSpec  ")
+                .append("FROM bascontractitem c ")
+                .append("LEFT JOIN basitem i ON c.itemid = i.id ")
+                .append("LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId ")
+                .append("LEFT JOIN bastuzhi bt ON i.tuzhiNo = bt.tuzhibianhao ")
+                .append("WHERE c.no = ? AND c.isdelete = 0 ");
+
+        // 构建参数列表
         List<Object> params = new ArrayList<>();
+        // contractNo一定存在，先添加
         params.add(contractNo);
 
-        return Db.find(sql, params.toArray());
-    }
+        // 如果noticeid不为空，则添加该筛选条件
+        if (noticeid != null && !noticeid.trim().isEmpty()) {
+            sql.append("AND c.noticeid = ? ");
+            params.add(noticeid);
+        }
 
+        // 添加排序
+        sql.append("ORDER BY c.id");
+
+        return Db.find(sql.toString(), params.toArray());
+    }
 
     public boolean saveitem(Bascontractitem bascontractitem) {
         return bascontractitem.save();

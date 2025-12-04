@@ -227,5 +227,19 @@ public abstract class BaseBasContractMaterial<M extends BaseBasContractMaterial<
 		return getStr("orderMemo");
 	}
 	
+	/**
+	 * 关联的通知id
+	 */
+	public void setNoticeid(java.lang.String noticeid) {
+		set("noticeid", noticeid);
+	}
+	
+	/**
+	 * 关联的通知id
+	 */
+	public java.lang.String getNoticeid() {
+		return getStr("noticeid");
+	}
+	
 }
 

@@ -20,16 +20,16 @@ public class BasContractMaterialController extends Controller {
 
     private BasContractMaterialService service = new BasContractMaterialService();
 
-    //获取备料单列表根据合同号，这个是已经合并过的
+    //获取备料单列表根据通知编号，这个是已经合并过的
     @ActionKey("/bas_contract_material/getMaterialList")
     @HttpMethod("GET")
     public void getMaterialList() {
-        String contractNo = getPara("contractNo");
+        String noticeid = getPara("noticeid");
         try {
-            if (contractNo == null || contractNo.trim().isEmpty()){
-                renderJson(Result.badRequest("合同编号不能为空"));
+            if (noticeid == null || noticeid.trim().isEmpty()){
+                renderJson(Result.badRequest("通知编号"));
             }
-            List record = service.getMaterialList(contractNo);
+            List record = service.getMaterialList(noticeid);
             renderJson(Result.success("查询备料列表成功").putData("record", record));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("合同号格式错误"));
@@ -120,12 +120,12 @@ public class BasContractMaterialController extends Controller {
     }
 
 
-    @ActionKey("/bas_contract_material/deleteByContractNo")
+    @ActionKey("/bas_contract_material/deleteByNoticeId")
     @HttpMethod("DELETE")
-    public void deleteByContractNo() {
-        String contractNo = getPara("contractNo");
+    public void deleteByNoticeId() {
+        String noticeid = getPara("noticeid");
         try {
-            boolean success = service.deleteByContractNo(contractNo);
+            boolean success = service.deleteByNoticeId(noticeid);
             renderJson(success ? Result.success("删除成功") : Result.badRequest("删除失败"));
         }catch (Exception e){
             e.printStackTrace();
@@ -134,16 +134,17 @@ public class BasContractMaterialController extends Controller {
     }
 
 
-    //生成备料单列表-通过物料关系查询的，没有存，是先查出来看，前端点击保存后才会保存，根据一个合同号生成
+    //生成备料单列表-通过物料关系查询的，没有存，是先查出来看，前端点击保存后才会保存，根据合同号和同一个通知编号生成
     @ActionKey("/bas_contract_material/generateMaterialList")
     @HttpMethod("GET")
     public void generateMaterialList() {
         String contractNo = getPara("contractNo");
+        String noticeid = getPara("noticeid");
         if (contractNo == null || contractNo.trim().isEmpty()) {
             renderJson(Result.badRequest("合同号不能为空"));
         }
         try {
-            List<Map<String, Object>> itemList = service.getContractMaterialLeafListWithMerge(contractNo);
+            List<Map<String, Object>> itemList = service.getContractMaterialLeafListWithMerge(contractNo,noticeid);
             renderJson(Result.success("查询合同物料列表成功").putData("record", itemList));
         }catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));

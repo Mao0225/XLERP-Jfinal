@@ -465,5 +465,33 @@ public abstract class BasePlWorkOrder<M extends BasePlWorkOrder<M>> extends Mode
 		return getStr("woBatchNo");
 	}
 	
+	/**
+	 * 该工单要生产的成品或者半成品的id，关联basitem表查信息的
+	 */
+	public void setItemId(java.lang.Long itemId) {
+		set("itemId", itemId);
+	}
+	
+	/**
+	 * 该工单要生产的成品或者半成品的id，关联basitem表查信息的
+	 */
+	public java.lang.Long getItemId() {
+		return getLong("itemId");
+	}
+	
+	/**
+	 * 备注
+	 */
+	public void setMemo(java.lang.String memo) {
+		set("memo", memo);
+	}
+	
+	/**
+	 * 备注
+	 */
+	public java.lang.String getMemo() {
+		return getStr("memo");
+	}
+	
 }
 

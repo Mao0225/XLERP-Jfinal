@@ -19,42 +19,58 @@ public class BasContractMaterialService {
     private BasContractMaterial materialDao = new BasContractMaterial();
     private BasItemRelation relationDao = new BasItemRelation();
     private Basitem basitemDao = new Basitem();
-    public List getMaterialList(String contractNo) {
+
+    //根据通知编号获取产品物料清单（已经生成完的）
+    public List getMaterialList(String noticeid) {
 
 
         String select = "SELECT cm.*,i.no as itemNo,i.name as itemName,i.spec as itemSpec,i.inclass,i.unit ";
         String from = "FROM bas_contract_material cm " +
                 "LEFT JOIN basitem i ON cm.itemId = i.id " +
-                "WHERE cm.contractNo = ? " +
+                "WHERE cm.noticeid = ? " +
                 "ORDER BY cm.id";
 
         // 拼接完整的SQL语句
         String sql = select + from;
-        return Db.find(sql, contractNo);
+        return Db.find(sql, noticeid);
     }
 
 
     //获取合同所有产品列表
-    public List<Record> getContractItemByNo(String contractNo) {
-        String sql = "SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo,psp.scheduleCode "+
-                "FROM bascontractitem c " +
-                "LEFT JOIN basitem i ON c.itemid = i.id " +
-                "LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId " +
-                "WHERE c.no = ? AND c.isdelete = 0 " +
-                "ORDER BY c.id";
+    public List<Record> getContractItemByNo(String contractNo, String noticeid) {
+        // 构建基础SQL语句
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT c.*, i.no AS itemNo, i.name AS itemName, i.spec AS itemSpec, i.tuzhiNo,")
+                .append("psp.scheduleCode,bt.tuzhimingcheng as tuzhiName,bt.tuzhizuozhe,bt.tuzhiurl,bt.itemName as tuzhiItemName, bt.itemSpec as tuzhiItemSpec  ")
+                .append("FROM bascontractitem c ")
+                .append("LEFT JOIN basitem i ON c.itemid = i.id ")
+                .append("LEFT JOIN pl_schedule_plan psp ON c.id = psp.poItemId ")
+                .append("LEFT JOIN bastuzhi bt ON i.tuzhiNo = bt.tuzhibianhao ")
+                .append("WHERE c.no = ? AND c.isdelete = 0 ");
 
+        // 构建参数列表
         List<Object> params = new ArrayList<>();
+        // contractNo一定存在，先添加
         params.add(contractNo);
 
-        return Db.find(sql, params.toArray());
+        // 如果noticeid不为空，则添加该筛选条件
+        if (noticeid != null && !noticeid.trim().isEmpty()) {
+            sql.append("AND c.noticeid = ? ");
+            params.add(noticeid);
+        }
+
+        // 添加排序
+        sql.append("ORDER BY c.id");
+
+        return Db.find(sql.toString(), params.toArray());
     }
 
     /**
-     * 核心方法：通过合同编号查询所有产品的物料清单（仅叶子节点/原材料，按物料编号no合并）
+     * 核心方法：通过合同编号和通知编号查询---所有产品----的物料清单（仅叶子节点/原材料，按物料编号no合并）
      * 修复：不可变列表改为可变ArrayList，支持add操作
      */
-    public List<Map<String, Object>> getContractMaterialLeafListWithMerge(String contractNo) {
-        List<com.jfinal.plugin.activerecord.Record> contractItems = getContractItemByNo(contractNo);
+    public List<Map<String, Object>> getContractMaterialLeafListWithMerge(String contractNo, String noticeid) {
+        List<com.jfinal.plugin.activerecord.Record> contractItems = getContractItemByNo(contractNo, noticeid);
         if (contractItems.isEmpty()) {
             return new ArrayList<>();
         }
@@ -68,19 +84,21 @@ public class BasContractMaterialService {
             if (contractItemNum == null) {
                 contractItemNum = BigDecimal.ZERO;
             }
-            String itemMemo = contractItem.getStr("itemmemo");
-            // 备注null校验
-            if (itemMemo == null) {
-                itemMemo = "";
-            }
 
-            // 新增：获取主产品名称（假设contractItems中存储主产品名称的字段是itemname，根据实际表结构调整！）
+            // 1. 获取主产品名称
             String mainProductName = contractItem.getStr("itemName");
-            // 主产品名称null校验，避免后续NPE
             if (mainProductName == null) {
                 mainProductName = "未知产品";
             }
 
+            // ================== 新增修改 START ==================
+            // 2. 获取主产品规格型号 (假设字段名为 itemSpec，请根据数据库实际字段调整)
+            String mainProductSpec = contractItem.getStr("itemSpec");
+            // 规格型号null校验
+            if (mainProductSpec == null) {
+                mainProductSpec = "";
+            }
+            // ================== 新增修改 END ==================
 
             List<Map<String, Object>> productLeafNodes = collectMaterialLeafNodes(mainItemId, contractItemNum);
 
@@ -93,7 +111,7 @@ public class BasContractMaterialService {
                         : materialId.toString();
 
                 if (leafNodeMap.containsKey(mergeKey)) {
-                    // 已存在：累加用量 + 追加所有关联信息（含主产品名称）
+                    // --- 已存在：累加用量 + 追加所有关联信息 ---
                     Map<String, Object> existingNode = leafNodeMap.get(mergeKey);
 
                     // 累加实际用量
@@ -103,7 +121,7 @@ public class BasContractMaterialService {
 
                     // 追加合同产品ID
                     List<Integer> contractItemIds = (List<Integer>) existingNode.get("contractItemIds");
-                    if (!contractItemIds.contains(contractItem.getInt("id"))) { // 去重逻辑
+                    if (!contractItemIds.contains(contractItem.getInt("id"))) {
                         contractItemIds.add(contractItem.getInt("id"));
                     }
 
@@ -111,28 +129,48 @@ public class BasContractMaterialService {
                     List<BigDecimal> contractItemNums = (List<BigDecimal>) existingNode.get("contractItemNums");
                     contractItemNums.add(contractItemNum);
 
-                    // 新增：追加主产品名称
+                    // 追加主产品名称
                     List<String> itemNames = (List<String>) existingNode.get("itemNames");
-                    if (!itemNames.contains(mainProductName)) { // 去重逻辑
+                    if (!contractItemIds.contains(contractItem.getInt("id"))) { // 去重
                         itemNames.add(mainProductName);
                     }
+
+                    // ================== 新增修改 START ==================
+                    // 追加主产品规格型号
+                    List<String> itemSpecs = (List<String>) existingNode.get("itemSpecs");
+                    // 建议加去重逻辑，如果你希望同一个规格只显示一次
+                    if (!contractItemIds.contains(contractItem.getInt("id"))) {
+                        itemSpecs.add(mainProductSpec);
+                    }
+                    // ================== 新增修改 END ==================
+
                 } else {
-                    // 不存在：初始化所有可变列表（含itemNames）
+                    // --- 不存在：初始化所有可变列表 ---
                     List<Integer> contractItemIds = new ArrayList<>();
                     contractItemIds.add(contractItem.getInt("id"));
 
                     List<BigDecimal> contractItemNums = new ArrayList<>();
                     contractItemNums.add(contractItemNum);
 
-
-                    // 新增：初始化主产品名称列表
+                    // 初始化主产品名称列表
                     List<String> itemNames = new ArrayList<>();
                     itemNames.add(mainProductName);
 
-                    // 存入叶子节点（含itemNames）
+                    // ================== 新增修改 START ==================
+                    // 初始化主产品规格列表
+                    List<String> itemSpecs = new ArrayList<>();
+                    itemSpecs.add(mainProductSpec);
+                    // ================== 新增修改 END ==================
+
+                    // 存入叶子节点
                     leafNode.put("contractItemIds", contractItemIds);
                     leafNode.put("contractItemNums", contractItemNums);
-                    leafNode.put("itemNames", itemNames); // 新增：主产品名称列表
+                    leafNode.put("itemNames", itemNames);
+
+                    // ================== 新增修改 START ==================
+                    leafNode.put("itemSpecs", itemSpecs); // 存入规格列表
+                    // ================== 新增修改 END ==================
+
                     leafNodeMap.put(mergeKey, leafNode);
                 }
             }
@@ -189,12 +227,12 @@ public class BasContractMaterialService {
 
 
     /**
-     * 核心方法：通过合同编号查询所有产品的物料清单（按主产品分组，同一主产品下相同物料no合并数量）
+     * 核心方法：通过合同编号查询所有产品的物料清单（-----按主产品分组------，同一主产品下相同物料no合并数量）
      * 结构：每个主产品包含自身核心信息 + 该产品下合并后的原材料集合（相同no的原材料数量累加）
      */
     public List<Map<String, Object>> getContractMaterialPlan(String contractNo) {
         // 1. 查询合同下的所有主产品（合同明细）
-        List<Record> contractItems = getContractItemByNo(contractNo);
+        List<Record> contractItems = getContractItemByNo(contractNo, null);
         if (contractItems.isEmpty()) {
             return new ArrayList<>();
         }
@@ -285,8 +323,8 @@ public class BasContractMaterialService {
         return materialDao.deleteById(id);
     }
 
-    public boolean deleteByContractNo(String contractNo) {
-        return Db.delete("delete from bas_contract_material where contractNo = ?", contractNo) > 0;
+    public boolean deleteByNoticeId(String noticeid) {
+        return Db.delete("delete from bas_contract_material where noticeid = ?", noticeid) > 0;
     }
 
     public Page<Record> paginate(int pageNum, int pageSz, String contractNo,int relationStatus) {
