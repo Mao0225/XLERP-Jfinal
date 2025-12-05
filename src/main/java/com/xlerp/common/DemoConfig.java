@@ -11,6 +11,7 @@ import com.jfinal.plugin.activerecord.dialect.AnsiSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
+import com.xlerp.api.BasProcessRoute.Controller.ProcessRouteController;
 import com.xlerp.api.Common.FileUploadController;
 import com.xlerp.api.Common.SQLDruidFilter;
 import com.xlerp.api.Contract.Controller.BasContractController;
@@ -130,8 +131,9 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/insp_std_item", InspStdItemController.class);//检验标准明细管理--毛文斌
 		me.add("/insp_order", InspOrderController.class);//检验标准明细管理--毛文斌
 		me.add("/insp_result", InspResultController.class);//检验结果管理--毛文斌
-		me.add("/bas_contract_material", BasContractMaterialController.class);
-				me.add("/pl_purchase_order", PurchaseOrderController.class);
+		me.add("/bas_contract_material", BasContractMaterialController.class);//备料单管理
+		me.add("/pl_purchase_order", PurchaseOrderController.class);//采购计划管理
+		me.add("/processRoute", ProcessRouteController.class);//工艺路线管理
 
 
 

@@ -66,19 +66,19 @@ public class PlReportWorkOrderController extends Controller {
     }
 
 
-    //根据工单编号获取报工单列表
+    //根据工单编号和工序编码获取报工单列表
     @ActionKey("/pl_report_work_order/getListByWoNo")
     @HttpMethod("GET")
     public void getByWoNo() {
         String woNo = getPara("woNo");
-
+        String processCode = getPara("processCode");
         if (woNo == null || woNo.trim ().isEmpty ()) {
             renderJson (Result.badRequest ("工单编号不能为空"));
             return;
         }
 
         try {
-            List<PlReportWorkOrder> orderList = orderService.findBywoNo (woNo);
+            List<PlReportWorkOrder> orderList = orderService.findBywoNo (woNo,processCode);
             if (orderList != null ) {
                 renderJson (Result.success ("查询记录成功").putData ("orderList", orderList));
             } else {
@@ -199,4 +199,7 @@ public class PlReportWorkOrderController extends Controller {
             renderJson (Result.serverError ("确认排产计划时发生错误:" + e.getMessage ()));
         }
     }
+
+
+
 }

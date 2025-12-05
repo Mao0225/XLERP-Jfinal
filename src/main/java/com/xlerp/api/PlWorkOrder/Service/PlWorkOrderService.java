@@ -3,38 +3,34 @@ package com.xlerp.api.PlWorkOrder.Service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.api.System.Service.BasNoService;
-import com.xlerp.common.model.BasItemRelation;
-import com.xlerp.common.model.Basitem;
-import com.xlerp.common.model.PlWorkOrder;
+import com.xlerp.common.model.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlWorkOrderService {
     private static final PlWorkOrder dao = new PlWorkOrder();
     private static final BasItemRelation relationDao = new BasItemRelation().dao();
     private static final Basitem basitemDao = new Basitem().dao();
     private static final BasNoService basNoService = new BasNoService();
+    private static final BasProcessRoute routeDao = new BasProcessRoute().dao();
+    private static final PlReportWorkOrder rwoDao = new PlReportWorkOrder().dao();
     public Page<PlWorkOrder> paginate(int pageNumber, int pageSize,
                                       String contractNo, String contractName, String woNo,
                                       String status) {
 
-        // 达梦数据库用 LISTAGG 来拼接报工流程
-        String reportAgg =
-                "(select LISTAGG(r.processName || '|' || r.workshopName || '|' || r.status || '|' || r.writer, ';') " +
-                        "within group(order by r.id) " +
-                        "from pl_report_work_order r where r.woNo = p.woNo) as processes";
-
-        // 查询字段
-        String select = "select p.*, " + reportAgg + ", " +
+        // 1. 简化 Select 部分，移除了复杂的 LISTAGG 子查询
+        String select = "select p.*, " +
                 "bc.no as contractNo, bc.name as contractName," +
                 "bci.itemnum as contractAmount, bi.name as itemName, bci.itemunit as itemUnit," +
                 "bci.noticeid, bci.noticedrawno, bci.noticeinstead, bci.noticename, bci.noticeauther," +
                 "bci.noticebuilddate, bci.noticecomment, tz.tuzhiurl ";
 
-        // 构建 FROM
+        // 2. 构建 FROM 和 JOIN (保持原有逻辑，确保关联数据准确)
         StringBuilder from = new StringBuilder("from pl_work_order p ");
         from.append("left join pl_production_order po on po.ipoNo = p.ipoNo ");
         from.append("left join bascontractitem bci on po.poItemId = bci.id ");
@@ -45,6 +41,7 @@ public class PlWorkOrderService {
 
         List<Object> params = new ArrayList<>();
 
+        // 3. 构建查询条件
         if (contractNo != null && !contractNo.isEmpty()) {
             from.append("and bci.no like ? ");
             params.add("%" + contractNo + "%");
@@ -67,7 +64,26 @@ public class PlWorkOrderService {
 
         from.append("order by p.id desc");
 
-        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+        // 4. 执行分页查询
+        Page<PlWorkOrder> page = dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+
+        // 5. 【新增逻辑】遍历分页结果，根据 itemId 填充工序列表
+        // JFinal 的 Page.getList() 返回的是 Model 列表
+        for (PlWorkOrder order : page.getList()) {
+            // 获取 p.itemId
+            Integer itemId = order.getInt("itemId");
+
+            if (itemId != null) {
+                // 调用你写好的 getByItemId 方法
+                List<BasProcessRoute> routes = getByItemId(itemId);
+
+                // 将查询到的工序列表放入 Model 的额外属性中
+                // 前端 JSON 会多出一个 "processRoutes" 字段
+                order.put("processRoutes", routes);
+            }
+        }
+
+        return page;
     }
 
 
@@ -105,8 +121,9 @@ public class PlWorkOrderService {
     }
 
 
+
     /**
-     * 获取扁平化的半成品BOM列表
+     * 获取扁平化的半成品BOM列表（包含工序信息）
      * @param parentItemId 父物料ID
      * @param planQuantity 父物料计划生产数量（基数）
      * @return 包含父物料及所有半成品子物料的扁平列表
@@ -120,10 +137,13 @@ public class PlWorkOrderService {
 
         // 2. 处理顶层父节点（无条件加入列表）
         Map<String, Object> parentNode = parentMaterial.toMap();
-        // 顶层的需求数量就是传入的计划数量
         parentNode.put("requiredQuantity", planQuantity);
-        // 标记一下是顶层（可选，方便前端区分）
         parentNode.put("nodeType", "root");
+
+        // 【新增逻辑】查询父物料的工序并放入Map
+        List<BasProcessRoute> parentRoutes = getByItemId(parentItemId);
+        parentNode.put("processRoutes", parentRoutes);
+
         resultList.add(parentNode);
 
         // 3. 开始递归查找并平铺子节点
@@ -170,17 +190,81 @@ public class PlWorkOrderService {
                 // 5. 组装数据
                 Map<String, Object> childNode = childItem.toMap();
                 childNode.put("requiredQuantity", currentTotalQty); // 计算后的总需求量
-                childNode.put("unitQuantity", relationQty);         // 单个父件对应的单耗（保留参考）
+                childNode.put("unitQuantity", relationQty);         // 单个父件对应的单耗
                 childNode.put("relationId", relation.getId());      // 关系ID
                 childNode.put("nodeType", "child");                 // 标记为子节点
+
+                // 【新增逻辑】查询当前子物料(半成品)的工序并放入Map
+                List<BasProcessRoute> childRoutes = getByItemId(childItem.getId());
+                childNode.put("processRoutes", childRoutes);
 
                 // 加入扁平列表
                 resultList.add(childNode);
 
-                // 6. 递归向下：当前的子节点变成了下一级的父节点
-                // 重点：传入的数量是刚才计算出来的 currentTotalQty，这样下下级就会基于这个数量继续乘
+                // 6. 递归向下
                 recursiveSearch(childItem.getId(), currentTotalQty, resultList);
             }
         }
     }
+
+    /**
+     * 根据物料ID查询工序列表
+     * @param itemId 物料ID
+     * @return 工序列表
+     */
+    public List<BasProcessRoute> getByItemId(int itemId) {
+        // 确保 routeDao 已经被注入或在此类中可用
+        String sql = "select * from bas_process_route where itemId = ? order by sort asc"; // 建议加上排序
+        return routeDao.find(sql, itemId);
+    }
+
+    public List<Map<String, Object>> getWorkOrderComplete(String woNo, Integer itemId) {
+        // 1. 查询报工单，按工序分组并计算总完成数量
+        // 注意：请根据实际数据库字段修改 'qualified_qty' (合格数) 或 'report_qty' (报工数)
+        String reportSql = "SELECT processCode, SUM(amount) as totalQty " +
+                "FROM pl_report_work_order " +
+                "WHERE woNo = ? " +
+                "GROUP BY processCode";
+
+        List<PlReportWorkOrder> reportList = rwoDao.find(reportSql, woNo);
+
+        // 2. 将报工数据转换为 Map<ProcessCode, Quantity> 结构，方便后续快速匹配
+        // 如果 processCode 可能为空，注意处理 NullPointerException
+        Map<String, BigDecimal> completedMap = reportList.stream()
+                .collect(Collectors.toMap(
+                        r -> r.getStr("processCode"),
+                        r -> r.getBigDecimal("totalQty") == null ? BigDecimal.ZERO : r.getBigDecimal("totalQty")
+                ));
+
+        // 3. 调用 getByItemId 获取标准的工艺路线列表 (Plan)
+        List<BasProcessRoute> routes = getByItemId(itemId);
+
+        // 4. 组装结果数据 (Merge)
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        for (BasProcessRoute route : routes) {
+            // 将 Model 转为 Map，方便添加自定义字段
+            // JFinal Model 自带 _getAttrs() 或 toRecord().getColumns() 可以获取属性Map
+            Map<String, Object> itemMap = new HashMap<>(route.toRecord().getColumns());
+
+            // 获取当前工序的编号
+            String processCode = route.getStr("processCode");
+
+            // 从报工Map中获取对应的完成数量，如果没找到则默认为0
+            BigDecimal completedQty = completedMap.getOrDefault(processCode, BigDecimal.ZERO);
+
+            // 将统计结果放入 Map
+            itemMap.put("completedQty", completedQty);
+
+            // 可选：计算剩余数量 (假设 route 中有 standardQty 字段)
+            // BigDecimal standardQty = route.getBigDecimal("standardQty");
+            // itemMap.put("remainQty", standardQty.subtract(completedQty));
+
+            resultList.add(itemMap);
+        }
+
+        return resultList;
+    }
+
+
 }

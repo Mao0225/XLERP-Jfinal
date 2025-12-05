@@ -19,6 +19,7 @@ public class _MappingKit {
 		arp.addMapping("bas_contract_material", "id", BasContractMaterial.class);
 		arp.addMapping("bas_item_class", "id", BasItemClass.class);
 		arp.addMapping("bas_item_relation", "id", BasItemRelation.class);
+		arp.addMapping("bas_process_route", "id", BasProcessRoute.class);
 		arp.addMapping("bascontract", "id", Bascontract.class);
 		arp.addMapping("bascontractitem", "id", Bascontractitem.class);
 		arp.addMapping("basdepartment", "id", Basdepartment.class);

@@ -264,4 +264,33 @@ public class PlWorkOrderController extends Controller {
             renderJson (Result.serverError ("工单生成时发生错误:" + e.getMessage ()));
         }
     }
+
+
+    //查看工单完成情况，应该是传入工单号对应这个工单的生产产品，获取他的工序，然后获取他全部的报工单统计每个工序的完成情况
+    @ActionKey("/pl_work_order/getWorkOrderComplete")
+    @HttpMethod("GET")
+    public void getWorkOrderComplete() {
+        String woNo = getPara("woNo");
+        Integer itemId = getParaToInt("itemId");
+        if (woNo == null || woNo.trim ().isEmpty ()) {
+            renderJson (Result.badRequest ("工单编号不能为空"));
+        }
+        if (itemId == null || itemId <= 0) {
+            renderJson (Result.badRequest ("物料ID不能为空"));
+        }
+        try {
+            List<Map<String, Object>> list = workOrderService.getWorkOrderComplete(woNo, itemId);
+            if ( list != null) {
+                renderJson(Result.success("工单完成情况").putData("list", list));
+            } else {
+                renderJson(Result.serverError("工单完成情况查询失败"));
+            }
+        } catch (NumberFormatException e) {
+            renderJson (Result.badRequest ("记录 ID 格式错误"));
+        } catch (Exception e) {
+            renderJson (Result.serverError ("工单完成情况查询时发生错误:" + e.getMessage ()));
+        }
+    }
+
+
 }

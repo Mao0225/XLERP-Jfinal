@@ -82,7 +82,10 @@ public class PlReportWorkOrderService {
         return Db.update("update pl_report_work_order set status = ? where id = ? ", status, id) > 0;
     }
 
-    public List<PlReportWorkOrder> findBywoNo(String woNo) {
+    public List<PlReportWorkOrder> findBywoNo(String woNo,String processCode) {
+        if (processCode != null && !processCode.isEmpty()) {
+            return dao.find("select * from pl_report_work_order where woNo = ? and processCode = ? ", woNo, processCode);
+        }
         return dao.find("select * from pl_report_work_order where woNo = ? ", woNo);
     }
 }

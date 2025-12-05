@@ -429,5 +429,19 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 		return getStr("reportNo");
 	}
 	
+	/**
+	 * 报工数量
+	 */
+	public void setAmount(java.lang.Integer amount) {
+		set("amount", amount);
+	}
+	
+	/**
+	 * 报工数量
+	 */
+	public java.lang.Integer getAmount() {
+		return getInt("amount");
+	}
+	
 }
 
