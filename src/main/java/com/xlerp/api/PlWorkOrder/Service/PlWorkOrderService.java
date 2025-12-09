@@ -2,14 +2,12 @@ package com.xlerp.api.PlWorkOrder.Service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.api.System.Service.BasNoService;
 import com.xlerp.common.model.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlWorkOrderService {
@@ -219,47 +217,97 @@ public class PlWorkOrderService {
     }
 
     public List<Map<String, Object>> getWorkOrderComplete(String woNo, Integer itemId) {
-        // 1. 查询报工单，按工序分组并计算总完成数量
-        // 注意：请根据实际数据库字段修改 'qualified_qty' (合格数) 或 'report_qty' (报工数)
+        // 1. 获取标准的工艺路线列表 (Plan)
+        List<BasProcessRoute> routes = getByItemId(itemId);
+
+        // ==========================================
+        // 2. 准备数据源 A：报工数据 (用于 processType = 1)
+        //    逻辑：需要按 processCode 分组匹配
+        // ==========================================
         String reportSql = "SELECT processCode, SUM(amount) as totalQty " +
                 "FROM pl_report_work_order " +
                 "WHERE woNo = ? " +
                 "GROUP BY processCode";
-
         List<PlReportWorkOrder> reportList = rwoDao.find(reportSql, woNo);
 
-        // 2. 将报工数据转换为 Map<ProcessCode, Quantity> 结构，方便后续快速匹配
-        // 如果 processCode 可能为空，注意处理 NullPointerException
-        Map<String, BigDecimal> completedMap = reportList.stream()
+        // 转为 Map<ProcessCode, Quantity>
+        Map<String, BigDecimal> reportMap = reportList.stream()
                 .collect(Collectors.toMap(
                         r -> r.getStr("processCode"),
                         r -> r.getBigDecimal("totalQty") == null ? BigDecimal.ZERO : r.getBigDecimal("totalQty")
                 ));
 
-        // 3. 调用 getByItemId 获取标准的工艺路线列表 (Plan)
-        List<BasProcessRoute> routes = getByItemId(itemId);
+        // ==========================================
+        // 3. 准备数据源 B：检验数据 (用于 processType = 2 或 3)
+        //    逻辑：检验表没有工序编码，直接查出该工单所有明细，在内存中计算总和
+        // ==========================================
+        String inspSql = "SELECT status, amount FROM pl_insp_work_order WHERE woNo = ?";
+        // 使用 Db.find 查询通用 Record
+        List<Record> inspList = Db.find(inspSql, woNo);
 
-        // 4. 组装结果数据 (Merge)
+        // 预先计算好 processType=2 和 processType=3 需要的总数
+        BigDecimal qtyForType2 = BigDecimal.ZERO;
+        BigDecimal qtyForType3 = BigDecimal.ZERO;
+
+        // 定义 processType=2 需要统计的状态集合 (22, 30, 31)
+        List<String> type2TargetStatus = Arrays.asList("22", "30", "31");
+
+        for (Record r : inspList) {
+            // 安全获取 status，转为 String 防止数据库类型不一致(int/varchar)导致比较失败
+            Object statusObj = r.getObject("status");
+            String status = statusObj == null ? "" : String.valueOf(statusObj);
+
+            // 安全获取 amount
+            BigDecimal amount = r.getBigDecimal("amount");
+            if (amount == null) amount = BigDecimal.ZERO;
+
+            // 计算 processType = 2 的总数 (状态为 22, 30, 31)
+            if (type2TargetStatus.contains(status)) {
+                qtyForType2 = qtyForType2.add(amount);
+                System.out.println("processType=2, status=" + status + ", amount=" + amount);
+            }
+
+            // 计算 processType = 3 的总数 (状态为 31)
+            if ("31".equals(status)) {
+                qtyForType3 = qtyForType3.add(amount);
+                System.out.println("processType=3, status=" + status + ", amount=" + amount);
+
+            }
+        }
+
+        // ==========================================
+        // 4. 组装结果数据
+        // ==========================================
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         for (BasProcessRoute route : routes) {
-            // 将 Model 转为 Map，方便添加自定义字段
-            // JFinal Model 自带 _getAttrs() 或 toRecord().getColumns() 可以获取属性Map
+            // Model 转 Map
             Map<String, Object> itemMap = new HashMap<>(route.toRecord().getColumns());
 
-            // 获取当前工序的编号
             String processCode = route.getStr("processCode");
+            Integer processType = route.getInt("processType");
+            // 防止 processType 为空，默认为 1
+            if (processType == null) processType = 1;
 
-            // 从报工Map中获取对应的完成数量，如果没找到则默认为0
-            BigDecimal completedQty = completedMap.getOrDefault(processCode, BigDecimal.ZERO);
+            BigDecimal completedQty = BigDecimal.ZERO;
 
-            // 将统计结果放入 Map
+            if (processType == 1) {
+                // 类型1：从【报工表】Map中按工序编码取值
+                completedQty = reportMap.getOrDefault(processCode, BigDecimal.ZERO);
+            } else if (processType == 2) {
+                // 类型2：直接使用预计算好的检验表(状态22,30,31)总和
+                completedQty = qtyForType2;
+                System.out.println("processType: " + processType);
+                System.out.println("qtyForType2: " + qtyForType2);
+            } else if (processType == 3) {
+                // 类型3：直接使用预计算好的检验表(状态31)总和
+                completedQty = qtyForType3;
+                System.out.println("processType: " + processType);
+
+                System.out.println("qtyForType3: " + qtyForType3);
+            }
+
             itemMap.put("completedQty", completedQty);
-
-            // 可选：计算剩余数量 (假设 route 中有 standardQty 字段)
-            // BigDecimal standardQty = route.getBigDecimal("standardQty");
-            // itemMap.put("remainQty", standardQty.subtract(completedQty));
-
             resultList.add(itemMap);
         }
 

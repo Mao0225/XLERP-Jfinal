@@ -31,11 +31,13 @@ public class _MappingKit {
 		arp.addMapping("bastuzhi", "id", Bastuzhi.class);
 		arp.addMapping("bastuzhicailiao", "id", Bastuzhicailiao.class);
 		arp.addMapping("hruser", "id", Hruser.class);
+		arp.addMapping("pl_finish_inout_list", "id", PlFinishInoutList.class);
 		arp.addMapping("pl_insp_item", "id", PlInspItem.class);
 		arp.addMapping("pl_insp_order", "id", PlInspOrder.class);
 		arp.addMapping("pl_insp_result", "id", PlInspResult.class);
 		arp.addMapping("pl_insp_std", "id", PlInspStd.class);
 		arp.addMapping("pl_insp_std_item", "id", PlInspStdItem.class);
+		arp.addMapping("pl_insp_work_order", "id", PlInspWorkOrder.class);
 		arp.addMapping("pl_mat_inout_doc", "id", PlMatInoutDoc.class);
 		arp.addMapping("pl_mat_inout_item", "id", PlMatInoutItem.class);
 		arp.addMapping("pl_mat_inout_list", "id", PlMatInoutList.class);

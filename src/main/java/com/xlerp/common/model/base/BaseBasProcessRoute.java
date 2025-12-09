@@ -101,5 +101,19 @@ public abstract class BaseBasProcessRoute<M extends BaseBasProcessRoute<M>> exte
 		return getDate("createTime");
 	}
 	
+	/**
+	 * 标明是检验入库流程还是生产流程，1是生产，2是入库
+	 */
+	public void setProcessType(java.lang.Byte processType) {
+		set("processType", processType);
+	}
+	
+	/**
+	 * 标明是检验入库流程还是生产流程，1是生产，2是入库
+	 */
+	public java.lang.Byte getProcessType() {
+		return getByte("processType");
+	}
+	
 }
 

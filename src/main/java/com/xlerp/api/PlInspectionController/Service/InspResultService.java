@@ -73,19 +73,22 @@ public class InspResultService {
         try { new BigDecimal(str); return true; } catch (Exception e) { return false; }
     }
 
-    public List<Record> getListByOrderId(long id) {
+
+    //原材料检验结果
+    public List<Record> getListByOrderId(Integer id,Integer type) {
 
 
         String sql = """
             SELECT r.id, r.inspItemId, r.actualValue, r.testIndex,i.unit,i.category,i.inspItemName, i.inspItemCode,si.standardValue
             FROM pl_insp_result r
-            LEFT JOIN pl_insp_order io ON io.id = r.inspOrderId
             LEFT JOIN pl_insp_std_item si ON r.inspStdItemId = si.id
             LEFT JOIN pl_insp_item i ON r.inspItemId = i.id
-            WHERE r.inspOrderId = ?
+            WHERE r.inspOrderId = ? and r.type = ?
             """;
-        return Db.find(sql, id);
+        return Db.find(sql, id, type);
     }
+
+    //成品检验结果
 
     public boolean deleteById(long id) {
         return new PlInspResult().deleteById(id);

@@ -149,5 +149,19 @@ public abstract class BasePlInspResult<M extends BasePlInspResult<M>> extends Mo
 		return getLong("inspStdItemId");
 	}
 	
+	/**
+	 * 判断这个检验项目属于原材料还是成品，因为orderId可能会重复，1是原材料2是成品
+	 */
+	public void setType(java.lang.Byte type) {
+		set("type", type);
+	}
+	
+	/**
+	 * 判断这个检验项目属于原材料还是成品，因为orderId可能会重复，1是原材料2是成品
+	 */
+	public java.lang.Byte getType() {
+		return getByte("type");
+	}
+	
 }
 

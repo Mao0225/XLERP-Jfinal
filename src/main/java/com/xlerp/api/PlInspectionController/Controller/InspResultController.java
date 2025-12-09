@@ -70,13 +70,14 @@ public class InspResultController extends Controller {
     @ActionKey("/insp_result/getResultByOrderId")
     @HttpMethod("GET")
     public void getResultByOrderId() {
-        String orderId = getPara("orderId");
-        if (isBlank(orderId)) {
+        Integer orderId = getParaToInt("orderId");
+        Integer type = getParaToInt("type");
+        if ( orderId == null ) {
             renderJson(Result.badRequest("参数错误"));
             return;
         }
         try {
-            List<Record> list = service.getListByOrderId(parseLong(orderId));
+            List<Record> list = service.getListByOrderId(orderId,type);
             renderJson(Result.success("查询成功").putData("list", list));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码、每页大小或Id格式错误"));

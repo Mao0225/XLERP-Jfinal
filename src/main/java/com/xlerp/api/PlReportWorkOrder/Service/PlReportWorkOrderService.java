@@ -2,6 +2,7 @@ package com.xlerp.api.PlReportWorkOrder.Service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.PlReportWorkOrder;
 
 import java.util.ArrayList;
@@ -82,10 +83,23 @@ public class PlReportWorkOrderService {
         return Db.update("update pl_report_work_order set status = ? where id = ? ", status, id) > 0;
     }
 
-    public List<PlReportWorkOrder> findBywoNo(String woNo,String processCode) {
-        if (processCode != null && !processCode.isEmpty()) {
-            return dao.find("select * from pl_report_work_order where woNo = ? and processCode = ? ", woNo, processCode);
+    public List<Record> findBywoNo(String woNo, String processCode, Integer proccessType) {
+        if (processCode != null && !processCode.isEmpty() && proccessType == 1) {
+            return Db.find("select * from pl_report_work_order where woNo = ? and processCode = ? ", woNo, processCode);
+        }//type等于1说明是生产流程，2和3是检验入库流程查询的是另一个表
+        if (processCode != null && !processCode.isEmpty() &&  proccessType != 1) {
+            return findInspWorkOrder(woNo);
         }
-        return dao.find("select * from pl_report_work_order where woNo = ? ", woNo);
+        return Db.find("select * from pl_report_work_order where woNo = ? ", woNo);
+    }
+
+    public List<Record> findInspWorkOrder(String woNo) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT p.*, bi.no AS itemCode, bi.name AS itemName, bi.spec AS itemSpec ")
+                .append("FROM pl_insp_work_order p ")
+                .append("LEFT JOIN basitem bi ON bi.id = p.itemId ")
+                .append("WHERE p.woNo = ?"); // where 1=1 此处无必要（仅一个条件）
+
+        return Db.find(sql.toString(), woNo);
     }
 }

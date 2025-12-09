@@ -8,6 +8,7 @@ import com.xlerp.api.Common.Result;
 import com.xlerp.api.PlReportWorkOrder.Service.PlReportWorkOrderService;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.PlReportWorkOrder;
 
 import java.util.Arrays;
@@ -72,18 +73,15 @@ public class PlReportWorkOrderController extends Controller {
     public void getByWoNo() {
         String woNo = getPara("woNo");
         String processCode = getPara("processCode");
+        Integer processType = getParaToInt("processType");
         if (woNo == null || woNo.trim ().isEmpty ()) {
             renderJson (Result.badRequest ("工单编号不能为空"));
             return;
         }
 
         try {
-            List<PlReportWorkOrder> orderList = orderService.findBywoNo (woNo,processCode);
-            if (orderList != null ) {
+            List<Record> orderList = orderService.findBywoNo(woNo,processCode,processType);
                 renderJson (Result.success ("查询记录成功").putData ("orderList", orderList));
-            } else {
-                renderJson (Result.notFound ("记录未找到或已被删除"));
-            }
         } catch (NumberFormatException e) {
             renderJson (Result.badRequest ("记录 ID 格式错误"));
         }

@@ -28,6 +28,7 @@ import com.xlerp.api.PlProductionOrder.Controller.PlProductionOrderController;
 import com.xlerp.api.PlPurchaseOrder.Controller.PurchaseOrderController;
 import com.xlerp.api.PlReportWorkOrder.Controller.PlReportWorkOrderController;
 import com.xlerp.api.PlSchedulePlan.Controller.PlSchedulePlanController;
+import com.xlerp.api.PlStoreInout.Controller.finishInoutController;
 import com.xlerp.api.PlStoreInout.Controller.matInoutController;
 import com.xlerp.api.PlWorkOrder.Controller.PlWorkOrderController;
 import com.xlerp.api.System.Controller.*;
@@ -134,6 +135,8 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/bas_contract_material", BasContractMaterialController.class);//备料单管理
 		me.add("/pl_purchase_order", PurchaseOrderController.class);//采购计划管理
 		me.add("/processRoute", ProcessRouteController.class);//工艺路线管理
+		me.add("/insp_work_order", InspWorkOrderController.class);//生产工单检验入库单
+		me.add("/pl_finish_inout", finishInoutController.class);//产成品出入库记录
 
 
 
