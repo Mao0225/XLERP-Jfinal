@@ -98,12 +98,12 @@ public class PlProductionOrderService {
 
         // ===== 主查询SQL =====
         String baseSql = """
-        from pl_production_order p
-        left join bascontractitem bci on p.poItemId = bci.id
-        left join bascontract bc on bc.no = bci.no
-        left join basitem bi on bci.itemid = bi.id
-        where 1=1
-        """;
+    from pl_production_order p
+    left join bascontractitem bci on p.poItemId = bci.id
+    left join bascontract bc on bc.no = bci.no
+    left join basitem bi on bci.itemid = bi.id
+    where 1=1
+    """;
 
         List<Object> params = new ArrayList<>();
 
@@ -124,29 +124,29 @@ public class PlProductionOrderService {
             params.add(status);
         }
 
-        // ===== 1️⃣ 计算总数：分组后计数 =====
+        // ===== 1️⃣ 计算总数：同步GROUP BY字段 =====
         String countSql = "select count(*) as total from (select p.ipoBatchNo " + baseSql +
-                " group by p.ipoBatchNo, bc.no, bc.name, p.writer) t";
+                " group by p.ipoBatchNo, bc.no, bc.name, p.writer, p.ipoType) t";
         long totalRow = Db.queryLong(countSql, params.toArray());
 
-        // ===== 2️⃣ 分页查询实际数据 =====
+        // ===== 2️⃣ 分页查询实际数据：补充GROUP BY字段 =====
         String querySql = """
-        select 
-            p.ipoBatchNo,
-            bc.no as contractNo,
-            bc.name as contractName,
-            p.writer,
-            p.ipoType,
-            max(p.createdTime) as createdTime,
-            sum(case when p.status = '10' then 1 else 0 end) as status10Count,
-            sum(case when p.status = '20' then 1 else 0 end) as status20Count,
-            sum(case when p.status = '30' then 1 else 0 end) as status30Count,
-            listagg(distinct p.materialsName, ',') within group(order by p.materialsName) as materialsNames
-        """ + baseSql +
-                " group by p.ipoBatchNo, bc.no, bc.name, p.writer " +
+    select 
+        p.ipoBatchNo,
+        bc.no as contractNo,
+        bc.name as contractName,
+        p.writer,
+        p.ipoType,
+        max(p.createdTime) as createdTime,
+        sum(case when p.status = '10' then 1 else 0 end) as status10Count,
+        sum(case when p.status = '20' then 1 else 0 end) as status20Count,
+        sum(case when p.status = '30' then 1 else 0 end) as status30Count,
+        listagg(distinct p.materialsName, ',') within group(order by p.materialsName) as materialsNames
+    """ + baseSql +
+                " group by p.ipoBatchNo, bc.no, bc.name, p.writer, p.ipoType " +
                 " order by max(p.createdTime) desc";
 
-        // 达梦不支持 LIMIT，分页用 ROWNUM 包裹
+        // 达梦分页用 ROWNUM 包裹
         long offset = (pageNumber - 1L) * pageSize;
         String pagedSql = "select * from (" +
                 "select t.*, rownum as rn from (" + querySql + ") t where rownum <= ?" +
