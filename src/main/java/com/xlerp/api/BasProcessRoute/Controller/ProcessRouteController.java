@@ -3,6 +3,7 @@ package com.xlerp.api.BasProcessRoute.Controller;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.api.BasProcessRoute.Service.ProcessRouteService;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
@@ -15,7 +16,6 @@ import java.util.List;
 @Before(HttpMethodInterceptor.class)
 public class ProcessRouteController extends Controller {
     private final ProcessRouteService service = new ProcessRouteService();
-
     //增删改查
     @ActionKey("/processRoute/get")
     @HttpMethod("GET")
@@ -108,6 +108,34 @@ public class ProcessRouteController extends Controller {
             }
         }catch (NumberFormatException e){
             renderJson(Result.badRequest("产品 ID 错误"));
+        }
+    }
+
+
+    @ActionKey("/processRoute/getItemPage")
+    @HttpMethod("GET")
+    public void getpage() {
+        String pageNumber = getPara("pageNumber");
+        String pageSize = getPara("pageSize");
+        String itemNo = getPara("itemNo");
+        String itemName = getPara("itemName");
+        String spec = getPara("spec");
+        String firstClassId = getPara("firstClassId");
+        String secondClassId = getPara("secondClassId");
+
+        try {
+            int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
+            int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page page = service.itemPaginate(pageNum, pageSz,  itemNo, itemName, firstClassId, secondClassId, spec);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
         }
     }
 

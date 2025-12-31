@@ -2,15 +2,13 @@ package com.xlerp.api.System.Controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
-import com.jfinal.upload.UploadFile;
-import com.xlerp.api.Common.FileUploadUtils;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
 import com.xlerp.api.Common.HttpMethod;
 import com.xlerp.api.Common.HttpMethodInterceptor;
 import com.xlerp.api.Common.Result;
 import com.xlerp.api.System.Service.UserService;
 import com.xlerp.common.model.Sysuser;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Page;
 
 @Before(HttpMethodInterceptor.class)
 public class UserController extends Controller {
@@ -31,7 +29,6 @@ public class UserController extends Controller {
                 renderJson(Result.badRequest("页码或每页大小必须为正整数"));
                 return;
             }
-
             Page page = userService.paginate(pageNum, pageSz, username);
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
