@@ -362,15 +362,15 @@ public abstract class BasePlMatInoutList<M extends BasePlMatInoutList<M>> extend
 	/**
 	 * 出入库类型1入库，2出库
 	 */
-	public void setType(java.lang.Integer type) {
+	public void setType(java.lang.Byte type) {
 		set("type", type);
 	}
 	
 	/**
 	 * 出入库类型1入库，2出库
 	 */
-	public java.lang.Integer getType() {
-		return getInt("type");
+	public java.lang.Byte getType() {
+		return getByte("type");
 	}
 	
 	/**

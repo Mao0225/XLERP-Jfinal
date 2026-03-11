@@ -1,5 +1,6 @@
 package com.xlerp.api.PlMaterialsRequestController.Service;
 
+import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -9,6 +10,7 @@ import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.xlerp.common.model.PlMatInoutList;
+import com.xlerp.common.model.PlMaterialRequestAllocation;
 import com.xlerp.common.model.PlMaterialRequestDetail;
 import com.xlerp.common.model.PlMaterialRequestMain;
 
@@ -23,6 +25,8 @@ public class requestMainService {
 
     private static final PlMaterialRequestMain dao = new PlMaterialRequestMain();
     private static final PlMaterialRequestDetail detailDao = new PlMaterialRequestDetail();
+    private static final PlMaterialRequestAllocation allocDao = new PlMaterialRequestAllocation();
+
 
     /**
      * 分页查询领料单主表
@@ -166,7 +170,6 @@ public class requestMainService {
                             detail.setRequestQty(dJson.getBigDecimal("requestQty"));
                             detail.setApprovedQty(BigDecimal.ZERO);
                             detail.setActualQty(BigDecimal.ZERO);
-                            detail.setPendingQty(dJson.getBigDecimal("requestQty"));
                             detail.setDetailStatus(0); // 重置为待审核
                             detail.setCreateTime(new Date());
                             detail.setUpdateTime(new Date());
@@ -234,7 +237,6 @@ public class requestMainService {
                 detail.setRequestQty(detailData.getBigDecimal("requestQty"));
                 detail.setApprovedQty(BigDecimal.ZERO); // 初始为0，审核时填写
                 detail.setActualQty(BigDecimal.ZERO); // 初始为0，发放时填写
-                detail.setPendingQty(detailData.getBigDecimal("requestQty")); // 初始待领取数量等于申请数量
                 detail.setDetailStatus(0); // 初始待审核状态
                 detail.setKeeperComment(detailData.getString("keeperComment"));
                 detail.setRemark(detailData.getString("remark"));
@@ -358,22 +360,20 @@ public class requestMainService {
                 detail.setKeeperComment(keeperComment);
             }
 
-            // 如果是审核通过，设置批准数量（这里简化处理，实际应该按明细分别设置）
-            if (status == 1 && StrKit.notBlank(approvedQty)) {
-                try {
-                    BigDecimal qty = new BigDecimal(approvedQty);
-                    detail.setApprovedQty(qty);
-                    detail.setPendingQty(qty); // 批准数量作为待领取数量
-                } catch (NumberFormatException e) {
-                    // 忽略格式错误
-                }
-            }
+            // 如果是审核通过，设置批准数量（这里简化处理，实际应该按明细分别设置）--暂时不需要
+//            if (status == 1 && StrKit.notBlank(approvedQty)) {
+//                try {
+//                    BigDecimal qty = new BigDecimal(approvedQty);
+//                    detail.setApprovedQty(qty);
+//                } catch (NumberFormatException e) {
+//                    // 忽略格式错误
+//                }
+//            }
 
-            // 如果是审核拒绝，设置批准数量为0
-            if (status == 4) {
-                detail.setApprovedQty(BigDecimal.ZERO);
-                detail.setPendingQty(BigDecimal.ZERO);
-            }
+//            // 如果是审核拒绝，设置批准数量为0
+//            if (status == 4) {
+//                detail.setApprovedQty(BigDecimal.ZERO);
+//            }
 
             detail.setUpdateTime(new Date());
             detail.update();
@@ -412,7 +412,6 @@ public class requestMainService {
                     // 计算待领取数量
                     BigDecimal approvedQty = detail.getApprovedQty() != null ? detail.getApprovedQty() : BigDecimal.ZERO;
                     BigDecimal pendingQty = approvedQty.subtract(qty);
-                    detail.setPendingQty(pendingQty);
 
                     // 如果还有待领取数量，状态为部分领取
                     if (pendingQty.compareTo(BigDecimal.ZERO) > 0) {
@@ -511,7 +510,6 @@ public class requestMainService {
         supplement.setRequestQty(supplementQty);
         supplement.setApprovedQty(supplementQty);
         supplement.setActualQty(BigDecimal.ZERO);
-        supplement.setPendingQty(supplementQty);
         supplement.setDetailStatus(1); // 已审核
         supplement.setRemark(remark);
         supplement.setCreateTime(new Date());
@@ -583,7 +581,7 @@ public class requestMainService {
                         PlMatInoutList outbound = new PlMatInoutList();
                         // 核心关联字段
                         outbound.setParentId(inboundId);         // 关联原始入库ID
-                        outbound.setType(2);                    // 2: 出库
+                        outbound.setType((byte) 2);                    // 2: 出库
                         outbound.setActualQuantity(qty.negate());// 数量记为负数
                         outbound.setRemainingQuantity(BigDecimal.ZERO); // 出库记录本身无剩余量
                         outbound.setOperateTime(new Date());
@@ -624,7 +622,7 @@ public class requestMainService {
                     // 3. 更新领料明细表中的已领取数量和状态
                     BigDecimal currentActual = detail.getActualQty() != null ? detail.getActualQty() : BigDecimal.ZERO;
                     BigDecimal newActual = currentActual.add(totalQty);
-                    detail.setActualQty(newActual);
+//                    detail.setActualQty(newActual);//不更新，因为已领取要在申请端确认
 
                     // 状态判断：已领取 >= 申请批准数 ? 2(已完成) : 3(部分领取)
                     BigDecimal requestQty = detail.getRequestQty();
@@ -716,7 +714,6 @@ public class requestMainService {
                 BigDecimal approved = detail.getApprovedQty();
 
                 detail.setActualQty(newActual.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newActual);
-                detail.setPendingQty(approved.subtract(detail.getActualQty()));
 
                 // 重新判定明细状态：如果已领为0则待领取(1)，否则部分领取(3)
                 detail.setDetailStatus(detail.getActualQty().compareTo(BigDecimal.ZERO) == 0 ? 1 : 3);
@@ -750,7 +747,7 @@ public class requestMainService {
          * 3. 溯源扩展：关联查询出对应的入库批次号(batchNo)，方便前端直接展示。
          */
         String sql = "SELECT " +
-                "m.id as allocationId, m.quantity as allocatedQty, m.createTime as dispatchTime, " +
+                "m.id as allocationId, m.quantity as allocatedQty, m.createTime as dispatchTime,m.status," +
                 "i.id as outboundId, i.batchNo, i.warehouse, i.materialCode, i.materialName, " +
                 "i.materialSpec, i.materialUnit, i.price, i.inspOrderNo, i.parentId as inboundId " +
                 "FROM pl_material_request_allocation m " +
@@ -784,7 +781,7 @@ public class requestMainService {
             // 这里的 SQL 关联了中间表 m 和出入库记录表 i
             // 从而实现：明细 -> 出库记录 的追踪
             String allocationSql = "SELECT " +
-                    "m.id as allocationId, m.quantity as allocatedQty, m.createTime as dispatchTime, " +
+                    "m.id as allocationId, m.quantity as allocatedQty, m.createTime as dispatchTime,m.status,m.confirmTime," +
                     "i.batchNo, i.warehouse, i.inspOrderNo, i.supplierName, i.writer " +
                     "FROM pl_material_request_allocation m " +
                     "INNER JOIN pl_mat_inout_list i ON m.outboundId = i.id " +
@@ -799,5 +796,160 @@ public class requestMainService {
 
         return details;
     }
+
+    /**
+     * 确认领取
+     *
+     * 业务规则：
+     * 1. 把当前出库分配记录 allocation 状态改成“已领取”(status=1)
+     * 2. 把对应明细 detail 的 actualQty 累加本次领取数量
+     * 3. 根据明细 actualQty 和 requestQty 比较，更新明细状态：
+     *    - actualQty == requestQty：全部领取（2）
+     *    - actualQty < requestQty：部分领取（3）
+     * 4. 再根据整张申请单的所有明细状态，更新主单状态：
+     *    - 所有明细都是“全部领取(2)”：主单状态=20（全部领取）
+     *    - 只要存在已领取/部分领取（2或3），但不是全部都领取完：主单状态=21（部分领取）
+     */
+    public boolean confirmReceive(int id) {
+        // 当前时间，作为更新时间/确认时间
+        DateTime now = DateTime.now();
+
+        // =========================
+        // 1. 查询出库分配记录 allocation
+        // =========================
+        PlMaterialRequestAllocation allocation = allocDao.findById(id);
+        if (allocation == null) {
+            // 分配记录不存在，直接返回 false
+            return false;
+        }
+
+        // 如果这条记录已经确认领取过了，就不允许重复确认
+        if (allocation.getStatus() != null && allocation.getStatus() == 1) {
+            return false;
+        }
+
+        // 本次领取数量，防止空指针，默认按 0 处理
+        BigDecimal quantity = allocation.getQuantity() == null
+                ? BigDecimal.ZERO
+                : allocation.getQuantity();
+
+        // =========================
+        // 2. 查询对应的申请明细 detail
+        // =========================
+        Long detailId = allocation.getDetailId();
+        PlMaterialRequestDetail detail = detailDao.findById(detailId);
+        if (detail == null) {
+            // 明细不存在，无法继续
+            return false;
+        }
+
+        // 已领取数量 actualQty，防止空指针
+        BigDecimal actualQty = detail.getActualQty() == null
+                ? BigDecimal.ZERO
+                : detail.getActualQty();
+
+        // 申请数量 requestQty，防止空指针
+        BigDecimal requestQty = detail.getRequestQty() == null
+                ? BigDecimal.ZERO
+                : detail.getRequestQty();
+
+        // 计算确认本次领取后的新实际领取数量
+        BigDecimal newActualQty = actualQty.add(quantity);
+
+        // =========================
+        // 3. 校验：不能超领
+        // =========================
+        // 如果确认后的实际领取数量 > 申请数量，说明超领，直接返回 false
+        if (newActualQty.compareTo(requestQty) > 0) {
+            return false;
+        }
+
+        // =========================
+        // 4. 更新明细 detail
+        // =========================
+        // 更新实际领取数量
+        detail.setActualQty(newActualQty);
+
+        // 根据领取情况设置明细状态
+        if (newActualQty.compareTo(requestQty) >= 0) {
+            // 实际领取数量 >= 申请数量，说明已全部领取
+            detail.setDetailStatus(2); // 2 = 全部领取
+        } else {
+            // 实际领取数量 < 申请数量，说明只领取了一部分
+            detail.setDetailStatus(3); // 3 = 部分领取
+        }
+
+        // 更新时间
+        detail.setUpdateTime(now);
+
+        // 把明细更新到数据库
+        if (!detail.update()) {
+            return false;
+        }
+
+        // =========================
+        // 5. 查询主单 main
+        // =========================
+        Long mainId = detail.getRequestId();
+        PlMaterialRequestMain main = dao.findById(mainId);
+        if (main == null) {
+            return false;
+        }
+
+        // =========================
+        // 6. 重新查询当前主单下的所有明细
+        //    用于重新判断主单状态
+        // =========================
+        List<PlMaterialRequestDetail> details = findDetailsByRequestId(mainId);
+
+        // 是否全部领取
+        boolean allReceived = true;
+
+        // 是否至少有一个明细已经发生领取（全部领取/部分领取）
+        boolean anyReceived = false;
+
+        for (PlMaterialRequestDetail d : details) {
+            Integer status = d.getDetailStatus();
+
+            // 只要有一个明细状态是 2 或 3，说明整单已经开始领取了
+            if (status != null && (status == 2 || status == 3)) {
+                anyReceived = true;
+            }
+
+            // 只要有一个明细不是“全部领取(2)”，那就不能算整单全部领取
+            if (status == null || status != 2) {
+                allReceived = false;
+            }
+        }
+
+        // =========================
+        // 7. 更新主单状态
+        // =========================
+        if (allReceived) {
+            // 所有明细都是“全部领取”
+            main.setStatus(20); // 20 = 全部领取
+        } else if (anyReceived) {
+            // 至少有一条领取过，但还没全部领完
+            main.setStatus(21); // 21 = 部分领取
+        }
+
+        // 更新时间
+        main.setUpdateTime(now);
+
+        // 更新主单
+        if (!main.update()) {
+            return false;
+        }
+
+        // =========================
+        // 8. 更新 allocation 状态为已领取
+        // =========================
+        allocation.setStatus(1);       // 1 = 已领取
+        allocation.setConfirmTime(now);
+
+        // 返回是否更新成功
+        return allocation.update();
+    }
+
 }
 

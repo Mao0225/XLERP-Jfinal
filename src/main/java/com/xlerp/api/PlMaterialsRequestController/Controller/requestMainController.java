@@ -1,5 +1,7 @@
 package com.xlerp.api.PlMaterialsRequestController.Controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
@@ -127,7 +129,7 @@ public class requestMainController extends Controller {
     }
 
     /**
-     * 创建领料单（包含明细）
+     * 创建领料单（包含明细）---没问题了
      */
     @ActionKey("/material_request_main/save")
     @HttpMethod("POST")
@@ -555,6 +557,39 @@ public class requestMainController extends Controller {
             renderJson(Result.success("查询成功").putData("details", details));
         } catch (Exception e) {
             renderJson(Result.serverError("详情加载失败: " + e.getMessage()));
+        }
+    }
+
+
+
+    /**
+     * 领料人确认领取
+     */
+    @ActionKey("/material_request_allocation/confirmReceive")
+    @HttpMethod("POST")
+    public void confirmReceive() {
+        // 读取原始请求体
+        String rawData = getRawData();
+        // 判断请求体是否为空
+        if (rawData == null || rawData.trim().isEmpty()) {
+            renderJson(Result.badRequest("请求体不能为空"));
+            return;
+        }
+        // 把 JSON 字符串转成 JSONObject
+        JSONObject jsonObject = JSON.parseObject(rawData);
+        // 从 JSON 里取 id
+        Integer id = jsonObject.getInteger("id");
+        // 判空
+        if (id == null || id == 0) {
+            renderJson(Result.badRequest("缺少ID"));
+            return;
+        }
+        // 调用业务方法
+        boolean success = requestMainService.confirmReceive(id);
+        if (success) {
+            renderJson(Result.success("领料人确认领取成功"));
+        } else {
+            renderJson(Result.badRequest("领料人确认领取失败"));
         }
     }
 }

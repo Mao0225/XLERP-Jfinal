@@ -158,14 +158,14 @@ public abstract class BasePlMaterialRequestMain<M extends BasePlMaterialRequestM
 	}
 	
 	/**
-	 * 状态（0-待审核，1-已审核待领取，2-已领取，3-部分领取，4-已拒绝，5-已取消）
+	 * 状态（0-草稿，1-待审核，11-审核成功待领取，12-审核拒绝，20-已全部领取，21-已部分领取）
 	 */
 	public void setStatus(java.lang.Integer status) {
 		set("status", status);
 	}
 	
 	/**
-	 * 状态（0-待审核，1-已审核待领取，2-已领取，3-部分领取，4-已拒绝，5-已取消）
+	 * 状态（0-草稿，1-待审核，11-审核成功待领取，12-审核拒绝，20-已全部领取，21-已部分领取）
 	 */
 	public java.lang.Integer getStatus() {
 		return getInt("status");

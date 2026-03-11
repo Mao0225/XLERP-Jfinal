@@ -60,14 +60,14 @@ public abstract class BasePlMaterialRequestDetail<M extends BasePlMaterialReques
 	}
 	
 	/**
-	 * 批准数量（库管员审核后填写）
+	 * 批准数量（库管员审核后填写，暂时没用）
 	 */
 	public void setApprovedQty(java.math.BigDecimal approvedQty) {
 		set("approvedQty", approvedQty);
 	}
 	
 	/**
-	 * 批准数量（库管员审核后填写）
+	 * 批准数量（库管员审核后填写，暂时没用）
 	 */
 	public java.math.BigDecimal getApprovedQty() {
 		return get("approvedQty");
@@ -88,28 +88,14 @@ public abstract class BasePlMaterialRequestDetail<M extends BasePlMaterialReques
 	}
 	
 	/**
-	 * 待领取数量（申请数量-已领取数量）
-	 */
-	public void setPendingQty(java.math.BigDecimal pendingQty) {
-		set("pendingQty", pendingQty);
-	}
-	
-	/**
-	 * 待领取数量（申请数量-已领取数量）
-	 */
-	public java.math.BigDecimal getPendingQty() {
-		return get("pendingQty");
-	}
-	
-	/**
-	 * 明细状态（0-待审核，1-已审核，2-已领取，3-部分领取，4-已拒绝）
+	 * 明细状态（0-待审核，1-已审核，2-已全部领取，3-部分领取，4-已拒绝）
 	 */
 	public void setDetailStatus(java.lang.Integer detailStatus) {
 		set("detailStatus", detailStatus);
 	}
 	
 	/**
-	 * 明细状态（0-待审核，1-已审核，2-已领取，3-部分领取，4-已拒绝）
+	 * 明细状态（0-待审核，1-已审核，2-已全部领取，3-部分领取，4-已拒绝）
 	 */
 	public java.lang.Integer getDetailStatus() {
 		return getInt("detailStatus");

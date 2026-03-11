@@ -79,5 +79,33 @@ public abstract class BasePlMaterialRequestAllocation<M extends BasePlMaterialRe
 		return getDate("createTime");
 	}
 	
+	/**
+	 * 0是未领取，1是已领取，已领取的不可撤销
+	 */
+	public void setStatus(java.lang.Integer status) {
+		set("status", status);
+	}
+	
+	/**
+	 * 0是未领取，1是已领取，已领取的不可撤销
+	 */
+	public java.lang.Integer getStatus() {
+		return getInt("status");
+	}
+	
+	/**
+	 * 确认领取时间
+	 */
+	public void setConfirmTime(java.util.Date confirmTime) {
+		set("confirmTime", confirmTime);
+	}
+	
+	/**
+	 * 确认领取时间
+	 */
+	public java.util.Date getConfirmTime() {
+		return getDate("confirmTime");
+	}
+	
 }
 
