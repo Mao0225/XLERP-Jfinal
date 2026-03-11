@@ -362,15 +362,15 @@ public abstract class BasePlMatInoutList<M extends BasePlMatInoutList<M>> extend
 	/**
 	 * 出入库类型1入库，2出库
 	 */
-	public void setType(java.lang.Byte type) {
+	public void setType(java.lang.Integer type) {
 		set("type", type);
 	}
 	
 	/**
 	 * 出入库类型1入库，2出库
 	 */
-	public java.lang.Byte getType() {
-		return getByte("type");
+	public java.lang.Integer getType() {
+		return getInt("type");
 	}
 	
 	/**
@@ -413,6 +413,34 @@ public abstract class BasePlMatInoutList<M extends BasePlMatInoutList<M>> extend
 	 */
 	public java.lang.String getWeightUnit() {
 		return getStr("weightUnit");
+	}
+	
+	/**
+	 * 剩余数量/重量
+	 */
+	public void setRemainingQuantity(java.math.BigDecimal remainingQuantity) {
+		set("remainingQuantity", remainingQuantity);
+	}
+	
+	/**
+	 * 剩余数量/重量
+	 */
+	public java.math.BigDecimal getRemainingQuantity() {
+		return get("remainingQuantity");
+	}
+	
+	/**
+	 * 出库用，关联本表表示出库的哪个入库记录
+	 */
+	public void setParentId(java.lang.Long parentId) {
+		set("parentId", parentId);
+	}
+	
+	/**
+	 * 出库用，关联本表表示出库的哪个入库记录
+	 */
+	public java.lang.Long getParentId() {
+		return getLong("parentId");
 	}
 	
 }

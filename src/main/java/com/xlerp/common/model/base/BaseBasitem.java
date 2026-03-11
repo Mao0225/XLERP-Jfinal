@@ -293,5 +293,19 @@ public abstract class BaseBasitem<M extends BaseBasitem<M>> extends Model<M> imp
 		return getDate("createTime");
 	}
 	
+	/**
+	 * 设计重量
+	 */
+	public void setPlanWeight(java.math.BigDecimal planWeight) {
+		set("planWeight", planWeight);
+	}
+	
+	/**
+	 * 设计重量
+	 */
+	public java.math.BigDecimal getPlanWeight() {
+		return get("planWeight");
+	}
+	
 }
 

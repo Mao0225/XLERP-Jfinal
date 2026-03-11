@@ -477,5 +477,33 @@ public abstract class BasePlInspOrder<M extends BasePlInspOrder<M>> extends Mode
 		return getStr("matNo");
 	}
 	
+	/**
+	 * 合同编号
+	 */
+	public void setContractNo(java.lang.String contractNo) {
+		set("contractNo", contractNo);
+	}
+	
+	/**
+	 * 合同编号
+	 */
+	public java.lang.String getContractNo() {
+		return getStr("contractNo");
+	}
+	
+	/**
+	 * 合同名称
+	 */
+	public void setContractName(java.lang.String contractName) {
+		set("contractName", contractName);
+	}
+	
+	/**
+	 * 合同名称
+	 */
+	public java.lang.String getContractName() {
+		return getStr("contractName");
+	}
+	
 }
 

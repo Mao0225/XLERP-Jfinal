@@ -496,15 +496,15 @@ public abstract class BaseBascontractitem<M extends BaseBascontractitem<M>> exte
 	/**
 	 * 产品预期交货时间
 	 */
-	public void setItemDeliverTime(java.lang.String itemDeliverTime) {
+	public void setItemDeliverTime(java.util.Date itemDeliverTime) {
 		set("itemDeliverTime", itemDeliverTime);
 	}
 	
 	/**
 	 * 产品预期交货时间
 	 */
-	public java.lang.String getItemDeliverTime() {
-		return getStr("itemDeliverTime");
+	public java.util.Date getItemDeliverTime() {
+		return getDate("itemDeliverTime");
 	}
 	
 }

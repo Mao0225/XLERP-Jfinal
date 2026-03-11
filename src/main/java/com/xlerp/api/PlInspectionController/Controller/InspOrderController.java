@@ -49,7 +49,6 @@ public class InspOrderController extends Controller {
         try {
             int pageNum = (pageNumber != null && !pageNumber.trim().isEmpty()) ? Integer.parseInt(pageNumber) : 1;
             int pageSz = (pageSize != null && !pageSize.trim().isEmpty()) ? Integer.parseInt(pageSize) : 10;
-
             if (pageNum < 1 || pageSz < 1) {
                 renderJson(Result.badRequest("页码或每页大小必须为正整数"));
                 return;

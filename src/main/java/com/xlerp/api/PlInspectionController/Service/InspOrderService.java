@@ -19,7 +19,7 @@ public class InspOrderService {
      * 分页查询检验单列表（可扩展）
      */
     public Page<PlInspOrder> paginate(int pageNumber, int pageSize, String param, String status) {
-        String select = "select p.*,bi.no as itemCode,bi.name as itemName,bi.spec as itemSpec ";
+        String select = "select p.*,bi.no as itemCode,bi.name as itemName,bi.spec as itemSpec";
         // 核心：先加 where 1=1，后续条件统一用 and 拼接
         StringBuilder from = new StringBuilder("from pl_insp_order p " +
                 "left join basitem bi on bi.id = p.itemId where 1=1 ");
@@ -134,3 +134,4 @@ public class InspOrderService {
         return dao.findById(i);
     }
 }
+

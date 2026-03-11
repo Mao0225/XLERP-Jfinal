@@ -351,5 +351,19 @@ public abstract class BasePlInspWorkOrder<M extends BasePlInspWorkOrder<M>> exte
 		return getStr("contractName");
 	}
 	
+	/**
+	 * 送货单位
+	 */
+	public void setDeliveryUnit(java.lang.String deliveryUnit) {
+		set("deliveryUnit", deliveryUnit);
+	}
+	
+	/**
+	 * 送货单位
+	 */
+	public java.lang.String getDeliveryUnit() {
+		return getStr("deliveryUnit");
+	}
+	
 }
 

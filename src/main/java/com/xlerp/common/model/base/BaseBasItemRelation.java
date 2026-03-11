@@ -107,5 +107,13 @@ public abstract class BaseBasItemRelation<M extends BaseBasItemRelation<M>> exte
 		return getStr("memo");
 	}
 	
+	public void setCreateTime(java.util.Date createTime) {
+		set("createTime", createTime);
+	}
+	
+	public java.util.Date getCreateTime() {
+		return getDate("createTime");
+	}
+	
 }
 

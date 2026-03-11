@@ -41,6 +41,9 @@ public class _MappingKit {
 		arp.addMapping("pl_mat_inout_doc", "id", PlMatInoutDoc.class);
 		arp.addMapping("pl_mat_inout_item", "id", PlMatInoutItem.class);
 		arp.addMapping("pl_mat_inout_list", "id", PlMatInoutList.class);
+		arp.addMapping("pl_material_request_allocation", "id", PlMaterialRequestAllocation.class);
+		arp.addMapping("pl_material_request_detail", "id", PlMaterialRequestDetail.class);
+		arp.addMapping("pl_material_request_main", "id", PlMaterialRequestMain.class);
 		arp.addMapping("pl_production_order", "id", PlProductionOrder.class);
 		arp.addMapping("pl_purchase_order", "id", PlPurchaseOrder.class);
 		arp.addMapping("pl_report_work_order", "id", PlReportWorkOrder.class);
