@@ -214,41 +214,6 @@ public class requestMainController extends Controller {
         }
     }
 
-    /**
-     * 更新领料单状态
-     */
-    @ActionKey("/material_request_main/updatestatus")
-    @HttpMethod("POST")
-    public void updateStatus() {
-        String id = getPara("id");
-        String status = getPara("status");
-        String remark = getPara("remark");
-
-        if (id == null || id.trim().isEmpty()) {
-            renderJson(Result.badRequest("领料单ID不能为空"));
-            return;
-        }
-
-        if (status == null || status.trim().isEmpty()) {
-            renderJson(Result.badRequest("状态不能为空"));
-            return;
-        }
-
-        try {
-            Long requestId = Long.parseLong(id);
-            Integer newStatus = Integer.parseInt(status);
-            boolean success = requestMainService.updateStatus(requestId, newStatus, remark);
-            if (success) {
-                renderJson(Result.success("状态更新成功"));
-            } else {
-                renderJson(Result.serverError("状态更新失败"));
-            }
-        } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("ID或状态格式错误"));
-        } catch (Exception e) {
-            renderJson(Result.serverError("状态更新失败: " + e.getMessage()));
-        }
-    }
 
     /**
      * 批量更新状态
@@ -323,41 +288,9 @@ public class requestMainController extends Controller {
         }
     }
 
-    /**
-     * 确认实际领取数量
-     */
-    @ActionKey("/material_request_main/confirmactual")
-    @HttpMethod("POST")
-    public void confirmActual() {
-        String requestId = getPara("requestId");
-        String actualQty = getPara("actualQty");
-        String remark = getPara("remark");
-
-        if (requestId == null || requestId.trim().isEmpty()) {
-            renderJson(Result.badRequest("领料单ID不能为空"));
-            return;
-        }
-
-        try {
-            Long id = Long.parseLong(requestId);
-            Integer userId = getParaToInt("userId");
-            String userName = getAttr("username");
-
-            boolean success = requestMainService.confirmActualQty(id, actualQty, remark, userId, userName);
-            if (success) {
-                renderJson(Result.success("确认成功"));
-            } else {
-                renderJson(Result.serverError("确认失败"));
-            }
-        } catch (NumberFormatException e) {
-            renderJson(Result.badRequest("参数格式错误"));
-        } catch (Exception e) {
-            renderJson(Result.serverError("确认失败: " + e.getMessage()));
-        }
-    }
 
     /**
-     * 获取我的领料单列表
+     * 获取我的领料单列表--暂时没用
      */
     @ActionKey("/material_request_main/getmylist")
     @HttpMethod("GET")
@@ -429,26 +362,6 @@ public class requestMainController extends Controller {
             renderJson(Result.serverError("查询失败: " + e.getMessage()));
         }
     }
-//    /**
-//     * 执行配货出库（闭环关键）
-//     * 库管员选定批次后，正式扣减库存
-//     */
-//    @ActionKey("/material_stock/executeDispatch")
-//    @HttpMethod("POST")
-//    public void executeDispatch() {
-//        Long detailId = getParaToLong("detailId");
-//        String dispatchData = getPara("dispatchData");
-//        Integer userId = getSessionAttr("userId");
-//        String userName = getSessionAttr("userName");
-//
-//        try {
-//            // 2. 使用 service 实例调用，而不是类名 requestMainService
-//            Map<String, Object> result = requestMainService.executeDispatch(detailId, dispatchData, userId, userName);
-//            renderJson(Result.success("配货成功").putData("result", result));
-//        } catch (Exception e) {
-//            renderJson(Result.serverError("配货失败: " + e.getMessage()));
-//        }
-//    }
 
     /**
      * 接口：执行出库分配
@@ -513,10 +426,22 @@ public class requestMainController extends Controller {
     @HttpMethod("POST") // 涉及数据变更，建议用 POST
     public void cancelDispatch() {
         // 获取关联表的主键 ID
-        Long allocationId = getParaToLong("allocationId");
+
+        // 读取原始请求体
+        String rawData = getRawData();
+        // 判断请求体是否为空
+        if (rawData == null || rawData.trim().isEmpty()) {
+            renderJson(Result.badRequest("请求体不能为空"));
+            return;
+        }
+        // 把 JSON 字符串转成 JSONObject
+        JSONObject jsonObject = JSON.parseObject(rawData);
+        // 从 JSON 里取 id
+        Long allocationId = jsonObject.getLong("allocationId");
 
         // 从 Session 获取当前操作人
         String userName = getSessionAttr("userName");
+        System.out.println("userName: " + userName);
 
         if (allocationId == null) {
             renderJson(Result.badRequest("缺少必要参数：allocationId"));

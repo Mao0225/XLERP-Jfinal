@@ -102,62 +102,6 @@ public abstract class BasePlMaterialRequestDetail<M extends BasePlMaterialReques
 	}
 	
 	/**
-	 * 批次号
-	 */
-	public void setBatchNo(java.lang.String batchNo) {
-		set("batchNo", batchNo);
-	}
-	
-	/**
-	 * 批次号
-	 */
-	public java.lang.String getBatchNo() {
-		return getStr("batchNo");
-	}
-	
-	/**
-	 * 库管员备注
-	 */
-	public void setKeeperComment(java.lang.String keeperComment) {
-		set("keeperComment", keeperComment);
-	}
-	
-	/**
-	 * 库管员备注
-	 */
-	public java.lang.String getKeeperComment() {
-		return getStr("keeperComment");
-	}
-	
-	/**
-	 * 审核人ID
-	 */
-	public void setApproveUserId(java.lang.Long approveUserId) {
-		set("approveUserId", approveUserId);
-	}
-	
-	/**
-	 * 审核人ID
-	 */
-	public java.lang.Long getApproveUserId() {
-		return getLong("approveUserId");
-	}
-	
-	/**
-	 * 审核人姓名
-	 */
-	public void setApproveUserName(java.lang.String approveUserName) {
-		set("approveUserName", approveUserName);
-	}
-	
-	/**
-	 * 审核人姓名
-	 */
-	public java.lang.String getApproveUserName() {
-		return getStr("approveUserName");
-	}
-	
-	/**
 	 * 备注
 	 */
 	public void setRemark(java.lang.String remark) {

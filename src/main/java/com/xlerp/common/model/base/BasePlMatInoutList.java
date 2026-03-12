@@ -318,14 +318,14 @@ public abstract class BasePlMatInoutList<M extends BasePlMatInoutList<M>> extend
 	}
 	
 	/**
-	 * 入库时间（通用）
+	 * 出入库时间（通用）
 	 */
 	public void setOperateTime(java.util.Date operateTime) {
 		set("operateTime", operateTime);
 	}
 	
 	/**
-	 * 入库时间（通用）
+	 * 出入库时间（通用）
 	 */
 	public java.util.Date getOperateTime() {
 		return getDate("operateTime");

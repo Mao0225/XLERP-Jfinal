@@ -29,7 +29,7 @@ public class requestMainService {
 
 
     /**
-     * 分页查询领料单主表
+     * 分页查询领料单主表---
      */
     public Page<PlMaterialRequestMain> paginate(int pageNumber, int pageSize, String requestNo,
                                                 String applicantName, String departmentName,
@@ -190,7 +190,7 @@ public class requestMainService {
 
 
     /**
-     * 保存领料单及其明细
+     * 保存领料单及其明细---
      */
     public Map<String, Object> saveWithDetails(String jsonData) {
         JSONObject jsonObject = JSON.parseObject(jsonData);
@@ -238,7 +238,6 @@ public class requestMainService {
                 detail.setApprovedQty(BigDecimal.ZERO); // 初始为0，审核时填写
                 detail.setActualQty(BigDecimal.ZERO); // 初始为0，发放时填写
                 detail.setDetailStatus(0); // 初始待审核状态
-                detail.setKeeperComment(detailData.getString("keeperComment"));
                 detail.setRemark(detailData.getString("remark"));
                 detail.setCreateTime(new Date());
                 detail.setUpdateTime(new Date());
@@ -259,7 +258,7 @@ public class requestMainService {
     }
 
     /**
-     * 更新领料单主表
+     * 更新领料单主表----
      */
     public boolean update(PlMaterialRequestMain main) {
         main.setUpdateTime(new Date());
@@ -267,7 +266,7 @@ public class requestMainService {
     }
 
     /**
-     * 删除领料单及其明细
+     * 删除领料单及其明细---只有未配货的才能删
      */
     public boolean deleteWithDetails(Long requestId) {
         // 先删除明细
@@ -282,7 +281,7 @@ public class requestMainService {
     }
 
     /**
-     * 更新领料单状态
+     * 更新领料单状态-----暂时不用
      */
     public boolean updateStatus(Long requestId, Integer status, String remark) {
         PlMaterialRequestMain main = dao.findById(requestId);
@@ -305,7 +304,7 @@ public class requestMainService {
     }
 
     /**
-     * 批量更新状态
+     * 批量更新状态-----暂时不用
      */
     public int batchUpdateStatus(String[] ids, Integer status, String remark) {
         int count = 0;
@@ -348,96 +347,11 @@ public class requestMainService {
             return false;
         }
 
-        // 更新明细表
-        List<PlMaterialRequestDetail> details = detailDao.find("select * from pl_material_request_detail where requestId = ?", requestId);
-
-        for (PlMaterialRequestDetail detail : details) {
-            detail.setDetailStatus(status);
-            detail.setApproveUserId(Long.valueOf(userId));
-            detail.setApproveUserName(userName);
-
-            if (StrKit.notBlank(keeperComment)) {
-                detail.setKeeperComment(keeperComment);
-            }
-
-            // 如果是审核通过，设置批准数量（这里简化处理，实际应该按明细分别设置）--暂时不需要
-//            if (status == 1 && StrKit.notBlank(approvedQty)) {
-//                try {
-//                    BigDecimal qty = new BigDecimal(approvedQty);
-//                    detail.setApprovedQty(qty);
-//                } catch (NumberFormatException e) {
-//                    // 忽略格式错误
-//                }
-//            }
-
-//            // 如果是审核拒绝，设置批准数量为0
-//            if (status == 4) {
-//                detail.setApprovedQty(BigDecimal.ZERO);
-//            }
-
-            detail.setUpdateTime(new Date());
-            detail.update();
-        }
-
         return true;
     }
 
     /**
-     * 确认实际领取数量
-     */
-    public boolean confirmActualQty(Long requestId, String actualQty, String remark,
-                                    Integer userId, String userName) {
-        // 更新主表
-        PlMaterialRequestMain main = dao.findById(requestId);
-        if (main == null) {
-            return false;
-        }
-
-        // 这里简化处理，实际应该按明细分别设置实际数量
-        main.setStatus(2); // 已领取
-        main.setUpdateTime(new Date());
-        if (StrKit.notBlank(remark)) {
-            main.setRemark(remark);
-        }
-
-        // 更新明细表
-        List<PlMaterialRequestDetail> details = detailDao.find("select * from pl_material_request_detail where requestId = ?", requestId);
-
-        for (PlMaterialRequestDetail detail : details) {
-            if (StrKit.notBlank(actualQty)) {
-                try {
-                    BigDecimal qty = new BigDecimal(actualQty);
-                    detail.setActualQty(qty);
-
-                    // 计算待领取数量
-                    BigDecimal approvedQty = detail.getApprovedQty() != null ? detail.getApprovedQty() : BigDecimal.ZERO;
-                    BigDecimal pendingQty = approvedQty.subtract(qty);
-
-                    // 如果还有待领取数量，状态为部分领取
-                    if (pendingQty.compareTo(BigDecimal.ZERO) > 0) {
-                        detail.setDetailStatus(3);
-                    } else {
-                        detail.setDetailStatus(2); // 已领取
-                    }
-
-                } catch (NumberFormatException e) {
-                    // 忽略格式错误
-                }
-            }
-
-            detail.setUpdateTime(new Date());
-            detail.update();
-        }
-
-        // 检查是否有部分领取的明细
-        boolean hasPartial = details.stream().anyMatch(d -> d.getDetailStatus() == 3);
-        main.setStatus(hasPartial ? 3 : 2); // 3-部分领取 2-已领取
-
-        return main.update();
-    }
-
-    /**
-     * 获取我的领料单列表
+     * 获取我的领料单列表--暂时没用
      */
     public Page<PlMaterialRequestMain> getMyRequestList(Integer userId, int pageNumber,
                                                         int pageSize, Integer status) {
@@ -458,7 +372,7 @@ public class requestMainService {
     }
 
     /**
-     * 获取待审核领料单列表（库管员视角）
+     * 获取待审核领料单列表（库管员视角）---
      */
     public Page<PlMaterialRequestMain> getPendingRequestList(Integer keeperId, int pageNumber, int pageSize) {
         String select = "select *";
@@ -475,54 +389,7 @@ public class requestMainService {
     }
 
     /**
-     * 更新明细状态
-     */
-    public boolean updateDetailStatus(Long detailId, Integer status, String comment) {
-        PlMaterialRequestDetail detail = detailDao.findById(detailId);
-        if (detail == null) {
-            return false;
-        }
-
-        detail.setDetailStatus(status);
-        if (StrKit.notBlank(comment)) {
-            detail.setKeeperComment(comment);
-        }
-        detail.setUpdateTime(new Date());
-
-        return detail.update();
-    }
-
-    /**
-     * 创建补充领料明细
-     */
-    public PlMaterialRequestDetail createSupplementDetail(Long originalRequestId, Long originalDetailId,
-                                                          BigDecimal supplementQty, String remark) {
-        // 获取原始明细
-        PlMaterialRequestDetail originalDetail = detailDao.findById(originalDetailId);
-        if (originalDetail == null) {
-            return null;
-        }
-
-        // 创建新的补充明细
-        PlMaterialRequestDetail supplement = new PlMaterialRequestDetail();
-        supplement.setRequestId(originalRequestId);
-        supplement.setMaterialId(originalDetail.getMaterialId());
-        supplement.setRequestQty(supplementQty);
-        supplement.setApprovedQty(supplementQty);
-        supplement.setActualQty(BigDecimal.ZERO);
-        supplement.setDetailStatus(1); // 已审核
-        supplement.setRemark(remark);
-        supplement.setCreateTime(new Date());
-        supplement.setUpdateTime(new Date());
-
-        if (supplement.save()) {
-            return supplement;
-        }
-        return null;
-    }
-
-    /**
-     * 根据物料ID查询库存批次信息（为核心）
+     * 根据物料ID查询库存批次信息（为核心）---
      * 为某个领料项寻找"货源"
      */
     public List<Record> findStockBatchesByItemId(Long itemId) {
@@ -540,7 +407,7 @@ public class requestMainService {
 
     private static PlMatInoutList matDao = new PlMatInoutList().dao();
     /**
-     * 执行配货出库（核心逻辑）
+     * 执行配货出库（核心逻辑）---
      * @param detailId 领料明细ID
      * @param dispatchData 批次分配数据 JSON 字符串 [{"inboundId":1, "qty":10}]
      * @param userName 操作人姓名
@@ -558,11 +425,12 @@ public class requestMainService {
                     if (detail == null) throw new RuntimeException("领料明细不存在");
 
                     JSONArray dispatchList = JSON.parseArray(dispatchData);
+                    //查看前端传过来的配货数据，两个值，一个inboundId也就是入库记录ID，一个qty也就是数量，说明从哪条入记录里面出
                     if (dispatchList == null || dispatchList.isEmpty()) throw new RuntimeException("请选择配货批次");
 
-                    BigDecimal totalQty = BigDecimal.ZERO;
+                    BigDecimal totalQty = BigDecimal.ZERO;//初始化总数
 
-                    // 2. 遍历每一条分配批次
+                    // 2. 遍历每一条分配批次--因为是支持批量配货的，就是这一个物料我可以选择多个入库记录，每个记录不同数量，共同组成这个领料项目的出库单
                     for (int i = 0; i < dispatchList.size(); i++) {
                         JSONObject item = dispatchList.getJSONObject(i);
                         Long inboundId = item.getLong("inboundId"); // 入库记录ID
@@ -579,28 +447,29 @@ public class requestMainService {
 
                         // b. 创建出库记录，复用入库记录的所有物料/批次/检验信息
                         PlMatInoutList outbound = new PlMatInoutList();
+
                         // 核心关联字段
                         outbound.setParentId(inboundId);         // 关联原始入库ID
                         outbound.setType((byte) 2);                    // 2: 出库
                         outbound.setActualQuantity(qty.negate());// 数量记为负数
                         outbound.setRemainingQuantity(BigDecimal.ZERO); // 出库记录本身无剩余量
-                        outbound.setOperateTime(new Date());
-                        outbound.setWriter(userName);
-
+                        outbound.setOperateTime(new Date());//操作时间
+                        outbound.setWriter(userName);//操作人
+//                        outbound.setTerm();//期间，暂时不用
                         // 字段复用（闭环追溯关键）
-                        outbound.setInspOrderNo(inbound.getInspOrderNo());
-                        outbound.setWarehouse(inbound.getWarehouse());
+                        outbound.setInspOrderNo(inbound.getInspOrderNo());//检验单号
+                        outbound.setWarehouse(inbound.getWarehouse());//仓库
                         outbound.setContractNo(inbound.getContractNo());
                         outbound.setContractName(inbound.getContractName());
-                        outbound.setSupplierName(inbound.getSupplierName());
+                        outbound.setSupplierName(inbound.getSupplierName());//供应商
                         outbound.setMaterialCode(inbound.getMaterialCode());
                         outbound.setMaterialName(inbound.getMaterialName());
                         outbound.setMaterialSpec(inbound.getMaterialSpec());
                         outbound.setMaterialUnit(inbound.getMaterialUnit());
-                        outbound.setBatchNo(inbound.getBatchNo());
-                        outbound.setInclass(inbound.getInclass());
+                        outbound.setBatchNo(inbound.getBatchNo());//炉批号
+                        outbound.setInclass(inbound.getInclass());//分类
                         outbound.setMaterial(inbound.getMaterial());
-                        outbound.setPrice(inbound.getPrice());
+//                        outbound.setPrice(inbound.getPrice());
 
                         if (!outbound.save()) throw new RuntimeException("保存出库明细失败");
 
@@ -619,20 +488,8 @@ public class requestMainService {
                         totalQty = totalQty.add(qty);
                     }
 
-                    // 3. 更新领料明细表中的已领取数量和状态
-                    BigDecimal currentActual = detail.getActualQty() != null ? detail.getActualQty() : BigDecimal.ZERO;
-                    BigDecimal newActual = currentActual.add(totalQty);
-//                    detail.setActualQty(newActual);//不更新，因为已领取要在申请端确认
-
-                    // 状态判断：已领取 >= 申请批准数 ? 2(已完成) : 3(部分领取)
-                    BigDecimal requestQty = detail.getRequestQty();
-                    detail.setDetailStatus(newActual.compareTo(requestQty) >= 0 ? 2 : 3);
+                    detail.setDetailStatus(1);//设置为待领取状态，因为刚配货肯定是待领取
                     detail.update();
-
-                    // 4. 同步更新主表状态逻辑（建议调用之前定义的 updateMainRequestStatus）
-                    updateMainStatus(detail.getRequestId());
-
-                    result.put("newActualQty", newActual);
                     return true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -683,55 +540,37 @@ public class requestMainService {
     public boolean cancelDispatch(Long allocationId, String userName) {
         return Db.tx(() -> {
             // 1. 查找关联记录
-            Record allocation = Db.findById("pl_material_request_allocation", allocationId);
+            PlMaterialRequestAllocation allocation = allocDao.findById(allocationId);
             if (allocation == null) {
                 throw new RuntimeException("未找到配货关联记录");
             }
 
-            Long outboundId = allocation.getLong("outboundId");
-            Long detailId = allocation.getLong("detailId");
-            BigDecimal qtyToReturn = allocation.getBigDecimal("quantity"); // 配货时存入的数量
+            Long outboundId = allocation.getOutboundId();
+            Long detailId = allocation.getDetailId();
+            BigDecimal qtyToReturn = allocation.getQuantity(); // 配货时存入的数量
 
             // 2. 查找对应的出库记录，获取 parentId (即原入库批次ID)
             PlMatInoutList outbound = matDao.findById(outboundId);
             if (outbound == null || outbound.getType() != 2) {
                 throw new RuntimeException("未找到对应的出库明细");
             }
-            Long inboundId = outbound.getParentId();
+            Long inboundId = outbound.getParentId();//拿到该出库记录对应的入库记录的id
 
             // 3. 回滚库存：将数量加回原入库批次的 remainingQuantity
             // 注意：使用 SQL 直接累加更安全，防止并发冲突
-            String updateInboundSql = "UPDATE pl_mat_inout_list SET remainingQuantity = remainingQuantity + ?, updateTime = ? WHERE id = ? AND type = 1";
-            int updated = Db.update(updateInboundSql, qtyToReturn, new Date(), inboundId);
+            String updateInboundSql = "UPDATE pl_mat_inout_list SET remainingQuantity = remainingQuantity + ? WHERE id = ? AND type = 1";
+            int updated = Db.update(updateInboundSql, qtyToReturn, inboundId);
             if (updated == 0) {
                 throw new RuntimeException("回滚入库库存失败，原入库记录可能已被删除");
             }
 
-            // 4. 更新领料明细表：扣除已领数量，增加待领数量
-            PlMaterialRequestDetail detail = detailDao.findById(detailId);
-            if (detail != null) {
-                BigDecimal newActual = detail.getActualQty().subtract(qtyToReturn);
-                BigDecimal approved = detail.getApprovedQty();
+            // 5. 物理删除出库关联领料表记录
+            allocation.delete();
+            // 6. 出库记录处理：建议逻辑删除或标记作废，不要直接物理删除，保留审计痕迹，目前是直接物理删除
+//            outbound.setMemo("撤销配货回滚：" + (outbound.getMemo() == null ? "" : outbound.getMemo()));
+//            outbound.setActualQuantity(BigDecimal.ZERO); // 数量归零
+            return outbound.delete();// 删除
 
-                detail.setActualQty(newActual.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newActual);
-
-                // 重新判定明细状态：如果已领为0则待领取(1)，否则部分领取(3)
-                detail.setDetailStatus(detail.getActualQty().compareTo(BigDecimal.ZERO) == 0 ? 1 : 3);
-                detail.setUpdateTime(new Date());
-                detail.update();
-
-                // 同步更新主表状态
-                updateMainStatus(detail.getRequestId());
-            }
-
-            // 5. 物理删除关联表记录
-            Db.delete("pl_material_request_allocation", allocationId);
-
-            // 6. 出库记录处理：建议逻辑删除或标记作废，不要直接物理删除，保留审计痕迹
-            outbound.setMemo("撤销配货回滚：" + (outbound.getMemo() == null ? "" : outbound.getMemo()));
-            outbound.setActualQuantity(BigDecimal.ZERO); // 数量归零
-            outbound.delete();// 删除
-            return outbound.update();
         });
     }
 
@@ -739,6 +578,11 @@ public class requestMainService {
         return detailDao.deleteById(detailId);
     }
 
+
+    /**
+     * 获取配货记录---
+     * @param detailId 明细ID
+     */
     public List<Record> getDispatchRecords(Long detailId) {
         /**
          * 优化点：
@@ -765,10 +609,11 @@ public class requestMainService {
      */
     public List<Record> getDetailsWithAllocations(Long requestId) {
         // 1. 首先查出该领料单下的所有明细，并关联物料基础信息
-        String detailSql = "SELECT d.*, " +
+        String detailSql = "SELECT d.*, m.applicantName," +
                 "b.no as itemCode, b.name as itemName, b.spec as itemSpec, b.unit as itemUnit " +
                 "FROM pl_material_request_detail d " +
                 "LEFT JOIN basitem b ON d.materialId = b.id " +
+                "LEFT JOIN pl_material_request_main m ON d.requestId = m.id " +
                 "WHERE d.requestId = ? " +
                 "ORDER BY d.id ASC";
 
