@@ -443,5 +443,19 @@ public abstract class BasePlReportWorkOrder<M extends BasePlReportWorkOrder<M>> 
 		return getInt("amount");
 	}
 	
+	/**
+	 * 报工人Id
+	 */
+	public void setReporterId(java.lang.Integer reporterId) {
+		set("reporterId", reporterId);
+	}
+	
+	/**
+	 * 报工人Id
+	 */
+	public java.lang.Integer getReporterId() {
+		return getInt("reporterId");
+	}
+	
 }
 

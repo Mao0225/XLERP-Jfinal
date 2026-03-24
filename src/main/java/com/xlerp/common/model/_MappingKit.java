@@ -46,6 +46,7 @@ public class _MappingKit {
 		arp.addMapping("pl_material_request_main", "id", PlMaterialRequestMain.class);
 		arp.addMapping("pl_production_order", "id", PlProductionOrder.class);
 		arp.addMapping("pl_purchase_order", "id", PlPurchaseOrder.class);
+		arp.addMapping("pl_reporder_material", "id", PlReporderMaterial.class);
 		arp.addMapping("pl_report_work_order", "id", PlReportWorkOrder.class);
 		arp.addMapping("pl_schedule_plan", "id", PlSchedulePlan.class);
 		arp.addMapping("pl_supply_order", "id", PlSupplyOrder.class);

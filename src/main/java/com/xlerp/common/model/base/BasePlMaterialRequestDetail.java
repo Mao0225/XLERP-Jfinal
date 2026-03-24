@@ -143,5 +143,19 @@ public abstract class BasePlMaterialRequestDetail<M extends BasePlMaterialReques
 		return getDate("updateTime");
 	}
 	
+	/**
+	 * 已使用的数量
+	 */
+	public void setUsedQty(java.math.BigDecimal usedQty) {
+		set("usedQty", usedQty);
+	}
+	
+	/**
+	 * 已使用的数量
+	 */
+	public java.math.BigDecimal getUsedQty() {
+		return get("usedQty");
+	}
+	
 }
 

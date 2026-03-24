@@ -76,9 +76,110 @@ public class requestMainService {
         return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
     }
 
+
+
+    /**
+     * 分页查询领料单主表---
+     */
+    public Page<PlMaterialRequestMain> mypaginate(int pageNumber, int pageSize, String requestNo,
+                                                String applicantName, String departmentName,
+                                                Integer status, String startDate, String endDate, Integer userId) {
+        String select = "select *";
+        StringBuilder from = new StringBuilder(" from pl_material_request_main where 1=1");
+        List<Object> params = new ArrayList<>();
+
+        // 1. 动态构建查询条件
+        if (StrKit.notBlank(requestNo)) {
+            from.append(" and requestNo like ?");
+            params.add("%" + requestNo + "%");
+        }
+        if (StrKit.notBlank(applicantName)) {
+            from.append(" and applicantName like ?");
+            params.add("%" + applicantName + "%");
+        }
+        if (StrKit.notBlank(departmentName)) {
+            from.append(" and departmentName like ?");
+            params.add("%" + departmentName + "%");
+        }
+
+        // 2. 权限与状态逻辑处理 (核心错误修复点)
+        if (status != null) {
+            from.append(" and status = ?");
+            params.add(status);
+        }
+
+        if (userId != null){
+            from.append(" and applicantId = ?");
+            params.add(userId);
+        }
+
+        // 3. 时间过滤
+        if (StrKit.notBlank(startDate)) {
+            from.append(" and createTime >= ?");
+            params.add(startDate);
+        }
+        if (StrKit.notBlank(endDate)) {
+            from.append(" and createTime <= ?");
+            params.add(endDate);
+        }
+
+        from.append(" order by id desc");
+
+        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
+    }
+
     /**
      * 根据ID查找领料单
      */
+    /**
+     * 根据 userId 查询历史领料记录及其明细
+     */
+    public Page<Record> getMyHistoryWithDetails(int pageNumber, int pageSize, Long userId) {
+        String select = "select " +
+                "d.id, " +
+                "d.requestId, " +
+                "d.materialId, " +
+                "d.requestQty, " +
+                "d.approvedQty, " +
+                "COALESCE(d.actualQty, 0) as actualQty, " +
+                "COALESCE(u.usedQty, d.usedQty, 0) as usedQty, " +
+                "(COALESCE(d.actualQty, 0) - COALESCE(u.usedQty, d.usedQty, 0)) as availableQty, " +
+                "d.detailStatus, " +
+                "d.remark as detailRemark, " +
+                "d.createTime as detailCreateTime, " +
+                "d.updateTime as detailUpdateTime, " +
+                "m.id as mainId, " +
+                "m.requestNo, " +
+                "m.applicantId, " +
+                "m.applicantName, " +
+                "m.departmentName, " +
+                "m.projectId, " +
+                "m.projectName, " +
+                "m.requestReason, " +
+                "m.status as mainStatus, " +
+                "m.remark as mainRemark, " +
+                "m.createTime as requestCreateTime, " +
+                "m.updateTime as requestUpdateTime, " +
+                "b.no as itemCode, " +
+                "b.name as itemName, " +
+                "b.spec as itemSpec, " +
+                "b.unit as itemUnit, " +
+                "b.inclass as itemInclass";
+
+        String from = "from pl_material_request_detail d " +
+                "inner join pl_material_request_main m on d.requestId = m.id " +
+                "left join basitem b on d.materialId = b.id " +
+                "left join ( " +
+                "    select matDetailId, COALESCE(sum(usedQty), 0) as usedQty " +
+                "    from pl_reporder_material " +
+                "    group by matDetailId " +
+                ") u on u.matDetailId = d.id " +
+                "where m.applicantId = ? and COALESCE(d.actualQty, 0) > 0 " +
+                "order by d.id desc";
+
+        return Db.paginate(pageNumber, pageSize, select, from, userId);
+    }
+
     public PlMaterialRequestMain findById(Long id) {
         return dao.findById(id);
     }
@@ -350,26 +451,6 @@ public class requestMainService {
         return true;
     }
 
-    /**
-     * 获取我的领料单列表--暂时没用
-     */
-    public Page<PlMaterialRequestMain> getMyRequestList(Integer userId, int pageNumber,
-                                                        int pageSize, Integer status) {
-        String select = "select *";
-        StringBuilder from = new StringBuilder("from pl_material_request_main where applicantId = ?");
-
-        List<Object> params = new ArrayList<>();
-        params.add(userId);
-
-        if (status != null) {
-            from.append(" and status = ?");
-            params.add(status);
-        }
-
-        from.append(" order by id desc");
-
-        return dao.paginate(pageNumber, pageSize, select, from.toString(), params.toArray());
-    }
 
     /**
      * 获取待审核领料单列表（库管员视角）---
@@ -797,4 +878,3 @@ public class requestMainService {
     }
 
 }
-

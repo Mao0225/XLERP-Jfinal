@@ -60,6 +60,38 @@ public class requestMainController extends Controller {
     /**
      * 根据ID查询领料单详情（包含明细）
      */
+    /**
+     * 根据 userId 分页查询本人的领料明细记录，并平铺主表信息
+     */
+    @ActionKey("/material_request_main/getMyHistoryWithDetails")
+    @HttpMethod("GET")
+    public void getMyHistoryWithDetails() {
+        String pageNumber = getPara("pageNumber", "1");
+        String pageSize = getPara("pageSize", "20");
+        Long userId = getParaToLong("userId");
+        if (userId == null) {
+            renderJson(Result.badRequest("userId不能为空"));
+            return;
+        }
+
+        try {
+            int pageNum = Integer.parseInt(pageNumber);
+            int pageSz = Integer.parseInt(pageSize);
+
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<Record> page = requestMainService.getMyHistoryWithDetails(pageNum, pageSz, userId);
+            renderJson(Result.success("查询成功").putData("page", page));
+        } catch (NumberFormatException e) {
+            renderJson(Result.badRequest("页码或每页大小格式错误"));
+        } catch (Exception e) {
+            renderJson(Result.serverError("查询失败: " + e.getMessage()));
+        }
+    }
+
     @ActionKey("/material_request_main/getdetail")
     @HttpMethod("GET")
     public void getDetail() {
@@ -290,29 +322,39 @@ public class requestMainController extends Controller {
 
 
     /**
-     * 获取我的领料单列表--暂时没用
+     * 分页查询领料单主表-查询本人的领料记录
      */
-    @ActionKey("/material_request_main/getmylist")
+    @ActionKey("/material_request_main/getMyList")
     @HttpMethod("GET")
     public void getMyList() {
         String pageNumber = getPara("pageNumber", "1");
         String pageSize = getPara("pageSize", "20");
-        Integer userId = getParaToInt("userId");
+        String requestNo = getPara("requestNo");
+        String applicantName = getPara("applicantName");
+        String departmentName = getPara("departmentName");
         Integer status = getParaToInt("status");
+        String startDate = getPara("startDate");
+        String endDate = getPara("endDate");
+        Integer userId = getParaToInt("userId");
 
         try {
             int pageNum = Integer.parseInt(pageNumber);
             int pageSz = Integer.parseInt(pageSize);
 
-            Page<PlMaterialRequestMain> page = requestMainService.getMyRequestList(
-                userId, pageNum, pageSz, status);
+            if (pageNum < 1 || pageSz < 1) {
+                renderJson(Result.badRequest("页码或每页大小必须为正整数"));
+                return;
+            }
+
+            Page<PlMaterialRequestMain> page = requestMainService.mypaginate(
+                    pageNum, pageSz, requestNo, applicantName, departmentName, status, startDate, endDate, userId
+            );
             renderJson(Result.success("查询成功").putData("page", page));
         } catch (NumberFormatException e) {
             renderJson(Result.badRequest("页码或每页大小格式错误"));
-        } catch (Exception e) {
-            renderJson(Result.serverError("查询失败: " + e.getMessage()));
         }
     }
+
 
     /**
      * 获取待审核领料单列表（库管员视角）
